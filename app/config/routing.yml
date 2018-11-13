@@ -1,0 +1,7 @@
+gatomlo_project_manager:
+    resource: "@GatomloProjectManagerBundle/Resources/config/routing.yml"
+    prefix:   /
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation

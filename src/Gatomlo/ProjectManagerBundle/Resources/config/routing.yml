@@ -1,0 +1,3 @@
+gatomlo_project_manager_homepage:
+    path:     /
+    defaults: { _controller: GatomloProjectManagerBundle:Default:index }

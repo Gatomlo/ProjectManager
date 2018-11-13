@@ -12,70 +12,70 @@ gatomlo_project_manager_config:
 #projets
 gatomlo_project_manager_all_projects:
     path:      /projects/all
-    defaults: { _controller: OCPlatformBundle:Project:all }
+    defaults: { _controller: GatomloProjectManagerBundle:Project:all }
 
 gatomlo_project_manager_one_project:
     path:      /projects/{id}
-    defaults: { _controller: OCPlatformBundle:Project:view }
+    defaults: { _controller: GatomloProjectManagerBundle:Project:view }
 
 gatomlo_project_manager_add_project:
     path:      /projects/add
-    defaults: { _controller: OCPlatformBundle:Project:add }
+    defaults: { _controller: GatomloProjectManagerBundle:Project:add }
 
 gatomlo_project_manager_delete_project:
     path:      /projects/delete/{id}
-    defaults: { _controller: OCPlatformBundle:Project:delete }
+    defaults: { _controller: GatomloProjectManagerBundle:Project:delete }
 
 
 #users
 gatomlo_project_manager_all_users:
     path:      /users/all
-    defaults: { _controller: OCPlatformBundle:User:all }
+    defaults: { _controller: GatomloProjectManagerBundle:User:all }
 
 gatomlo_project_manager_one_user:
     path:      /users/{id}
-    defaults: { _controller: OCPlatformBundle:User:view }
+    defaults: { _controller: GatomloProjectManagerBundle:User:view }
 
 gatomlo_project_manager_add_user:
     path:      /users/add
-    defaults: { _controller: OCPlatformBundle:User:add }
+    defaults: { _controller: GatomloProjectManagerBundle:User:add }
 
 gatomlo_project_manager_delete_user:
     path:      /users/delete/{id}
-    defaults: { _controller: OCPlatformBundle:User:delete }
+    defaults: { _controller: GatomloProjectManagerBundle:User:delete }
 
 
 #events
 gatomlo_project_manager_all_events:
     path:      /events/all
-    defaults: { _controller: OCPlatformBundle:Event:all }
+    defaults: { _controller: GatomloProjectManagerBundle:Event:all }
 
 gatomlo_project_manager_one_event:
     path:      /events/{id}
-    defaults: { _controller: OCPlatformBundle:Event:view }
+    defaults: { _controller: GatomloProjectManagerBundle:Event:view }
 
 gatomlo_project_manager_add_event:
     path:      /events/add
-    defaults: { _controller: OCPlatformBundle:Event:add }
+    defaults: { _controller: GatomloProjectManagerBundle:Event:add }
 
 gatomlo_project_manager_delete_event:
     path:      /events/delete/{id}
-    defaults: { _controller: OCPlatformBundle:Event:delete }
+    defaults: { _controller: GatomloProjectManagerBundle:Event:delete }
 
 
 #tasks
 gatomlo_project_manager_all_tasks:
     path:      /tasks/all
-    defaults: { _controller: OCPlatformBundle:Task:all }
+    defaults: { _controller: GatomloProjectManagerBundle:Task:all }
 
 gatomlo_project_manager_one_task:
     path:      /tasks/{id}
-    defaults: { _controller: OCPlatformBundle:Task:view }
+    defaults: { _controller: GatomloProjectManagerBundle:Task:view }
 
 gatomlo_project_manager_add_task:
     path:      /tasks/add
-    defaults: { _controller: OCPlatformBundle:Task:add }
+    defaults: { _controller: GatomloProjectManagerBundle:Task:add }
 
 gatomlo_project_manager_delete_tasks:
     path:      /tasks/delete/{id}
-    defaults: { _controller: OCPlatformBundle:Task:delete }
+    defaults: { _controller: GatomloProjectManagerBundle:Task:delete }

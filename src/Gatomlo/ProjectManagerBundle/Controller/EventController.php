@@ -11,15 +11,19 @@ class EventController extends Controller
     {
         return $this->render('@GatomloProjectManager/Event/all.html.twig');
     }
-    public function viewAction()
+    public function viewAction($id)
     {
-        return $this->render('@GatomloProjectManager/Event/view.html.twig');
+        return $this->render('@GatomloProjectManager/Event/view.html.twig',array('id'=>$id));
     }
     public function addAction()
     {
         return $this->render('@GatomloProjectManager/Event/add.html.twig');
     }
-    public function deleteAction()
+    public function editAction($id)
+    {
+        return $this->render('@GatomloProjectManager/Event/edit.html.twig');
+    }
+    public function deleteAction($id)
     {
         return $this->render('@GatomloProjectManager/Event/delete.html.twig');
     }

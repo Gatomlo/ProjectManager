@@ -17,14 +17,24 @@ gatomlo_project_manager_all_projects:
 gatomlo_project_manager_one_project:
     path:      /projects/{id}
     defaults: { _controller: GatomloProjectManagerBundle:Project:view }
+    requirements:
+        id: \d+
 
 gatomlo_project_manager_add_project:
     path:      /projects/add
     defaults: { _controller: GatomloProjectManagerBundle:Project:add }
 
+gatomlo_project_manager_edit_project:
+    path:      /projects/edit/{id}
+    defaults: { _controller: GatomloProjectManagerBundle:Project:edit }
+    requirements:
+        id: \d+
+
 gatomlo_project_manager_delete_project:
     path:      /projects/delete/{id}
     defaults: { _controller: GatomloProjectManagerBundle:Project:delete }
+    requirements:
+        id: \d+
 
 
 #users
@@ -35,15 +45,24 @@ gatomlo_project_manager_all_users:
 gatomlo_project_manager_one_user:
     path:      /users/{id}
     defaults: { _controller: GatomloProjectManagerBundle:User:view }
+    requirements:
+        id: \d+
 
 gatomlo_project_manager_add_user:
     path:      /users/add
     defaults: { _controller: GatomloProjectManagerBundle:User:add }
 
+gatomlo_project_manager_edit_user:
+    path:      /users/edit/{id}
+    defaults: { _controller: GatomloProjectManagerBundle:User:edit }
+    requirements:
+        id: \d+
+
 gatomlo_project_manager_delete_user:
     path:      /users/delete/{id}
     defaults: { _controller: GatomloProjectManagerBundle:User:delete }
-
+    requirements:
+        id: \d+
 
 #events
 gatomlo_project_manager_all_events:
@@ -53,15 +72,24 @@ gatomlo_project_manager_all_events:
 gatomlo_project_manager_one_event:
     path:      /events/{id}
     defaults: { _controller: GatomloProjectManagerBundle:Event:view }
+    requirements:
+        id: \d+
 
 gatomlo_project_manager_add_event:
     path:      /events/add
     defaults: { _controller: GatomloProjectManagerBundle:Event:add }
 
+gatomlo_project_manager_edit_event:
+    path:      /events/edit/{id}
+    defaults: { _controller: GatomloProjectManagerBundle:Event:edit }
+    requirements:
+        id: \d+
+
 gatomlo_project_manager_delete_event:
     path:      /events/delete/{id}
     defaults: { _controller: GatomloProjectManagerBundle:Event:delete }
-
+    requirements:
+        id: \d+
 
 #tasks
 gatomlo_project_manager_all_tasks:
@@ -71,11 +99,21 @@ gatomlo_project_manager_all_tasks:
 gatomlo_project_manager_one_task:
     path:      /tasks/{id}
     defaults: { _controller: GatomloProjectManagerBundle:Task:view }
+    requirements:
+          id: \d+
 
 gatomlo_project_manager_add_task:
     path:      /tasks/add
     defaults: { _controller: GatomloProjectManagerBundle:Task:add }
 
+gatomlo_project_manager_edit_task:
+    path:      /tasks/edit/{id}
+    defaults: { _controller: GatomloProjectManagerBundle:Task:edit }
+    requirements:
+        id: \d+
+
 gatomlo_project_manager_delete_tasks:
     path:      /tasks/delete/{id}
     defaults: { _controller: GatomloProjectManagerBundle:Task:delete }
+    requirements:
+        id: \d+

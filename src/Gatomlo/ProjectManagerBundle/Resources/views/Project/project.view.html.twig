@@ -1,0 +1,48 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+
+Project
+
+{% endblock %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item">
+    <a href="#">Projet</a>
+  </li>
+  <li class="breadcrumb-item active">{{project.name}}</li>
+{% endblock %}
+
+{% block body %}
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" href="#">Description</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Tâches</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Evénements</a>
+    </li>
+  </ul>
+  
+  </br></br>
+  <div class="card">
+    <div class="card-header">
+      <h2>{{project.name}}</h2>
+      {% for status in project.status %}
+        Status : {{status.name}}
+      {% endfor %}
+    </div>
+    <div class="card-body">
+      {{project.description}}
+    </div>
+    <div class="card-footer text-muted text-right">
+      {% if not project.tags.empty %}
+          {% for tag in project.tags %}
+            <div class="badge badge-secondary">{{ tag.name }}{% if not loop.last %}</div>, {% endif %}
+          {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

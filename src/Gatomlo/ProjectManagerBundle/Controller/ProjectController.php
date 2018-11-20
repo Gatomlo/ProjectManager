@@ -3,6 +3,7 @@
 namespace Gatomlo\ProjectManagerBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Gatomlo\ProjectManagerBundle\Entity\Project;
 
 
 class ProjectController extends Controller
@@ -13,7 +14,16 @@ class ProjectController extends Controller
   }
   public function viewAction($id)
   {
-      return $this->render('@GatomloProjectManager/Project/view.html.twig');
+    $em = $this->getDoctrine()->getManager();
+    $project = $em->getRepository('GatomloProjectManagerBundle:Project')->find($id);
+
+      if (null === $project) {
+        throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas.");
+      }
+
+
+      return $this->render('@GatomloProjectManager/Project/project.view.html.twig',array(
+        'project'=>$project));
   }
   public function addAction()
   {

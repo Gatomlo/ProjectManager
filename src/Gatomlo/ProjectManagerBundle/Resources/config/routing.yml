@@ -36,6 +36,13 @@ gatomlo_project_manager_delete_project:
     requirements:
         id: \d+
 
+gatomlo_project_manager_add_project_to_parent:
+    path:      /projects/add_to_parent/{idChild}/{idParent}
+    defaults: { _controller: GatomloProjectManagerBundle:Project:addParent }
+    requirements:
+        idChild: \d+
+        idParent: \d+
+
 
 #users
 gatomlo_project_manager_all_users:

@@ -37,4 +37,22 @@ class ProjectController extends Controller
   {
       return $this->render('@GatomloProjectManager/Project/delete.html.twig');
   }
+
+  public function addParentAction($idChild,$idParent)
+  {
+      $em = $this->getDoctrine()->getManager();
+      $child = $em->getRepository('GatomloProjectManagerBundle:Project')->find($idChild);
+      $parent = $em->getRepository('GatomloProjectManagerBundle:Project')->find($idParent);
+
+      $parent->addChild($child);
+      $child->setParent($parent);
+
+      $em->persist($child);
+      $em->persist($parent);
+      $em->flush();
+
+      return $this->render('@GatomloProjectManager/Project/project.default.html.twig',array(
+        'child'=>$child,
+        'parent'=>$parent));
+  }
 }

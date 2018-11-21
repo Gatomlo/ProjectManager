@@ -58,16 +58,13 @@ class Project
     private $endtime;
 
     /**
-     * @var \stdClass|null
-     *
-     * @ORM\Column(name="parents", type="object", nullable=true)
-     */
-    private $parents;
+    * @ORM\ManyToOne(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Project", inversedBy="childs", cascade={"persist"})
+    */
+    private $parent;
 
     /**
-     * @var \stdClass|null
+     * @ORM\OneToMany(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Project", mappedBy="parent", cascade={"persist"})
      *
-     * @ORM\Column(name="childs", type="object", nullable=true)
      */
     private $childs;
 
@@ -429,11 +426,11 @@ class Project
       $this->tags[] = $tag;
     }
 
-    public function removeTag(Tag $tag)
-    {
-      // Ici on utilise une méthode de l'ArrayCollection, pour supprimer la catégorie en argument
-      $this->tagss->removeElement($tag);
-    }
+    // public function removeTag(Tag $tag)
+    // {
+    //   // Ici on utilise une méthode de l'ArrayCollection, pour supprimer la catégorie en argument
+    //   $this->tagss->removeElement($tag);
+    // }
 
 
     /**
@@ -521,5 +518,81 @@ class Project
     public function removeEvent(\Gatomlo\ProjectManagerBundle\Entity\Event $event)
     {
         return $this->events->removeElement($event);
+    }
+
+    /**
+     * Add parent.
+     *
+     * @param \Gatomlo\ProjectManagerBundle\Entity\Project $parent
+     *
+     * @return Project
+     */
+    public function addParent(\Gatomlo\ProjectManagerBundle\Entity\Project $parent)
+    {
+        $this->parents[] = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Remove parent.
+     *
+     * @param \Gatomlo\ProjectManagerBundle\Entity\Project $parent
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeParent(\Gatomlo\ProjectManagerBundle\Entity\Project $parent)
+    {
+        return $this->parents->removeElement($parent);
+    }
+
+    /**
+     * Add child.
+     *
+     * @param \Gatomlo\ProjectManagerBundle\Entity\Project $child
+     *
+     * @return Project
+     */
+    public function addChild(\Gatomlo\ProjectManagerBundle\Entity\Project $child)
+    {
+        $this->childs[] = $child;
+
+        return $this;
+    }
+
+    /**
+     * Remove child.
+     *
+     * @param \Gatomlo\ProjectManagerBundle\Entity\Project $child
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeChild(\Gatomlo\ProjectManagerBundle\Entity\Project $child)
+    {
+        return $this->childs->removeElement($child);
+    }
+
+    /**
+     * Set parent.
+     *
+     * @param \Gatomlo\ProjectManagerBundle\Entity\Project|null $parent
+     *
+     * @return Project
+     */
+    public function setParent(\Gatomlo\ProjectManagerBundle\Entity\Project $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent.
+     *
+     * @return \Gatomlo\ProjectManagerBundle\Entity\Project|null
+     */
+    public function getParent()
+    {
+        return $this->parent;
     }
 }

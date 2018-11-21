@@ -37,7 +37,7 @@ class DefaultController extends Controller
       $project->addTag($tags);
 
       $status = new Status();
-      $status->SetName('Dre9');
+      $status->SetName('Dre10');
       $status->setType(0);
       $status->setProject($project);
 

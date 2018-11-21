@@ -22,7 +22,7 @@ class EventController extends Controller
     }
     public function viewAction($id)
     {
-        return $this->render('@GatomloProjectManager/Event/view.html.twig',array(
+        return $this->render('@GatomloProjectManager/Event/event.view.html.twig',array(
           'id'=>$id));
     }
     public function addAction()

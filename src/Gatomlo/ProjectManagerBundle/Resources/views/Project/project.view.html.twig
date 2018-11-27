@@ -30,16 +30,21 @@
 
     </div>
     <div class="card-body">
+      <h5>Description:</h5>
       {{project.description}}
+      
       {% if project.parent is not null %}
-        </br></br>Projet parent:</br>
+      </br></br><h5>Projet parent:</h5>
         {{project.parent.name}} - {{project.parent.id}}
       {% endif %}
 
-      </br></br>Projets enfants:</br>
-      {% for child in project.childs %}
-        {{child.name}} - {{child.id}} {% if not loop.last %}</br> {% endif %}
-      {% endfor %}
+      {% if project.childs is not null %}
+        </br></br><h5>Projets enfants:</h5>
+        {% for child in project.childs %}
+          {{child.name}} - {{child.id}} {% if not loop.last %}</br> {% endif %}
+        {% endfor %}
+      {% endif %}
+
     </div>
     <div class="card-footer text-muted text-right">
       {% if not project.tags.empty %}

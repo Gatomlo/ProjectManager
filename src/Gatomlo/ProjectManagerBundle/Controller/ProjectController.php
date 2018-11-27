@@ -10,7 +10,9 @@ class ProjectController extends Controller
 {
   public function allAction()
   {
-      return $this->render('@GatomloProjectManager/Project/all.html.twig');
+      $em = $this->getDoctrine()->getManager();
+      $projects = $em->getRepository('GatomloProjectManagerBundle:Project')->findAll();
+      return $this->render('@GatomloProjectManager/Project/project.all.html.twig',array('projects'=>$projects));
   }
   public function viewAction($id)
   {

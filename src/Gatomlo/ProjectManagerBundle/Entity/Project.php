@@ -78,9 +78,9 @@ class Project
     /**
      * @var \stdClass
      *
-     * @ORM\Column(name="creator", type="object")
+     * @ORM\Column(name="creator", type="string")
      */
-    private $creator;
+    private $creator = "ThomasV";
 
     /**
      * @var \stdClass|null
@@ -102,7 +102,7 @@ class Project
      *
      * @ORM\Column(name="archived", type="boolean")
      */
-    private $archived;
+    private $archived = FALSE;
 
      /**
      * @ORM\OneToMany(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Status", mappedBy="project", cascade={"persist"})

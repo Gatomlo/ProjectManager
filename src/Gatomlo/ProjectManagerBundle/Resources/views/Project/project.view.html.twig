@@ -32,16 +32,16 @@
     <div class="card-body">
       <h5>Description:</h5>
       {{project.description}}
-      
+
       {% if project.parent is not null %}
       </br></br><h5>Projet parent:</h5>
-        {{project.parent.name}} - {{project.parent.id}}
+        <a href="{{ path('gatomlo_project_manager_one_project', { 'id': project.parent.id }) }}">{{project.parent.name}}</a>
       {% endif %}
 
       {% if project.childs is not null %}
         </br></br><h5>Projets enfants:</h5>
         {% for child in project.childs %}
-          {{child.name}} - {{child.id}} {% if not loop.last %}</br> {% endif %}
+          <a href="{{ path('gatomlo_project_manager_one_project', { 'id': child.id }) }}">{{child.name}}</a>{% if not loop.last %}</br> {% endif %}
         {% endfor %}
       {% endif %}
 

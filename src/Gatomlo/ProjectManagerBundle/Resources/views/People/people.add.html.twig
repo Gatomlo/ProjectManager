@@ -1,0 +1,12 @@
+{% extends "base.html.twig" %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item">
+    <a href="#">Projet</a>
+  </li>
+  <li class="breadcrumb-item active">Nouveau projet</li>
+{% endblock %}
+
+{% block body %}
+  {{ form(form) }}
+{% endblock %}

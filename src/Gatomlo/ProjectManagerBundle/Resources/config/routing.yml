@@ -44,30 +44,30 @@ gatomlo_project_manager_add_project_to_parent:
         idParent: \d+
 
 
-#users
-gatomlo_project_manager_all_users:
-    path:      /users/all
-    defaults: { _controller: GatomloProjectManagerBundle:User:all }
+#peoples
+gatomlo_project_manager_all_peoples:
+    path:      /peoples/all
+    defaults: { _controller: GatomloProjectManagerBundle:People:all }
 
-gatomlo_project_manager_one_user:
-    path:      /users/{id}
-    defaults: { _controller: GatomloProjectManagerBundle:User:view }
+gatomlo_project_manager_one_people:
+    path:      /peoples/{id}
+    defaults: { _controller: GatomloProjectManagerBundle:People:view }
     requirements:
         id: \d+
 
-gatomlo_project_manager_add_user:
-    path:      /users/add
-    defaults: { _controller: GatomloProjectManagerBundle:User:add }
+gatomlo_project_manager_add_people:
+    path:      /peoples/add
+    defaults: { _controller: GatomloProjectManagerBundle:People:add }
 
-gatomlo_project_manager_edit_user:
-    path:      /users/edit/{id}
-    defaults: { _controller: GatomloProjectManagerBundle:User:edit }
+gatomlo_project_manager_edit_people:
+    path:      /peoples/edit/{id}
+    defaults: { _controller: GatomloProjectManagerBundle:People:edit }
     requirements:
         id: \d+
 
-gatomlo_project_manager_delete_user:
-    path:      /users/delete/{id}
-    defaults: { _controller: GatomloProjectManagerBundle:User:delete }
+gatomlo_project_manager_delete_people:
+    path:      /peoples/delete/{id}
+    defaults: { _controller: GatomloProjectManagerBundle:People:delete }
     requirements:
         id: \d+
 

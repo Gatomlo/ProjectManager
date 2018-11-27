@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item">
+    <a href="#">Contact</a>
+  </li>
+  <li class="breadcrumb-item active">{{people.firstName}} {{people.lastName}} </li>
+{% endblock %}
+
+{% block body %}
+
+  </br></br>
+  <div class="card">
+    <div class="card-header">
+      <h2>{{people.firstName}} {{people.lastName}}</h2>
+
+    </div>
+    <div class="card-body">
+      <h5>Description:</h5>
+
+
+    </div>
+    <div class="card-footer text-muted text-right">
+
+    </div>
+  </div>
+{% endblock %}

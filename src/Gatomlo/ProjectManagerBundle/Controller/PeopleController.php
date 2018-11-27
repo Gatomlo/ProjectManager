@@ -3,7 +3,7 @@
 namespace Gatomlo\ProjectManagerBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Gatomlo\ProjectManagerBundle\Entity\Project;
+use Gatomlo\ProjectManagerBundle\Entity\People;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -15,42 +15,39 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
-class ProjectController extends Controller
+class PeopleController extends Controller
 {
   public function allAction()
   {
       $em = $this->getDoctrine()->getManager();
-      $projects = $em->getRepository('GatomloProjectManagerBundle:Project')->findAll();
-      return $this->render('@GatomloProjectManager/Project/project.all.html.twig',array('projects'=>$projects));
+      $people = $em->getRepository('GatomloProjectManagerBundle:People')->findAll();
+      return $this->render('@GatomloProjectManager/People/people.all.html.twig',array('peoples'=>$people));
   }
   public function viewAction($id)
   {
     $em = $this->getDoctrine()->getManager();
-    $project = $em->getRepository('GatomloProjectManagerBundle:Project')->find($id);
+    $people = $em->getRepository('GatomloProjectManagerBundle:People')->find($id);
 
-      if (null === $project) {
-        throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas.");
+      if (null === $people) {
+        throw new NotFoundHttpException("L'utilisateur d'id ".$id." n'existe pas.");
       }
 
 
-      return $this->render('@GatomloProjectManager/Project/project.view.html.twig',array(
-        'project'=>$project));
+      return $this->render('@GatomloProjectManager/People/people.view.html.twig',array(
+        'people'=>$people));
   }
   public function addAction(Request $request)
   {
-    // On crée un objet Project
-    $project = new Project();
+    // On crée un objet People
+    $people = new People();
 
     // On crée le FormBuilder grâce au service form factory
-    $formBuilder = $this->get('form.factory')->createBuilder(FormType::class, $project);
+    $formBuilder = $this->get('form.factory')->createBuilder(FormType::class, $people);
 
     // On ajoute les champs de l'entité que l'on veut à notre formulaire
     $formBuilder
-      ->add('name',      TextType::class)
-      ->add('description', TextareaType::class)
-      ->add('parent', EntityType::class, array(
-        'class' => Project::class,
-        'choice_label' => 'name'))
+      ->add('firstName',      TextType::class)
+      ->add('lastName', TextType::class)
       ->add('save',      SubmitType::class)
     ;
 
@@ -68,40 +65,37 @@ class ProjectController extends Controller
      if ($form->isValid()) {
        // On enregistre notre objet $advert dans la base de données, par exemple
        $em = $this->getDoctrine()->getManager();
-       $em->persist($project);
+       $em->persist($people);
        $em->flush();
 
-       $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+       $request->getSession()->getFlashBag()->add('notice', 'Utilisateur bien enregistré.');
 
        // On redirige vers la page de visualisation de l'annonce nouvellement créée
-       return $this->redirectToRoute('gatomlo_project_manager_one_project', array('id' => $project->getId()));
+       return $this->redirectToRoute('gatomlo_project_manager_one_people', array('id' => $people->getId()));
      }
    }
 
 
     // On passe la méthode createView() du formulaire à la vue
     // afin qu'elle puisse afficher le formulaire toute seule
-    return $this->render('@GatomloProjectManager/Project/project.add.html.twig', array(
+    return $this->render('@GatomloProjectManager/People/people.add.html.twig', array(
       'form' => $form->createView(),
     ));
   }
 
   public function editAction(Request $request, $id)
   {
-    // On crée un objet Project
+    // On crée un objet People
     $em = $this->getDoctrine()->getManager();
-    $project = $em->getRepository('GatomloProjectManagerBundle:Project')->find($id);
+    $people = $em->getRepository('GatomloProjectManagerBundle:People')->find($id);
 
     // On crée le FormBuilder grâce au service form factory
-    $formBuilder = $this->get('form.factory')->createBuilder(FormType::class, $project);
+    $formBuilder = $this->get('form.factory')->createBuilder(FormType::class, $people);
 
     // On ajoute les champs de l'entité que l'on veut à notre formulaire
     $formBuilder
-      ->add('name',      TextType::class)
-      ->add('description', TextareaType::class)
-      ->add('parent', EntityType::class, array(
-        'class' => Project::class,
-        'choice_label' => 'name'))
+      ->add('firtName',      TextType::class)
+      ->add('lastName',      TextType::class)
       ->add('save',      SubmitType::class)
     ;
 
@@ -119,20 +113,20 @@ class ProjectController extends Controller
      if ($form->isValid()) {
        // On enregistre notre objet $advert dans la base de données, par exemple
        $em = $this->getDoctrine()->getManager();
-       $em->persist($project);
+       $em->persist($people);
        $em->flush();
 
-       $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+       $request->getSession()->getFlashBag()->add('notice', 'Utilisateur bien enregistré.');
 
        // On redirige vers la page de visualisation de l'annonce nouvellement créée
-       return $this->redirectToRoute('gatomlo_project_manager_one_project', array('id' => $project->getId()));
+       return $this->redirectToRoute('gatomlo_project_manager_one_people', array('id' => $people->getId()));
      }
    }
 
 
     // On passe la méthode createView() du formulaire à la vue
     // afin qu'elle puisse afficher le formulaire toute seule
-    return $this->render('@GatomloProjectManager/Project/project.add.html.twig', array(
+    return $this->render('@GatomloProjectManager/People/people.add.html.twig', array(
       'form' => $form->createView(),
     ));
   }
@@ -140,28 +134,11 @@ class ProjectController extends Controller
   public function deleteAction($id)
   {
       $em = $this->getDoctrine()->getManager();
-      $project = $em->getRepository('GatomloProjectManagerBundle:Project')->find($id);
-      $em->remove($project);
+      $people = $em->getRepository('GatomloProjectManagerBundle:People')->find($id);
+      $em->remove($people);
       $em->flush();
 
-       return $this->redirectToRoute('gatomlo_project_manager_all_projects');
+       return $this->redirectToRoute('gatomlo_project_manager_all_peoples');
   }
 
-  public function addParentAction($idChild,$idParent)
-  {
-      $em = $this->getDoctrine()->getManager();
-      $child = $em->getRepository('GatomloProjectManagerBundle:Project')->find($idChild);
-      $parent = $em->getRepository('GatomloProjectManagerBundle:Project')->find($idParent);
-
-      $parent->addChild($child);
-      $child->setParent($parent);
-
-      $em->persist($child);
-      $em->persist($parent);
-      $em->flush();
-
-      return $this->render('@GatomloProjectManager/Project/project.default.html.twig',array(
-        'child'=>$child,
-        'parent'=>$parent));
-  }
 }

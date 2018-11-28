@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Gatomlo\ProjectManagerBundle\Form\PeopleType;
 
 
 class PeopleController extends Controller
@@ -38,21 +39,9 @@ class PeopleController extends Controller
   }
   public function addAction(Request $request)
   {
-    // On crée un objet People
+
     $people = new People();
-
-    // On crée le FormBuilder grâce au service form factory
-    $formBuilder = $this->get('form.factory')->createBuilder(FormType::class, $people);
-
-    // On ajoute les champs de l'entité que l'on veut à notre formulaire
-    $formBuilder
-      ->add('firstName',      TextType::class)
-      ->add('lastName', TextType::class)
-      ->add('save',      SubmitType::class)
-    ;
-
-    // À partir du formBuilder, on génère le formulaire
-    $form = $formBuilder->getForm();
+    $form = $this->get('form.factory')->create(PeopleType::class, $people);
 
     // Si la requête est en POST
    if ($request->isMethod('POST')) {
@@ -89,18 +78,7 @@ class PeopleController extends Controller
     $em = $this->getDoctrine()->getManager();
     $people = $em->getRepository('GatomloProjectManagerBundle:People')->find($id);
 
-    // On crée le FormBuilder grâce au service form factory
-    $formBuilder = $this->get('form.factory')->createBuilder(FormType::class, $people);
-
-    // On ajoute les champs de l'entité que l'on veut à notre formulaire
-    $formBuilder
-      ->add('firtName',      TextType::class)
-      ->add('lastName',      TextType::class)
-      ->add('save',      SubmitType::class)
-    ;
-
-    // À partir du formBuilder, on génère le formulaire
-    $form = $formBuilder->getForm();
+    $form = $this->get('form.factory')->create(PeopleType::class, $people);
 
     // Si la requête est en POST
    if ($request->isMethod('POST')) {
@@ -122,7 +100,6 @@ class PeopleController extends Controller
        return $this->redirectToRoute('gatomlo_project_manager_one_people', array('id' => $people->getId()));
      }
    }
-
 
     // On passe la méthode createView() du formulaire à la vue
     // afin qu'elle puisse afficher le formulaire toute seule

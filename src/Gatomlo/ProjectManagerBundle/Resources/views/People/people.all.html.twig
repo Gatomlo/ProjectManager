@@ -2,7 +2,7 @@
 
 {% block breadcrumb %}
   <li class="breadcrumb-item">
-    <a href="#">Projet</a>
+    <a href="{{ path('gatomlo_project_manager_all_peoples')}}">Contacts</a>
   </li>
   <li class="breadcrumb-item active">Tous les contacts</li>
 {% endblock %}
@@ -19,13 +19,19 @@
             <tr>
               <th>Nom</th>
               <th>Prénom</th>
+              <th>Diplome</th>
+              <th>Matricule</th>
+              <th>Institution</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tfoot>
             <tr>
               <th>Nom</th>
-              <th>Status</th>
+              <th>Prénom</th>
+              <th>Diplome</th>
+              <th>Matricule</th>
+              <th>Institution</th>
               <th>Actions</th>
             </tr>
           </tfoot>
@@ -34,6 +40,21 @@
               <tr>
                 <td>{{people.firstName}}</td>
                 <td>{{people.lastName}}</td>
+                {% if people.diplome is not null %}
+                  <td>{{people.diplome}}</td>
+                {% else %}
+                  <td>/</td>
+                {% endif %}
+                {% if people.matricule is not null %}
+                  <td>{{people.matricule}}</td>
+                {% else %}
+                  <td>/</td>
+                {% endif %}
+                {% if people.institution is not null %}
+                <td>{{people.institution}}</td>
+                {% else %}
+                  <td>/</td>
+                {% endif %}
                 <td>
                   <div class="dropdown">
                     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

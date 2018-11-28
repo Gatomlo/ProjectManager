@@ -2,11 +2,91 @@
 
 {% block breadcrumb %}
   <li class="breadcrumb-item">
-    <a href="#">Projet</a>
+    <a href="{{ path('gatomlo_project_manager_all_peoples')}}">Contacts</a>
   </li>
   <li class="breadcrumb-item active">Nouveau projet</li>
 {% endblock %}
 
 {% block body %}
-  {{ form(form) }}
+
+  <div class="well">
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+    {# Les erreurs générales du formulaire. #}
+    {{ form_errors(form) }}
+
+    <div class="card">
+      <div class="card-header">
+        Contact
+      </div>
+      <div class="card-body">
+        <div class="form-group col-sm">
+          {{form_row(form.firstName)}}
+        </div>
+        <div class="form-group col-sm">
+          {{form_row(form.lastName)}}
+        </div>
+        <div class="form-group col-sm">
+          {{form_row(form.streetAndNumer)}}
+        </div>
+        <div class="form-group col-sm">
+          {{form_row(form.cityAndCode)}}
+        </div>
+        <div class="form-group col-sm">
+          {{form_row(form.email)}}
+        </div>
+        <div class="form-group col-sm">
+          {{form_row(form.phone)}}
+        </div>
+        <div class="form-group col-sm">
+          {{form_row(form.diplome)}}
+        </div>
+        <div class="form-group col-sm">
+          {{form_row(form.matricule)}}
+        </div>
+      </div>
+    </div>
+
+    </br>
+
+    <div class="card">
+      <div class="card-header">
+        Institution
+      </div>
+      <div class="card-body">
+        <div class="form-group col-sm">
+          {{form_row(form.institution)}}
+        </div>
+        <div class="form-group col-sm">
+          {{form_row(form.streetOfInstitution)}}
+        </div>
+        <div class="form-group col-sm">
+          {{form_row(form.cityAndCodeOfInstitution)}}
+        </div>
+        <div class="form-group col-sm">
+          {{form_row(form.fonction)}}
+        </div>
+      </div>
+    </div>
+
+    </br>
+
+    <div class="card">
+      <div class="card-header">
+        Autres informations
+      </div>
+      <div class="card-body">
+        <div class="form-group col-sm">
+          {{form_row(form.comment)}}
+        </div>
+    </div>
+  </div>
+</br>
+<div>
+  {{ form_widget(form.save) }}
+</div>
+
+    {{ form_end(form) }}
+  </div>
+</br>
 {% endblock %}

@@ -2,21 +2,102 @@
 
 {% block breadcrumb %}
   <li class="breadcrumb-item">
-    <a href="#">Contact</a>
+    <a href="{{ path('gatomlo_project_manager_all_peoples')}}">Contacts</a>
   </li>
   <li class="breadcrumb-item active">{{people.firstName}} {{people.lastName}} </li>
 {% endblock %}
 
 {% block body %}
 
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" href="#">Coordonnées</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Projets</a>
+  </li>
+</ul>
+
   </br></br>
   <div class="card">
     <div class="card-header">
-      <h2>{{people.firstName}} {{people.lastName}}</h2>
-
+      <div class="row">
+        <h2 class="col-auto mr-auto">{{people.firstName}} {{people.lastName}}</h2>
+        <div class="dropdown col-auto">
+          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-cogs"></i>
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="{{ path('gatomlo_project_manager_edit_people', { 'id': people.id }) }}"><i class="fas fa-pen"></i> Editer</a>
+            <a class="dropdown-item" href="{{ path('gatomlo_project_manager_delete_people', { 'id': people.id }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="card-body">
-      <h5>Description:</h5>
+      <h4>Personnelles:</h4>
+      <i class="fas fa-home"></i> :
+      {% if people.streetAndNumer is not null %}
+        {{people.streetAndNumer}}, {{people.cityAndCode}}
+      {% else %}
+        non encodé
+      {% endif %}
+      </br>
+      <i class="fas fa-phone"></i> :
+      {% if people.phone is not null %}
+        {{people.phone}}
+      {% else %}
+        non encodé
+      {% endif %}
+      </br>
+      <i class="fas fa-at"></i> :
+      {% if people.email is not null %}
+        {{people.email}}
+      {% else %}
+        non encodé
+      {% endif %}
+      </br></br>
+      <i class="fas fa-graduation-cap"></i> :
+      {% if people.diplome is not null %}
+        {{people.diplome}}
+      {% else %}
+        non encodé
+      {% endif %}
+      </br></br>
+      <i class="far fa-id-card"></i> :
+      {% if people.matricule is not null %}
+        {{people.matricule}}
+      {% else %}
+        non encodé
+      {% endif %}
+      </br></br>
+      <h4>Institution:</h4>
+      {% if people.institution is not null %}
+        <strong>{{people.institution}}</strong>
+      {% else %}
+        non encodé
+      {% endif %}
+      </br>
+      {% if people.streetOfInstitution is not null %}
+        {{people.streetOfInstitution}}, {{people.cityAndCodeOfInstitution}}
+      {% else %}
+        non encodé
+      {% endif %}
+      </br></br>
+      Fonction :
+      {% if people.fonction is not null %}
+        {{people.fonction}}
+      {% else %}
+        non encodé
+      {% endif %}
+      </br></br>
+      <h4>Remarque(s):</h4>
+      {% if people.comment is not null %}
+        {{people.comment}}
+      {% else %}
+        pas de commentaire
+      {% endif %}
+
 
 
     </div>

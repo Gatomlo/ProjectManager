@@ -47,14 +47,14 @@ class People
      *
      * @ORM\Column(name="telephone", type="string", length=125, nullable=true)
      */
-    private $telephone;
+    private $phone;
 
     /**
      * @var string|null
      *
      * @ORM\Column(name="rue", type="string", length=200, nullable=true)
      */
-    private $rue;
+    private $streetAndNumer;
 
     /**
      * @var string|null
@@ -68,7 +68,7 @@ class People
      *
      * @ORM\Column(name="instutition", type="string", length=255, nullable=true)
      */
-    private $instutition;
+    private $institution;
 
     /**
      * @var string|null
@@ -94,9 +94,23 @@ class People
     /**
      * @var string|null
      *
+     * @ORM\Column(name="matricule", type="string", length=255, nullable=true)
+     */
+    private $matricule;
+
+    /**
+     * @var string|null
+     *
      * @ORM\Column(name="diplome", type="string", length=255, nullable=true)
      */
     private $diplome;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="comment", type="text", nullable=true)
+     */
+    private $comment;
 
 
     /**
@@ -371,5 +385,125 @@ class People
     public function getDiplome()
     {
         return $this->diplome;
+    }
+
+    /**
+     * Set phone.
+     *
+     * @param string|null $phone
+     *
+     * @return People
+     */
+    public function setPhone($phone = null)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone.
+     *
+     * @return string|null
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * Set streetAndNumer.
+     *
+     * @param string|null $streetAndNumer
+     *
+     * @return People
+     */
+    public function setStreetAndNumer($streetAndNumer = null)
+    {
+        $this->streetAndNumer = $streetAndNumer;
+
+        return $this;
+    }
+
+    /**
+     * Get streetAndNumer.
+     *
+     * @return string|null
+     */
+    public function getStreetAndNumer()
+    {
+        return $this->streetAndNumer;
+    }
+
+    /**
+     * Set institution.
+     *
+     * @param string|null $institution
+     *
+     * @return People
+     */
+    public function setInstitution($institution = null)
+    {
+        $this->institution = $institution;
+
+        return $this;
+    }
+
+    /**
+     * Get institution.
+     *
+     * @return string|null
+     */
+    public function getInstitution()
+    {
+        return $this->institution;
+    }
+
+    /**
+     * Set comment.
+     *
+     * @param string|null $comment
+     *
+     * @return People
+     */
+    public function setComment($comment = null)
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Get comment.
+     *
+     * @return string|null
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * Set matricule.
+     *
+     * @param string|null $matricule
+     *
+     * @return People
+     */
+    public function setMatricule($matricule = null)
+    {
+        $this->matricule = $matricule;
+
+        return $this;
+    }
+
+    /**
+     * Get matricule.
+     *
+     * @return string|null
+     */
+    public function getMatricule()
+    {
+        return $this->matricule;
     }
 }

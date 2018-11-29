@@ -69,6 +69,7 @@ class PeopleController extends Controller
     // afin qu'elle puisse afficher le formulaire toute seule
     return $this->render('@GatomloProjectManager/People/people.add.html.twig', array(
       'form' => $form->createView(),
+      'people' => $people
     ));
   }
 

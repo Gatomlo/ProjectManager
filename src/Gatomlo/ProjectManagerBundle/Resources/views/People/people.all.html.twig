@@ -25,16 +25,7 @@
               <th>Actions</th>
             </tr>
           </thead>
-          <tfoot>
-            <tr>
-              <th>Nom</th>
-              <th>Prénom</th>
-              <th>Diplome</th>
-              <th>Matricule</th>
-              <th>Institution</th>
-              <th>Actions</th>
-            </tr>
-          </tfoot>
+
           <tbody>
             {% for people in peoples %}
               <tr>
@@ -77,5 +68,20 @@
 
 {% endblock %}
 
-{% block script %}
+{% block scripts %}
+  <script>
+    $(document).ready(function() {
+      $('#eventDatatable').DataTable({
+        responsive: true,
+        stateSave: true,
+        "columnDefs": [
+              {
+                  "targets": [ 3 ],
+                  "visible": true,
+                  "searchable": true
+              },
+          ]
+      });
+    });
+  </script>
 {% endblock %}

@@ -53,7 +53,7 @@ class Project
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="endtime", type="datetime", nullable=true)
+     * @ORM\Column(name="endtime", type="date", nullable=true)
      */
     private $endtime;
 
@@ -594,5 +594,17 @@ class Project
     public function getParent()
     {
         return $this->parent;
+    }
+
+    /**
+     * Remove tag.
+     *
+     * @param \Gatomlo\ProjectManagerBundle\Entity\Tags $tag
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeTag(\Gatomlo\ProjectManagerBundle\Entity\Tags $tag)
+    {
+        return $this->tags->removeElement($tag);
     }
 }

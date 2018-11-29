@@ -50,24 +50,24 @@ class Event
     private $creation;
 
     /**
-     * @var \DateTime|null
+     * @var \Date|null
      *
      * @ORM\Column(name="enddate", type="datetime", nullable=true)
      */
     private $enddate;
 
     /**
-     * @var \DateTime
+     * @var \Date
      *
      * @ORM\Column(name="startdate", type="datetime")
      */
     private $startdate;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Type", inversedBy="event", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Type", inversedBy="events", cascade={"persist"})
      *
      */
-    private $types;
+    private $type;
 
     /**
      * @ORM\ManyToOne(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Project", inversedBy="events", cascade={"persist"})
@@ -236,6 +236,7 @@ class Event
      */
     public function setStartdate($startdate)
     {
+
         $this->startdate = $startdate;
 
         return $this;
@@ -454,5 +455,53 @@ class Event
     public function getTypes()
     {
         return $this->types;
+    }
+
+    /**
+     * Set endtime.
+     *
+     * @param \DateTime|null $endtime
+     *
+     * @return Event
+     */
+    public function setEndtime($endtime = null)
+    {
+        $this->endtime = $endtime;
+
+        return $this;
+    }
+
+    /**
+     * Get endtime.
+     *
+     * @return \DateTime|null
+     */
+    public function getEndtime()
+    {
+        return $this->endtime;
+    }
+
+    /**
+     * Set starttime.
+     *
+     * @param \DateTime $starttime
+     *
+     * @return Event
+     */
+    public function setStarttime($starttime)
+    {
+        $this->starttime = $starttime;
+
+        return $this;
+    }
+
+    /**
+     * Get starttime.
+     *
+     * @return \DateTime
+     */
+    public function getStarttime()
+    {
+        return $this->starttime;
     }
 }

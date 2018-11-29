@@ -13,14 +13,18 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Gatomlo\ProjectManagerBundle\Form\ProjectType;
+
 
 
 class ProjectController extends Controller
 {
-  public function allAction()
+  public function allAction($archived)
   {
       $em = $this->getDoctrine()->getManager();
-      $projects = $em->getRepository('GatomloProjectManagerBundle:Project')->findAll();
+      $projects = $em->getRepository('GatomloProjectManagerBundle:Project')->findBy(array(
+        'archived'=> $archived
+      ));
       return $this->render('@GatomloProjectManager/Project/project.all.html.twig',array('projects'=>$projects));
   }
   public function viewAction($id)
@@ -41,21 +45,7 @@ class ProjectController extends Controller
     // On crée un objet Project
     $project = new Project();
 
-    // On crée le FormBuilder grâce au service form factory
-    $formBuilder = $this->get('form.factory')->createBuilder(FormType::class, $project);
-
-    // On ajoute les champs de l'entité que l'on veut à notre formulaire
-    $formBuilder
-      ->add('name',      TextType::class)
-      ->add('description', TextareaType::class)
-      ->add('parent', EntityType::class, array(
-        'class' => Project::class,
-        'choice_label' => 'name'))
-      ->add('save',      SubmitType::class)
-    ;
-
-    // À partir du formBuilder, on génère le formulaire
-    $form = $formBuilder->getForm();
+    $form = $this->get('form.factory')->create(ProjectType::class, $project);
 
     // Si la requête est en POST
    if ($request->isMethod('POST')) {
@@ -71,7 +61,7 @@ class ProjectController extends Controller
        $em->persist($project);
        $em->flush();
 
-       $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+       $request->getSession()->getFlashBag()->add('notice', 'Projet bien enregistrée.');
 
        // On redirige vers la page de visualisation de l'annonce nouvellement créée
        return $this->redirectToRoute('gatomlo_project_manager_one_project', array('id' => $project->getId()));
@@ -83,6 +73,7 @@ class ProjectController extends Controller
     // afin qu'elle puisse afficher le formulaire toute seule
     return $this->render('@GatomloProjectManager/Project/project.add.html.twig', array(
       'form' => $form->createView(),
+      'project'=>$project
     ));
   }
 
@@ -92,21 +83,7 @@ class ProjectController extends Controller
     $em = $this->getDoctrine()->getManager();
     $project = $em->getRepository('GatomloProjectManagerBundle:Project')->find($id);
 
-    // On crée le FormBuilder grâce au service form factory
-    $formBuilder = $this->get('form.factory')->createBuilder(FormType::class, $project);
-
-    // On ajoute les champs de l'entité que l'on veut à notre formulaire
-    $formBuilder
-      ->add('name',      TextType::class)
-      ->add('description', TextareaType::class)
-      ->add('parent', EntityType::class, array(
-        'class' => Project::class,
-        'choice_label' => 'name'))
-      ->add('save',      SubmitType::class)
-    ;
-
-    // À partir du formBuilder, on génère le formulaire
-    $form = $formBuilder->getForm();
+    $form = $this->get('form.factory')->create(ProjectType::class, $project);
 
     // Si la requête est en POST
    if ($request->isMethod('POST')) {
@@ -134,6 +111,7 @@ class ProjectController extends Controller
     // afin qu'elle puisse afficher le formulaire toute seule
     return $this->render('@GatomloProjectManager/Project/project.add.html.twig', array(
       'form' => $form->createView(),
+      'project'=>$project
     ));
   }
 
@@ -163,5 +141,22 @@ class ProjectController extends Controller
       return $this->render('@GatomloProjectManager/Project/project.default.html.twig',array(
         'child'=>$child,
         'parent'=>$parent));
+  }
+
+  public function archivedAction($id)
+  {
+    $em = $this->getDoctrine()->getManager();
+    $project = $em->getRepository('GatomloProjectManagerBundle:Project')->find($id);
+
+    if ($project->getArchived()== FALSE){
+      $project->SetArchived(TRUE);
+    }
+    else{
+      $project->SetArchived(FALSE);
+    }
+
+    $em->persist($project);
+    $em->flush();
+    return $this->redirectToRoute('gatomlo_project_manager_all_projects');
   }
 }

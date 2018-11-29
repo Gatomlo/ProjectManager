@@ -11,8 +11,12 @@ gatomlo_project_manager_config:
 
 #projets
 gatomlo_project_manager_all_projects:
-    path:      /projects/all
-    defaults: { _controller: GatomloProjectManagerBundle:Project:all }
+    path:      /projects/all/{archived}
+    defaults:
+      _controller: GatomloProjectManagerBundle:Project:all
+      archived: FALSE
+    requirements:
+        archived: 0|1
 
 gatomlo_project_manager_one_project:
     path:      /projects/{id}
@@ -35,6 +39,13 @@ gatomlo_project_manager_delete_project:
     defaults: { _controller: GatomloProjectManagerBundle:Project:delete }
     requirements:
         id: \d+
+
+gatomlo_project_manager_archived_project:
+    path:      /projects/archived/{id}
+    defaults: { _controller: GatomloProjectManagerBundle:Project:archived }
+    requirements:
+        id: \d+
+
 
 gatomlo_project_manager_add_project_to_parent:
     path:      /projects/add_to_parent/{idChild}/{idParent}

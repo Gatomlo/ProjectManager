@@ -18,7 +18,7 @@ class PeopleType extends AbstractType
     $builder
       ->add('firstName',      TextType::class,array(
         'label'=>'Prénom',
-        'attr' => array('class'=>'form-control')
+        'attr' => array('class'=>'form-control'),
       ))
       ->add('lastName',      TextType::class,array(
         'label'=>'Nom',
@@ -82,8 +82,7 @@ class PeopleType extends AbstractType
       ->add('save',      SubmitType::class,array(
         'label'=>'Enregistrer',
         'attr' => array('class'=>'btn btn-primary')
-      ))
-    ;
+      ));
   }
 
   public function configureOptions(OptionsResolver $resolver)

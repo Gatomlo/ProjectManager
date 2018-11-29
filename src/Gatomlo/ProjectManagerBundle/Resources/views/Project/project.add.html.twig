@@ -2,9 +2,9 @@
 
 {% block breadcrumb %}
   <li class="breadcrumb-item">
-    <a href="#">Projet</a>
+    <a href="{{ path('gatomlo_project_manager_all_projects')}}">Projets</a>
   </li>
-  <li class="breadcrumb-item active">Nouveau projet</li>
+  <li class="breadcrumb-item active"> {{project.name}}  </li>
 {% endblock %}
 
 {% block body %}

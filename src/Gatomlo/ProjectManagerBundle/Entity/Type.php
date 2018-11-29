@@ -36,9 +36,9 @@ class Type
     private $description;
 
     /**
-    * @ORM\OneToMany(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Event", mappedBy="types", cascade={"persist"})
+    * @ORM\OneToMany(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Event", mappedBy="type", cascade={"persist"})
     */
-    private $event;
+    private $events;
 
 
     /**
@@ -154,5 +154,15 @@ class Type
     public function removeEvent(\Gatomlo\ProjectManagerBundle\Entity\Event $event)
     {
         return $this->event->removeElement($event);
+    }
+
+    /**
+     * Get events.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEvents()
+    {
+        return $this->events;
     }
 }

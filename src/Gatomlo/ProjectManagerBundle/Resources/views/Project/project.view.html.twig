@@ -2,7 +2,7 @@
 
 {% block breadcrumb %}
   <li class="breadcrumb-item">
-    <a href="#">Projet</a>
+    <a href="{{ path('gatomlo_project_manager_all_projects')}}">Projets</a>
   </li>
   <li class="breadcrumb-item active">{{project.name}}</li>
 {% endblock %}
@@ -13,20 +13,31 @@
       <a class="nav-link active" href="#">Description</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">Tâches</a>
+      <a class="nav-link" href="{{ path('gatomlo_project_manager_all_events', { 'id': project.id }) }}">Evénements</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">Evénements</a>
+      <a class="nav-link" href="#">Tâches</a>
     </li>
   </ul>
 
   </br></br>
   <div class="card">
     <div class="card-header">
-      <h2>{{project.name}}</h2>
-      {% for status in project.status %}
+      <!-- {% for status in project.status %}
         Status : {{status.name}}
-      {% endfor %}
+      {% endfor %} -->
+      <div class="row">
+        <h2 class="col-auto mr-auto">{{project.name}}</h2>
+        <div class="dropdown col-auto">
+          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-cogs"></i>
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="{{ path('gatomlo_project_manager_edit_project', { 'id': project.id }) }}"><i class="fas fa-pen"></i> Editer</a>
+            <a class="dropdown-item" href="{{ path('gatomlo_project_manager_delete_project', { 'id': project.id }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a>
+          </div>
+        </div>
+      </div>
 
     </div>
     <div class="card-body">
@@ -38,7 +49,7 @@
         <a href="{{ path('gatomlo_project_manager_one_project', { 'id': project.parent.id }) }}">{{project.parent.name}}</a>
       {% endif %}
 
-      {% if project.childs is not null %}
+      {% if project.childs =='' %}
         </br></br><h5>Projets enfants:</h5>
         {% for child in project.childs %}
           <a href="{{ path('gatomlo_project_manager_one_project', { 'id': child.id }) }}">{{child.name}}</a>{% if not loop.last %}</br> {% endif %}
@@ -46,12 +57,17 @@
       {% endif %}
 
     </div>
-    <div class="card-footer text-muted text-right">
-      {% if not project.tags.empty %}
-          {% for tag in project.tags %}
-            <div class="badge badge-secondary">{{ tag.name }}{% if not loop.last %}</div>, {% endif %}
-          {% endfor %}
-      {% endif %}
+    <div class="card-footer text-muted ">
+      <div class="row">
+        {% if project.endtime is not null %}
+          <div class="col-auto mr-auto">Echéance du projet : {{project.endtime|date("d/m/Y")}}</div>
+        {% endif %}
+        {% if not project.tags.empty %}
+            {% for tag in project.tags %}
+              <div class="badge badge-secondary dropdown col-auto">{{ tag.name }}{% if not loop.last %}</div>, {% endif %}
+            {% endfor %}
+        {% endif %}
+      </div>
     </div>
   </div>
 {% endblock %}

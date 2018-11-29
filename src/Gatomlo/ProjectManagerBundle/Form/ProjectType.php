@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -46,7 +47,15 @@ class ProjectType extends AbstractType
         'class' => Project::class,
         'label'=>'Projet parent',
         'choice_label' => 'name',
-        'required' => false
+        'required' => false,
+        'placeholder' => 'Sélectionner un parent',
+      ))
+      ->add('tags',      CollectionType::class,array(
+        'entry_type' => TagsType::class,
+        'allow_add' => true,
+        'allow_delete' => true,
+        'prototype' => true,
+        'entry_options' => array('label' => false)
       ))
       ->add('save',      SubmitType::class,array(
         'label'=>'Enregistrer',

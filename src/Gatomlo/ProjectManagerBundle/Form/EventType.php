@@ -31,7 +31,9 @@ class EventType extends AbstractType
         'class' => Type::class,
         'label'=>'Type d\'événement',
         'choice_label' => 'name',
-        'required' => true
+        'required' => true,
+        'placeholder' => 'Choisir un type',
+
       ))
       ->add('description',      TextareaType::class,array(
         'label'=>'Détail',
@@ -60,7 +62,8 @@ class EventType extends AbstractType
         'class' => Project::class,
         'label'=>'Projet lié',
         'choice_label' => 'name',
-        'required' => true
+        'required' => true,
+        'placeholder' => 'Choisir un projet',
       ))
 
       ->add('url',      TextType::class,array(

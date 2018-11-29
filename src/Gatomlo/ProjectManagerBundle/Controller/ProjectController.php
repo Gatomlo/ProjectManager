@@ -25,7 +25,7 @@ class ProjectController extends Controller
       $projects = $em->getRepository('GatomloProjectManagerBundle:Project')->findBy(array(
         'archived'=> $archived
       ));
-      return $this->render('@GatomloProjectManager/Project/project.all.html.twig',array('projects'=>$projects));
+      return $this->render('@GatomloProjectManager/Project/project.all.html.twig',array('projects'=>$projects, 'archived'=>$archived));
   }
   public function viewAction($id)
   {
@@ -157,6 +157,12 @@ class ProjectController extends Controller
 
     $em->persist($project);
     $em->flush();
-    return $this->redirectToRoute('gatomlo_project_manager_all_projects');
+    if ($project->getArchived()== TRUE){
+      return $this->redirectToRoute('gatomlo_project_manager_all_projects');
+    }
+    else{
+      return $this->redirectToRoute('gatomlo_project_manager_all_projects',array('archived'=>1));
+    }
+
   }
 }

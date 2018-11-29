@@ -4,7 +4,13 @@
   <li class="breadcrumb-item">
     <a href="{{ path('gatomlo_project_manager_all_projects')}}">Projets</a>
   </li>
-  <li class="breadcrumb-item active">Tous les projets</li>
+  <li class="breadcrumb-item active">
+    {% if archived %}
+      Archives
+    {% else %}
+      Actifs
+    {% endif %}
+  </li>
 {% endblock %}
 
 {% block body %}
@@ -42,14 +48,16 @@
                       <a class="dropdown-item" href="{{ path('gatomlo_project_manager_one_project', { 'id': project.id }) }}"><i class="fas fa-eye"></i> Voir</a>
                       <a class="dropdown-item" href="{{ path('gatomlo_project_manager_edit_project', { 'id': project.id }) }}"><i class="fas fa-pen"></i> Editer</a>
                       <a class="dropdown-item" href="{{ path('gatomlo_project_manager_delete_project', { 'id': project.id }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a>
-                        {% if project.archived == FALSE %}
-                          <a class="dropdown-item" href="{{ path('gatomlo_project_manager_archived_project', { 'id': project.id }) }}"><i class="fas fa-archive"></i>
-                          Archiver
-                        {% else %}
-                          <a class="dropdown-item" href="{{ path('gatomlo_project_manager_archived_project', { 'id': project.id }) }}"><i class="fas fa-undo"></i>
+                      {% if archived%}
+                        <a class="dropdown-item" href="{{ path('gatomlo_project_manager_archived_project', { 'id': project.id }) }}"><i class="fas fa-undo"></i>
                           Désarchiver
-                        {% endif %}
-                      </a>
+                        </a>
+                      {% else %}
+                        <a class="dropdown-item" href="{{ path('gatomlo_project_manager_archived_project', { 'id': project.id }) }}"><i class="fas fa-archive"></i>
+                          Archiver
+                        </a>      
+                      {% endif %}
+
                     </div>
                   </div>
                 </td>

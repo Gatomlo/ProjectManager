@@ -8,5 +8,27 @@
 {% endblock %}
 
 {% block body %}
-  {{ form(form) }}
+
+  {{ form_start(form) }}
+  {{ form_errors(form) }}
+  {{ form_row(form.name) }}
+  {{ form_row(form.description) }}
+  {{ form_row(form.url) }}
+  {{ form_row(form.endtime) }}
+  {{ form_row(form.parent) }}
+
+
+  <div class="tags" data-prototype="{{ form_widget(form.tags.vars.prototype)|e('html_attr') }}"></div>
+
+  {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+
+
+
+  {{ form_end(form) }}
+
+{% endblock %}
+{% block scripts %}
+
+<script src="{{ asset('js/addTags.js')}}"></script>
+
 {% endblock %}

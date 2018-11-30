@@ -105,12 +105,12 @@ class Project
     private $archived = FALSE;
 
      /**
-     * @ORM\OneToMany(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Status", mappedBy="project", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Status", inversedBy="project", cascade={"persist"})
      */
     private $status;
 
     /**
-    * @ORM\OneToMany(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Event", mappedBy="project", cascade={"persist"})
+    * @ORM\OneToMany(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Event", mappedBy="project", cascade={"persist","remove"})
     */
      private $events;
 
@@ -606,5 +606,19 @@ class Project
     public function removeTag(\Gatomlo\ProjectManagerBundle\Entity\Tags $tag)
     {
         return $this->tags->removeElement($tag);
+    }
+
+    /**
+     * Set status.
+     *
+     * @param \Gatomlo\ProjectManagerBundle\Entity\Status|null $status
+     *
+     * @return Project
+     */
+    public function setStatus(\Gatomlo\ProjectManagerBundle\Entity\Status $status = null)
+    {
+        $this->status = $status;
+
+        return $this;
     }
 }

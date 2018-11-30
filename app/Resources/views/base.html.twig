@@ -28,6 +28,7 @@
        <!-- Custom styles for this template-->
        <link href="{{ asset('css/sb-admin.css') }}" rel="stylesheet">
        <link href="{{ asset('css/datetimepicker.css') }}" rel="stylesheet">
+       <link href="{{ asset('css/jplist.core.min.css') }}" rel="stylesheet">
 
      {% endblock %}
 
@@ -185,7 +186,7 @@
         </div>
       </div>
     </div>
-
+    
     {% block javascripts %}
       <!-- Bootstrap core JavaScript-->
       <script src="{{ asset('js/jquery/jquery.min.js')}}"></script>
@@ -201,19 +202,12 @@
       <script src="{{ asset('js/sb-admin.min.js')}}"></script>
       <script src="{{ asset('js/Moment.js')}}"></script>
       <script src="{{ asset('js/datetimepicker.js')}}"></script>
+      <script src="{{ asset('js/jplist/jplist.core.min.js')}}"></script>
 
   {% endblock %}
 
   {% block scripts %}
-  <script>
-  $('#example').DataTable( {
-  responsive: {
-      details: {
-          display: $.fn.dataTable.Responsive.display.childRowImmediate
-      }
-  }
-} );
-  </script>
+
   {% endblock %}
 
   </body>

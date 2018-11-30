@@ -4,6 +4,7 @@ namespace Gatomlo\ProjectManagerBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Gatomlo\ProjectManagerBundle\Entity\Event;
+use Gatomlo\ProjectManagerBundle\Entity\Project;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -25,6 +26,14 @@ class EventController extends Controller
       $events = $em->getRepository('GatomloProjectManagerBundle:Event')->findAll();
       return $this->render('@GatomloProjectManager/Event/event.all.html.twig',array('events'=>$events));
   }
+  public function allForAction(Project $projectId)
+  {
+      $em = $this->getDoctrine()->getManager();
+      $events = $em->getRepository('GatomloProjectManagerBundle:Event')->findBy(array(
+        'project'=>$projectId
+      ));
+      return $this->render('@GatomloProjectManager/Event/event.allFor.html.twig',array('events'=>$events,'project'=>$projectId));
+  }
   public function viewAction($id)
   {
     $em = $this->getDoctrine()->getManager();
@@ -33,8 +42,6 @@ class EventController extends Controller
       if (null === $event) {
         throw new NotFoundHttpException("L'événement ".$id." n'existe pas.");
       }
-
-
       return $this->render('@GatomloProjectManager/Event/event.view.html.twig',array(
         'event'=>$event));
   }
@@ -61,7 +68,6 @@ class EventController extends Controller
 
        $request->getSession()->getFlashBag()->add('notice', 'Evénement bien enregistré.');
 
-       // On redirige vers la page de visualisation de l'annonce nouvellement créée
        return $this->redirectToRoute('gatomlo_project_manager_one_event', array('id' => $event->getId()));
      }
    }
@@ -103,24 +109,27 @@ class EventController extends Controller
        return $this->redirectToRoute('gatomlo_project_manager_one_event', array('id' => $event->getId()));
      }
    }
-
-
-    // On passe la méthode createView() du formulaire à la vue
-    // afin qu'elle puisse afficher le formulaire toute seule
     return $this->render('@GatomloProjectManager/Event/event.add.html.twig', array(
       'form' => $form->createView(),
       'event'=> $event
     ));
   }
 
-  public function deleteAction($id)
+  public function deleteAction($id,$from)
   {
       $em = $this->getDoctrine()->getManager();
       $event = $em->getRepository('GatomloProjectManagerBundle:Event')->find($id);
+      $project = $em->getRepository('GatomloProjectManagerBundle:Event')->find($event->getProject())->getId();
       $em->remove($event);
       $em->flush();
 
-       return $this->redirectToRoute('gatomlo_project_manager_all_events');
+      if($from == 'events'){
+        return $this->redirectToRoute('gatomlo_project_manager_all_events');
+      }
+      else{
+        return $this->redirectToRoute('gatomlo_project_manager_all_events_from_a_project',array('projectId'=>$project));
+      }
+
   }
 
 }

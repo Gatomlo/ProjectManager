@@ -1,1 +1,60 @@
 {% extends "base.html.twig" %}
+{% block body %}
+
+            <!-- hidden sort control -->
+            <div
+                style="display: none"
+                data-jplist-control="hidden-sort"
+                data-group="group1"
+                data-path=".name"
+                data-order="asc"
+                data-type="text"></div>
+
+            <!-- text filter control -->
+            <div>
+                <input
+                    data-jplist-control="textbox-filter"
+                    data-group="group1"
+                    data-name="my-filter-1"
+                    data-path=".name"
+                    type="text"
+                    value=""
+                    data-clear-btn-id="name-clear-btn"
+                    placeholder="Filter by Name" />
+
+                <button type="button" id="name-clear-btn">Clear</button>
+            </div>
+
+            <!-- content to filter -->
+            <div data-jplist-group="group1">
+
+                <!-- item -->
+                <div data-jplist-item>
+                    <div class="name">Cecilia Hanson</div>
+                </div>
+
+                <!-- item -->
+                <div data-jplist-item>
+                    <div class="name">Alejandro Miles</div>
+                </div>
+
+                <!-- item -->
+                <div data-jplist-item>
+                    <div class="name">Andy Harris</div>
+                </div>
+
+                ...
+
+                <!-- no results control -->
+                <div data-jplist-control="no-results" data-group="group1" data-name="no-results">No Results Found</div>
+
+        </div>
+
+
+
+      
+        <script>
+            jplist.init();
+        </script>
+
+{% endblock %}

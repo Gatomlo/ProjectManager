@@ -44,17 +44,14 @@ class EventType extends AbstractType
         'label'=>'Début de l\'événement',
         'widget' => 'single_text',
         'required' => true,
-        'html5'=> false,
-        'input'=>'datetime',
-        'format' => 'DD-MM-YYYY HH:mm:ss',
+        'html5' => false,
         'attr' => array('class'=>'datetimepicker'),
       ))
       ->add('enddate',      DatetimeType::class,array(
         'label'=>'Fin de l\'événement',
         'widget' => 'single_text',
         'required' => false,
-        'input'=>'datetime',
-        'format' => 'DD-MM-YYYY HH:mm:ss',
+        'html5' => false,
         'attr' => array('class'=>'datetimepicker'),
       ))
 

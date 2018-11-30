@@ -34,14 +34,12 @@ class ProjectType extends AbstractType
         'attr' => array('class'=>'form-control'),
       'required' => false
       ))
-      ->add('endtime',      DateType::class,array(
+      ->add('endtime',      DatetimeType::class,array(
         'label'=>'Date d\'échéance',
         'widget' => 'single_text',
         'html5'=> false,
         'attr' => array('class'=>'datetimepicker'),
         'required' => false,
-        'input'=>'datetime',
-        'format' => 'DD-MM-YYYY HH:mm:ss'
       ))
       ->add('parent', EntityType::class, array(
         'class' => Project::class,

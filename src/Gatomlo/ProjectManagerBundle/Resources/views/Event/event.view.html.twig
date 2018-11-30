@@ -18,7 +18,7 @@
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
           <a class="dropdown-item" href="{{ path('gatomlo_project_manager_edit_event', { 'id': event.id }) }}"><i class="fas fa-pen"></i> Editer</a>
-          <a class="dropdown-item" href="{{ path('gatomlo_project_manager_delete_event', { 'id': event.id }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a>
+          <a class="dropdown-item" href="{{ path('gatomlo_project_manager_delete_event', { 'id': event.id,'from':'events' }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a>
         </div>
       </div>
     </div>
@@ -27,10 +27,12 @@
     {{event.description}}
   </div>
   <div class="card-footer text-muted">
-    {{event.startdate|date("d/m/Y")}}
-    {% if event.enddate is not null %}
-      <div class="col-auto mr-auto"> - {{event.enddate|date("d/m/Y")}}</div>
-    {% endif %}
+    <div class="col-auto mr-auto">
+      {{event.startdate|date("d/m/Y")}}
+      {% if event.enddate is not null %}
+        - {{event.enddate|date("d/m/Y")}}
+        {% endif %}
+    </div>
   </div>
 </div>
 

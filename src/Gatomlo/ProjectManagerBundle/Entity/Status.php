@@ -40,14 +40,14 @@ class Status
      *
      * @ORM\Column(name="type", type="integer")
      */
+     //0 = status pour projet, 1 = status pour événement,  2 = status pour todo
+     //combinaisons possibles exemple 012 -> pour tous et 02 -> projet + todo
     private $type;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Project", inversedBy="status", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Project", mappedBy="status", cascade={"persist"})
      *
      */
-     //0 = status pour projet, 1 = status pour événement,  2 = status pour todo
-     //combinaisons possibles exemple 012 -> pour tous et 02 -> projet + todo
     private $project;
 
 
@@ -156,5 +156,38 @@ class Status
     public function getProject()
     {
         return $this->project;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->project = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add project.
+     *
+     * @param \Gatomlo\ProjectManagerBundle\Entity\Project $project
+     *
+     * @return Status
+     */
+    public function addProject(\Gatomlo\ProjectManagerBundle\Entity\Project $project)
+    {
+        $this->project[] = $project;
+
+        return $this;
+    }
+
+    /**
+     * Remove project.
+     *
+     * @param \Gatomlo\ProjectManagerBundle\Entity\Project $project
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeProject(\Gatomlo\ProjectManagerBundle\Entity\Project $project)
+    {
+        return $this->project->removeElement($project);
     }
 }

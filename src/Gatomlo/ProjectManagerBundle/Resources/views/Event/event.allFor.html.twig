@@ -2,12 +2,28 @@
 
 {% block breadcrumb %}
   <li class="breadcrumb-item">
-    <a href="{{ path('gatomlo_project_manager_all_peoples')}}">Evénements</a>
+    <a href="{{ path('gatomlo_project_manager_all_projects')}}">Projets</a>
   </li>
-  <li class="breadcrumb-item active">Tous les événements</li>
+  <li class="breadcrumb-item">
+    <a href="{{ path('gatomlo_project_manager_one_project', { 'id': project.id }) }}">{{project.name}}</a>
+  </li>
+  <li class="breadcrumb-item active">Evénements</li>
 {% endblock %}
 
 {% block body %}
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link" href="{{ path('gatomlo_project_manager_one_project', { 'id': project.id }) }}">Description</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" href="{{ path('gatomlo_project_manager_all_events_from_a_project', { 'projectId': project.id }) }}">Evénements</a>
+    </li>
+    <!-- <li class="nav-item">
+      <a class="nav-link" href="#">Tâches</a>
+    </li> -->
+  </ul>
+</br></br>
+
   <div class="card mb-3">
     <div class="card-header"><a class="float-right  btn btn-primary " href="{{ path('gatomlo_project_manager_add_event') }}"><i class="fas fa-plus-circle text-align-right"></i> Nouvel événement</a></div>
     <div class="card-body">
@@ -49,7 +65,7 @@
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                       <a class="dropdown-item" href="{{ path('gatomlo_project_manager_one_event', { 'id': event.id }) }}"><i class="fas fa-eye"></i> Voir</a>
                       <a class="dropdown-item" href="{{ path('gatomlo_project_manager_edit_event', { 'id': event.id }) }}"><i class="fas fa-pen"></i> Editer</a>
-                      <a class="dropdown-item" href="{{ path('gatomlo_project_manager_delete_event', { 'id': event.id,'from':'events' }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a>
+                      <a class="dropdown-item" href="{{ path('gatomlo_project_manager_delete_event', { 'id': event.id,'from':'project' }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a>
                     </div>
                   </div>
                 </td>

@@ -93,7 +93,7 @@
       </br></br>
       <h4>Remarque(s):</h4>
       {% if people.comment is not null %}
-        {{people.comment}}
+        {{people.comment | raw  }}
       {% else %}
         pas de commentaire
       {% endif %}

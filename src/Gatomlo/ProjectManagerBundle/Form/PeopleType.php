@@ -76,7 +76,7 @@ class PeopleType extends AbstractType
       ))
       ->add('comment',      TextareaType::class,array(
         'label'=>'Commentaire',
-        'attr' => array('class'=>'form-control'),
+        'attr' => array('class'=>'form-control summernote'),
         'required' => false
       ))
       ->add('save',      SubmitType::class,array(

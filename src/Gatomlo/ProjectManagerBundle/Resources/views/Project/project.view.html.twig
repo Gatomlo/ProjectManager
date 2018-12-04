@@ -52,7 +52,7 @@
     </div>
     <div class="card-body">
       <h5>Description:</h5>
-      {{project.description}}
+      {{project.description | raw  }}
 
       {% if project.parent is not null %}
       </br></br><h5>Projet parent:</h5>

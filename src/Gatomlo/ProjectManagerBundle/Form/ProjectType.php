@@ -26,7 +26,7 @@ class ProjectType extends AbstractType
       ))
       ->add('description',      TextareaType::class,array(
         'label'=>'Description du projet',
-        'attr' => array('class'=>'form-control'),
+        'attr' => array('class'=>'form-control summernote'),
         'required' => false
       ))
       ->add('url',      TextType::class,array(

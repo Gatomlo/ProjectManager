@@ -37,7 +37,7 @@ class EventType extends AbstractType
       ))
       ->add('description',      TextareaType::class,array(
         'label'=>'Détail',
-        'attr' => array('class'=>'form-control'),
+        'attr' => array('class'=>'form-control summernote'),
         'required' => true
       ))
       ->add('startdate',      DatetimeType::class,array(

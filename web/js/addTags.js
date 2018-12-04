@@ -1,10 +1,19 @@
+var $collectionHolder;
+
 // setup an "add a tag" link
-var $addTagLink = $('<button type="button" class="add_tag_link btn btn-primary"><i class="fas fa-tags"></i>Ajouter un tag</button></br></br>');
-var $newLinkLi = $('<span></span>').append($addTagLink);
+var $newLinkLi = $('<ul></ul>')
 
 jQuery(document).ready(function() {
   // Get the ul that holds the collection of tags
-  var $collectionHolder = $('div.tags');
+  $collectionHolder = $('ul.tags');
+
+  $oneLi =   $collectionHolder.find('li');
+
+  $oneLi.children().addClass('input-group');
+
+  $oneLi.children().each(function() {
+    addTagFormDeleteLink($(this));
+  });
 
   // add the "add a tag" anchor and li to the tags ul
   $collectionHolder.append($newLinkLi);
@@ -13,18 +22,10 @@ jQuery(document).ready(function() {
   // index when inserting a new item (e.g. 2)
   $collectionHolder.data('index', $collectionHolder.find(':input').length);
 
-
-
-
-  $addTagLink.on('click', function(e) {
-      // prevent the link from creating a "#" on the URL
-      e.preventDefault();
-
-      // add a new tag form (see code block below)
+  $('#addTagButton').click(function(e) {
+      // add a new tag form (see next code block)
       addTagForm($collectionHolder, $newLinkLi);
   });
-
-
 });
 
 function addTagForm($collectionHolder, $newLinkLi) {
@@ -34,24 +35,36 @@ function addTagForm($collectionHolder, $newLinkLi) {
   // get the new index
   var index = $collectionHolder.data('index');
 
-  // Replace '$$name$$' in the prototype's HTML to
+  var newForm = prototype;
+  // You need this only if you didn't set 'label' => false in your tags field in TaskType
+  // Replace '__name__label__' in the prototype's HTML to
   // instead be a number based on how many items we have
-  var newForm = prototype.replace(/__name__/g, index);
+  // newForm = newForm.replace(/__name__label__/g, index);
+
+  // Replace '__name__' in the prototype's HTML to
+  // instead be a number based on how many items we have
+  newForm = newForm.replace(/__name__/g, index);
 
   // increase the index with one for the next item
   $collectionHolder.data('index', index + 1);
 
+  var $removeFormButton =  $('<div class="input-group-append"><button class="btn btn-outline-secondary" type="button">Delete this tag</button></div');
+
   // Display the form in the page in an li, before the "Add a tag" link li
-  var $newFormLi = $('<span class="test"></span>').append(newForm).children().children().addClass('input-group').append('<div class="input-group-append"><button class="btn btn-outline-secondary remove-tag" type="button" id="button-addon2"><i class="far fa-trash-alt"></i></button></div>');
 
-  $newLinkLi.after($newFormLi);
+  var $newFormLi = $('<li></li>').append(newForm);
+  $newFormLi.children().children().addClass('input-group');
+  addTagFormDeleteLink($newFormLi.children().children());
+  $newLinkLi.before($newFormLi);
 
-  // handle the removal, just for this example
-  $('.remove-tag').click(function(e) {
-      e.preventDefault();
+}
 
-      $(this).parent().parent().remove();
+function addTagFormDeleteLink($tagFormLi) {
+  var $removeFormButton =  $('<div class="input-group-append"><button type="button" class="btn btn-outline-secondary"><i class="fas fa-trash-alt"></i></button></div');
+  $tagFormLi.append($removeFormButton);
 
-      return false;
+  $removeFormButton.on('click', function(e) {
+      // remove the li for the tag form
+      $tagFormLi.parents('li').remove();
   });
 }

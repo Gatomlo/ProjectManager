@@ -13,7 +13,6 @@ jQuery(document).ready(function() {
   // index when inserting a new item (e.g. 2)
   $collectionHolder.data('index', $collectionHolder.find(':input').length);
 
-  $('.existingTags').children().addClass('input-group').append('<div class="input-group-append"><button class="btn btn-outline-secondary remove-tag" type="button" id="button-addon2"><i class="far fa-trash-alt"></i></button></div>');
 
 
 

@@ -426,12 +426,6 @@ class Project
       $this->tags[] = $tag;
     }
 
-    // public function removeTag(Tag $tag)
-    // {
-    //   // Ici on utilise une méthode de l'ArrayCollection, pour supprimer la catégorie en argument
-    //   $this->tagss->removeElement($tag);
-    // }
-
 
     /**
      * Add status.
@@ -621,4 +615,5 @@ class Project
 
         return $this;
     }
+
 }

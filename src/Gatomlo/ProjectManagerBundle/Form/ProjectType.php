@@ -52,7 +52,7 @@ class ProjectType extends AbstractType
         'entry_type' => TagsType::class,
         'allow_add' => true,
         'allow_delete' => true,
-        'prototype' => true,
+        'by_reference' => false,
         'entry_options' => array('label' => false)
       ))
       ->add('save',      SubmitType::class,array(

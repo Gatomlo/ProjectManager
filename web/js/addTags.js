@@ -1,5 +1,5 @@
 // setup an "add a tag" link
-var $addTagLink = $('<button type="button" class="add_tag_link btn btn-primary"><i class="fas fa-tags"></i></button>');
+var $addTagLink = $('<button type="button" class="add_tag_link btn btn-primary"><i class="fas fa-tags"></i>Ajouter un tag</button></br></br>');
 var $newLinkLi = $('<span></span>').append($addTagLink);
 
 jQuery(document).ready(function() {
@@ -12,6 +12,10 @@ jQuery(document).ready(function() {
   // count the current form inputs we have (e.g. 2), use that as the new
   // index when inserting a new item (e.g. 2)
   $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+  $('.existingTags').children().addClass('input-group').append('<div class="input-group-append"><button class="btn btn-outline-secondary remove-tag" type="button" id="button-addon2"><i class="far fa-trash-alt"></i></button></div>');
+
+
 
   $addTagLink.on('click', function(e) {
       // prevent the link from creating a "#" on the URL

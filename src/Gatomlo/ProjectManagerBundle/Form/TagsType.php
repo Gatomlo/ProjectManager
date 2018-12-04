@@ -14,7 +14,8 @@ class TagsType extends AbstractType
   {
     $builder
       ->add('name',      TextType::class,array(
-        'attr' => array('class'=>'col-sm-6')
+        'attr' => array('class'=>'col-sm-6'),
+        'label' => false
       ));
   }
 

@@ -10,6 +10,7 @@
 {% block body %}
 
   {{ form_start(form) }}
+  {{ form_row(form._token) }}
   {{ form_errors(form) }}
   {{ form_row(form.name) }}
   {{ form_row(form.description) }}
@@ -19,12 +20,14 @@
 
 
   <div class="tags" data-prototype="{{ form_widget(form.tags.vars.prototype)|e('html_attr') }}"></div>
+  {% for tag in form.tags %}
+    <span class="existingTags">{{ form_row(tag.name) }}</span>
+  {% endfor %}
 
-  {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+  {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}</br></br>
 
 
 
-  {{ form_end(form) }}
 
 {% endblock %}
 {% block scripts %}

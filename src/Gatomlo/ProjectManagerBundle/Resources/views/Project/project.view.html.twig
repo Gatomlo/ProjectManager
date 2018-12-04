@@ -36,6 +36,15 @@
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item" href="{{ path('gatomlo_project_manager_edit_project', { 'id': project.id }) }}"><i class="fas fa-pen"></i> Editer</a>
             <a class="dropdown-item" href="{{ path('gatomlo_project_manager_delete_project', { 'id': project.id }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a>
+            {% if project.archived %}
+              <a class="dropdown-item" href="{{ path('gatomlo_project_manager_archived_project', { 'id': project.id }) }}"><i class="fas fa-undo"></i>
+                Désarchiver
+              </a>
+            {% else %}
+              <a class="dropdown-item" href="{{ path('gatomlo_project_manager_archived_project', { 'id': project.id }) }}"><i class="fas fa-archive"></i>
+                Archiver
+              </a>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -55,6 +64,10 @@
         {% for child in project.childs %}
           <a href="{{ path('gatomlo_project_manager_one_project', { 'id': child.id }) }}">{{child.name}}</a>{% if not loop.last %}</br> {% endif %}
         {% endfor %}
+      {% endif %}
+      {% if  project.url is not empty %}
+        </br></br>
+        URL : <a target="_blank" href="{{project.url}}">{{project.url}}</a>
       {% endif %}
 
     </div>

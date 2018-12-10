@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Function
  *
- * @ORM\Table(name="function")
+ * @ORM\Table(name="pm_peoplefunction")
  * @ORM\Entity(repositoryClass="Gatomlo\ProjectManagerBundle\Repository\FunctionRepository")
  */
-class Function
+class peopleFunction
 {
     /**
      * @var int

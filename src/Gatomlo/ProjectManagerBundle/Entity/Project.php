@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="pm_project")
  * @ORM\Entity(repositoryClass="Gatomlo\ProjectManagerBundle\Repository\ProjectRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Project
 {

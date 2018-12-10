@@ -18,6 +18,11 @@ gatomlo_project_manager_all_projects:
     requirements:
         archived: 0|1
 
+gatomlo_project_manager_projects_json:
+    path:      /projects/json
+    defaults: { _controller: GatomloProjectManagerBundle:Project:jsonProjectsList }
+
+
 gatomlo_project_manager_one_project:
     path:      /projects/{id}
     defaults: { _controller: GatomloProjectManagerBundle:Project:view }
@@ -142,3 +147,8 @@ gatomlo_project_manager_delete_tasks:
     defaults: { _controller: GatomloProjectManagerBundle:Task:delete }
     requirements:
         id: \d+
+
+#projets
+gatomlo_project_manager_tags_json:
+    path:      /tags/
+    defaults: { _controller: GatomloProjectManagerBundle:Tags:jsonTagsList }

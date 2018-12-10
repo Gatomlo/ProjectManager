@@ -9,27 +9,50 @@
 
 {% block body %}
 
-  {{ form_start(form) }}
-    {{ form_row(form._token) }}
-    {{ form_errors(form) }}
-    {{ form_row(form.name) }}
-    {{ form_row(form.description) }}
-    {{ form_row(form.url) }}
-    {{ form_row(form.endtime) }}
-    {{ form_row(form.parent) }}
-<hr>
-Tags <button type="button" id="addTagButton" class="btn btn-primary add_tag_link"><i class="fas fa-plus-circle"></i></button></br></br>
-    <ul class="tags" data-prototype="{{ form_widget(form.tags.vars.prototype)|e('html_attr') }}">
-      {% for tag in form.tags %}
-        <li>{{ form_row(tag.name) }}</li>
-      {% endfor %}
-    </ul>
-
-    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}</br></br>
-{{ form_end(form) }}
+  {{ form(form) }}
 
 {% endblock %}
 {% block scripts %}
+  <script>
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2({
+        });
+    });
+  </script>
+  <script>
+    $('.select-parent').selectize({
+      sortField: 'text'
+    });
 
-    <script src="{{ asset('js/addTags.js')}}"></script>
+
+
+$('.select-tags').selectize({
+  valueField: 'id',
+  labelField: 'text',
+  searchField: 'text',
+  create: true,
+  options: [],
+  load: function(query, callback) {
+    if (!query.length) return callback();
+    $.ajax({
+        url: '{{ path('gatomlo_project_manager_tags_json')}}',
+        type: 'GET',
+        dataType: 'json',
+        data: {
+            country: query,
+        },
+        error: function() {
+            callback();
+        },
+        success: function(res) {
+            callback(res);
+        }
+    });
+  }
+});
+  </script>
+
+
+  <script src="{{ asset('js/addTags.js')}}"></script>
+
 {% endblock %}

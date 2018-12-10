@@ -4,16 +4,12 @@ namespace Gatomlo\ProjectManagerBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Gatomlo\ProjectManagerBundle\Entity\Project;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Gatomlo\ProjectManagerBundle\Entity\Tags;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Gatomlo\ProjectManagerBundle\Form\ProjectType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 
@@ -40,6 +36,21 @@ class ProjectController extends Controller
       return $this->render('@GatomloProjectManager/Project/project.view.html.twig',array(
         'project'=>$project));
   }
+
+  public function jsonProjectsListAction()
+  {
+      $em = $this->getDoctrine()->getManager();
+      $projects = $em->getRepository('GatomloProjectManagerBundle:Project')->findAll();
+
+      $list_Projects = array();
+      foreach ($projects as $project){
+          $obj['id'] = $project->getId();
+          $obj['text'] = $project->getName();
+          array_push($list_Projects,$obj);
+      }
+      return new JsonResponse($list_Projects);
+  }
+
   public function addAction(Request $request)
   {
     // On crée un objet Project
@@ -58,6 +69,9 @@ class ProjectController extends Controller
      if ($form->isValid()) {
        // On enregistre notre objet $advert dans la base de données, par exemple
        $em = $this->getDoctrine()->getManager();
+       $tag = new Tags();
+       $tag->setName('ProjectController');
+       $project->addTag($tag);
        $em->persist($project);
        $em->flush();
 

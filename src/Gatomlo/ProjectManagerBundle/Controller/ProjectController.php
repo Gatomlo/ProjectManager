@@ -23,6 +23,7 @@ class ProjectController extends Controller
       ));
       return $this->render('@GatomloProjectManager/Project/project.all.html.twig',array('projects'=>$projects, 'archived'=>$archived));
   }
+
   public function viewAction($id)
   {
     $em = $this->getDoctrine()->getManager();
@@ -67,11 +68,25 @@ class ProjectController extends Controller
      // On vérifie que les valeurs entrées sont correctes
      // (Nous verrons la validation des objets en détail dans le prochain chapitre)
      if ($form->isValid()) {
+      $em = $this->getDoctrine()->getManager();
        // On enregistre notre objet $advert dans la base de données, par exemple
-       $em = $this->getDoctrine()->getManager();
-       $tag = new Tags();
-       $tag->setName('ProjectController');
-       $project->addTag($tag);
+       $tagsArray = $form['tagsArray']->getData();
+       $tags = explode(",",$tagsArray);
+       foreach ($tags as $tag) {
+         $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
+           'name'=> $tag
+         ));
+
+         if (empty($existingTag)){
+           $newTag = new Tags();
+           $newTag->setName($tag);
+           $project->addTag($newTag);
+         }
+
+         else {
+           $project->addTag($existingTag);
+         }
+       }
        $em->persist($project);
        $em->flush();
 
@@ -97,7 +112,20 @@ class ProjectController extends Controller
     $em = $this->getDoctrine()->getManager();
     $project = $em->getRepository('GatomloProjectManagerBundle:Project')->find($id);
 
-    $form = $this->get('form.factory')->create(ProjectType::class, $project);
+
+    //Récupération des tags
+    $existingTags = $project->getTags();
+    //Création d'un tableau vide
+    $existingTagsArray = [];
+    // Pour chaque tag, on récupére le nom et on l'insère dans le tableau vide.
+    foreach ($existingTags as $tag) {
+      $currentTag = $tag->getName();
+      array_push($existingTagsArray, $currentTag);
+    };
+    // On transforme le tableau en string pour pouvoir être inséré dans le champ texte selectize
+    $existingTagsStringFormat = implode(',',$existingTagsArray);
+
+    $form = $this->get('form.factory')->create(ProjectType::class, $project, array('existingTags'=>$existingTagsStringFormat));
 
     // Si la requête est en POST
    if ($request->isMethod('POST')) {
@@ -108,8 +136,32 @@ class ProjectController extends Controller
      // On vérifie que les valeurs entrées sont correctes
      // (Nous verrons la validation des objets en détail dans le prochain chapitre)
      if ($form->isValid()) {
+
+       foreach ($existingTags as $tag) {
+         $project->removeTag($tag);
+       };
        // On enregistre notre objet $advert dans la base de données, par exemple
        $em = $this->getDoctrine()->getManager();
+        // On enregistre notre objet $advert dans la base de données, par exemple
+        $tagsArray = $form['tagsArray']->getData();
+        $tags = explode(",",$tagsArray);
+        foreach ($tags as $tag) {
+          $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
+            'name'=> $tag
+          ));
+
+          if (empty($existingTag)){
+            $newTag = new Tags();
+            $newTag->setName($tag);
+            $project->addTag($newTag);
+          }
+
+          else {
+            $project->addTag($existingTag);
+          }
+        }
+
+
        $em->persist($project);
        $em->flush();
 
@@ -125,7 +177,8 @@ class ProjectController extends Controller
     // afin qu'elle puisse afficher le formulaire toute seule
     return $this->render('@GatomloProjectManager/Project/project.add.html.twig', array(
       'form' => $form->createView(),
-      'project'=>$project
+      'project'=>$project,
+      'tags'=>$existingTagsArray,
     ));
   }
 

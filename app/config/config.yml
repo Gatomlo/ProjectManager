@@ -37,7 +37,6 @@ twig:
     strict_variables: '%kernel.debug%'
     form_themes:
         - 'bootstrap_3_layout.html.twig'
-        - '@TetranzSelect2Entity/Form/fields.html.twig'
 
 # Doctrine Configuration
 doctrine:

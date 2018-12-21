@@ -11,45 +11,41 @@
 
   {{ form(form) }}
 
+
 {% endblock %}
 {% block scripts %}
-  <script>
-    $(document).ready(function() {
-        $('.js-example-basic-single').select2({
-        });
-    });
-  </script>
   <script>
     $('.select-parent').selectize({
       sortField: 'text'
     });
 
-
-
-$('.select-tags').selectize({
-  valueField: 'id',
-  labelField: 'text',
-  searchField: 'text',
-  create: true,
-  options: [],
-  load: function(query, callback) {
-    if (!query.length) return callback();
-    $.ajax({
-        url: '{{ path('gatomlo_project_manager_tags_json')}}',
-        type: 'GET',
-        dataType: 'json',
-        data: {
-            country: query,
-        },
-        error: function() {
-            callback();
-        },
-        success: function(res) {
-            callback(res);
-        }
+    $('.select-tags').selectize({
+      plugins: ['remove_button'],
+      valueField: 'text',
+      labelField: 'text',
+      searchField: 'text',
+      create: true,
+      options: [],
+      load: function(query, callback) {
+        if (!query.length) return callback();
+        $.ajax({
+            url: '{{ path('gatomlo_project_manager_tags_json')}}',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                country: query,
+            },
+            error: function() {
+                callback();
+            },
+            success: function(res) {
+                callback(res);
+            }
+        });
+      }
     });
-  }
-});
+
+    $('.select-tags')[0].selectize.addItem('coucou');
   </script>
 
 

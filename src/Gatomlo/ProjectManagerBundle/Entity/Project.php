@@ -342,6 +342,12 @@ class Project
         return $this->creator;
     }
 
+    public function addTag( $tag)
+    {
+      // Ici, on utilise l'ArrayCollection vraiment comme un tableau
+      $this->tags[] = $tag;
+    }
+
     /**
      * Set tags.
      *
@@ -365,6 +371,20 @@ class Project
     {
         return $this->tags;
     }
+
+
+    /**
+     * Remove tag.
+     *
+     * @param \Gatomlo\ProjectManagerBundle\Entity\Tags $tag
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeTag(\Gatomlo\ProjectManagerBundle\Entity\Tags $tag)
+    {
+        return $this->tags->removeElement($tag);
+    }
+
 
     /**
      * Set tasks.
@@ -419,14 +439,6 @@ class Project
       $this->tags = new ArrayCollection();
       $this->creation = new \Datetime();
     }
-
-    // Notez le singulier, on ajoute une seule catégorie à la fois
-    public function addTag( $tag)
-    {
-      // Ici, on utilise l'ArrayCollection vraiment comme un tableau
-      $this->tags[] = $tag;
-    }
-
 
     /**
      * Add status.
@@ -589,18 +601,6 @@ class Project
     public function getParent()
     {
         return $this->parent;
-    }
-
-    /**
-     * Remove tag.
-     *
-     * @param \Gatomlo\ProjectManagerBundle\Entity\Tags $tag
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeTag(\Gatomlo\ProjectManagerBundle\Entity\Tags $tag)
-    {
-        return $this->tags->removeElement($tag);
     }
 
     /**

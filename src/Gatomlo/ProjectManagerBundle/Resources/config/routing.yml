@@ -148,7 +148,7 @@ gatomlo_project_manager_delete_tasks:
     requirements:
         id: \d+
 
-#projets
+#tags
 gatomlo_project_manager_tags_json:
     path:      /tags/
     defaults: { _controller: GatomloProjectManagerBundle:Tags:jsonTagsList }

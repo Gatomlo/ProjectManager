@@ -27,11 +27,18 @@
     {{event.description | raw }}
   </div>
   <div class="card-footer text-muted">
-    <div class="col-auto mr-auto">
-      {{event.startdate|date("d/m/Y")}}
-      {% if event.enddate is not null %}
-        - {{event.enddate|date("d/m/Y")}}
-        {% endif %}
+    <div class="row">
+      <div class="col-auto mr-auto">
+        {{event.startdate|date("d/m/Y H:m")}}
+        {% if event.enddate is not null %}
+          - {{event.enddate|date("d/m/Y H:m")}}
+          {% endif %}
+      </div>
+      {% if not event.tags.empty %}
+          {% for tag in event.tags %}
+            <div class="badge badge-secondary dropdown col-auto">{{ tag.name }}</div>{% if not loop.last %}, {% endif %}
+          {% endfor %}
+      {% endif %}
     </div>
   </div>
 </div>

@@ -69,7 +69,7 @@ class ProjectController extends Controller
      // (Nous verrons la validation des objets en détail dans le prochain chapitre)
      if ($form->isValid()) {
       $em = $this->getDoctrine()->getManager();
-       // On enregistre notre objet $advert dans la base de données, par exemple
+
        $tagsArray = $form['tagsArray']->getData();
        $tags = explode(",",$tagsArray);
        foreach ($tags as $tag) {

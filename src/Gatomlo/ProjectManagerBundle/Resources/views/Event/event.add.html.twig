@@ -10,3 +10,41 @@
 {% block body %}
   {{ form(form) }}
 {% endblock %}
+{% block scripts %}
+  <script>
+    $('.select-parent').selectize({
+      sortField: 'text'
+    });
+
+    $('.select-tags').selectize({
+      plugins: ['remove_button'],
+      valueField: 'text',
+      labelField: 'text',
+      searchField: 'text',
+      create: true,
+      options: [],
+      load: function(query, callback) {
+        if (!query.length) return callback();
+        $.ajax({
+            url: '{{ path('gatomlo_project_manager_tags_json')}}',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                country: query,
+            },
+            error: function() {
+                callback();
+            },
+            success: function(res) {
+                callback(res);
+            }
+        });
+      }
+    });
+
+    $('.select-tags')[0].selectize.addItem('coucou');
+  </script>
+
+  <script src="{{ asset('js/addTags.js')}}"></script>
+
+{% endblock %}

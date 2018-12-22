@@ -36,13 +36,6 @@ class Event
     private $description;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="url", type="string", length=255, nullable=true)
-     */
-    private $url;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="creation", type="datetime")
@@ -92,7 +85,8 @@ class Event
     /**
      * @var \stdClass|null
      *
-     * @ORM\Column(name="Tags", type="object", nullable=true)
+     * @ORM\ManyToMany(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Tags", cascade={"persist"})
+     * @ORM\JoinTable(name="pm_event_tags")
      */
     private $tags;
 
@@ -155,29 +149,6 @@ class Event
         return $this->description;
     }
 
-    /**
-     * Set url.
-     *
-     * @param string|null $url
-     *
-     * @return Event
-     */
-    public function setUrl($url = null)
-    {
-        $this->url = $url;
-
-        return $this;
-    }
-
-    /**
-     * Get url.
-     *
-     * @return string|null
-     */
-    public function getUrl()
-    {
-        return $this->url;
-    }
 
     /**
      * Set creation.
@@ -348,12 +319,18 @@ class Event
         return $this->intervenants;
     }
 
+    public function addTag( $tag)
+    {
+      // Ici, on utilise l'ArrayCollection vraiment comme un tableau
+      $this->tags[] = $tag;
+    }
+
     /**
      * Set tags.
      *
      * @param \stdClass|null $tags
      *
-     * @return Event
+     * @return Project
      */
     public function setTags($tags = null)
     {
@@ -371,6 +348,19 @@ class Event
     {
         return $this->tags;
     }
+  
+    /**
+     * Remove tag.
+     *
+     * @param \Gatomlo\ProjectManagerBundle\Entity\Tags $tag
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeTag(\Gatomlo\ProjectManagerBundle\Entity\Tags $tag)
+    {
+        return $this->tags->removeElement($tag);
+    }
+
     /**
      * Constructor
      */

@@ -5,12 +5,7 @@ namespace Gatomlo\ProjectManagerBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Gatomlo\ProjectManagerBundle\Entity\Event;
 use Gatomlo\ProjectManagerBundle\Entity\Project;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Gatomlo\ProjectManagerBundle\Entity\Tags;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -63,6 +58,23 @@ class EventController extends Controller
      if ($form->isValid()) {
        // On enregistre notre objet $advert dans la base de données, par exemple
        $em = $this->getDoctrine()->getManager();
+        $tagsArray = $form['tagsArray']->getData();
+        $tags = explode(",",$tagsArray);
+        foreach ($tags as $tag) {
+          $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
+            'name'=> $tag
+          ));
+
+          if (empty($existingTag)){
+            $newTag = new Tags();
+            $newTag->setName($tag);
+            $event->addTag($newTag);
+          }
+
+          else {
+            $event->addTag($existingTag);
+          }
+        }
        $em->persist($event);
        $em->flush();
 
@@ -87,7 +99,20 @@ class EventController extends Controller
     $em = $this->getDoctrine()->getManager();
     $event = $em->getRepository('GatomloProjectManagerBundle:Event')->find($id);
 
-    $form = $this->get('form.factory')->create(EventType::class, $event);
+    //Récupération des tags
+    $existingTags = $event->getTags();
+    //Création d'un tableau vide
+    $existingTagsArray = [];
+    // Pour chaque tag, on récupére le nom et on l'insère dans le tableau vide.
+    foreach ($existingTags as $tag) {
+      $currentTag = $tag->getName();
+      array_push($existingTagsArray, $currentTag);
+    };
+    // On transforme le tableau en string pour pouvoir être inséré dans le champ texte selectize
+    $existingTagsStringFormat = implode(',',$existingTagsArray);
+
+
+    $form = $this->get('form.factory')->create(EventType::class, $event, array('existingTags'=>$existingTagsStringFormat));
 
     // Si la requête est en POST
    if ($request->isMethod('POST')) {
@@ -99,7 +124,29 @@ class EventController extends Controller
      // (Nous verrons la validation des objets en détail dans le prochain chapitre)
      if ($form->isValid()) {
        // On enregistre notre objet $advert dans la base de données, par exemple
+       foreach ($existingTags as $tag) {
+         $event->removeTag($tag);
+       };
+       // On enregistre notre objet $advert dans la base de données, par exemple
        $em = $this->getDoctrine()->getManager();
+        // On enregistre notre objet $advert dans la base de données, par exemple
+        $tagsArray = $form['tagsArray']->getData();
+        $tags = explode(",",$tagsArray);
+        foreach ($tags as $tag) {
+          $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
+            'name'=> $tag
+          ));
+
+          if (empty($existingTag)){
+            $newTag = new Tags();
+            $newTag->setName($tag);
+            $event->addTag($newTag);
+          }
+
+          else {
+            $event->addTag($existingTag);
+          }
+        }
        $em->persist($event);
        $em->flush();
 

@@ -33,7 +33,6 @@ class EventType extends AbstractType
         'choice_label' => 'name',
         'required' => true,
         'placeholder' => 'Choisir un type',
-
       ))
       ->add('description',      TextareaType::class,array(
         'label'=>'Détail',
@@ -54,19 +53,20 @@ class EventType extends AbstractType
         'html5' => false,
         'attr' => array('class'=>'datetimepicker'),
       ))
-
       ->add('project', EntityType::class, array(
         'class' => Project::class,
         'label'=>'Projet lié',
         'choice_label' => 'name',
         'required' => true,
         'placeholder' => 'Choisir un projet',
+        'disabled' => false,
+        'data' => $options['actual_project']
       ))
-
-      ->add('url',      TextType::class,array(
-        'label'=>'URL',
-        'attr' => array('class'=>'form-control'),
-        'required' => false
+      ->add('tagsArray', TextType::class, array(
+        'label'=>'Tags',
+        'mapped'=> false,
+        'attr' => array('class' => 'select-tags'),
+        'data' => $options['existingTags'],
       ))
       ->add('save',      SubmitType::class,array(
         'label'=>'Enregistrer',
@@ -77,7 +77,9 @@ class EventType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults(array(
-      'data_class' => 'Gatomlo\ProjectManagerBundle\Entity\Event'
+      'data_class' => 'Gatomlo\ProjectManagerBundle\Entity\Event',
+      'actual_project' => '',
+      'existingTags' => ''
     ));
   }
 }

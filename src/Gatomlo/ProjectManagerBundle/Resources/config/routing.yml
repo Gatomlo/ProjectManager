@@ -105,8 +105,14 @@ gatomlo_project_manager_one_event:
         id: \d+
 
 gatomlo_project_manager_add_event:
-    path:      /events/add
+    path:      /events/add/
     defaults: { _controller: GatomloProjectManagerBundle:Event:add }
+
+gatomlo_project_manager_add_event_from_project:
+    path:      /events/add/{projectId}
+    defaults: { _controller: GatomloProjectManagerBundle:Event:add }
+    requirements:
+        id: \d+
 
 gatomlo_project_manager_edit_event:
     path:      /events/edit/{id}

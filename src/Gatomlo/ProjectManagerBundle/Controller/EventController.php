@@ -40,12 +40,20 @@ class EventController extends Controller
       return $this->render('@GatomloProjectManager/Event/event.view.html.twig',array(
         'event'=>$event));
   }
-  public function addAction(Request $request)
+  public function addAction(Request $request, Project $projectId = null )
   {
 
     $event = new Event();
+    if ($projectId == null){
+      $fromProject = FALSE;
+    }
+    else{
+      $fromProject = TRUE;
+    }
 
-    $form = $this->get('form.factory')->create(EventType::class, $event);
+    $form = $this->get('form.factory')->create(EventType::class, $event, array(
+      'project'=>$projectId
+    ));
 
     // Si la requête est en POST
    if ($request->isMethod('POST')) {
@@ -80,7 +88,13 @@ class EventController extends Controller
 
        $request->getSession()->getFlashBag()->add('notice', 'Evénement bien enregistré.');
 
-       return $this->redirectToRoute('gatomlo_project_manager_one_event', array('id' => $event->getId()));
+       if($fromProject){
+          return $this->redirectToRoute('gatomlo_project_manager_all_events_from_a_project', array('projectId' => $event->getProject()->getId()));
+       }
+       else{
+          return $this->redirectToRoute('gatomlo_project_manager_all_events');
+       }
+
      }
    }
 
@@ -98,6 +112,7 @@ class EventController extends Controller
 
     $em = $this->getDoctrine()->getManager();
     $event = $em->getRepository('GatomloProjectManagerBundle:Event')->find($id);
+    $project = $event->getProject();
 
     //Récupération des tags
     $existingTags = $event->getTags();
@@ -112,7 +127,9 @@ class EventController extends Controller
     $existingTagsStringFormat = implode(',',$existingTagsArray);
 
 
-    $form = $this->get('form.factory')->create(EventType::class, $event, array('existingTags'=>$existingTagsStringFormat));
+    $form = $this->get('form.factory')->create(EventType::class, $event, array(
+      'existingTags'=>$existingTagsStringFormat,
+      'project'=>$project));
 
     // Si la requête est en POST
    if ($request->isMethod('POST')) {
@@ -158,7 +175,7 @@ class EventController extends Controller
    }
     return $this->render('@GatomloProjectManager/Event/event.add.html.twig', array(
       'form' => $form->createView(),
-      'event'=> $event
+      'event'=> $event,
     ));
   }
 

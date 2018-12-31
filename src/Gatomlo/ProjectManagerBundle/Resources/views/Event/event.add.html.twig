@@ -12,10 +12,9 @@
 {% endblock %}
 {% block scripts %}
   <script>
-    $('.select-parent').selectize({
+    $('.select-project').selectize({
       sortField: 'text'
     });
-
     $('.select-tags').selectize({
       plugins: ['remove_button'],
       valueField: 'text',
@@ -41,10 +40,5 @@
         });
       }
     });
-
-    $('.select-tags')[0].selectize.addItem('coucou');
   </script>
-
-  <script src="{{ asset('js/addTags.js')}}"></script>
-
 {% endblock %}

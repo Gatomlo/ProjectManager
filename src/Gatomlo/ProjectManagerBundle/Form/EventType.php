@@ -59,14 +59,15 @@ class EventType extends AbstractType
         'choice_label' => 'name',
         'required' => true,
         'placeholder' => 'Choisir un projet',
-        'disabled' => false,
-        'data' => $options['actual_project']
+        'attr' => array('class'=>'select-project'),
+        'data' => $options['project']
       ))
       ->add('tagsArray', TextType::class, array(
         'label'=>'Tags',
         'mapped'=> false,
         'attr' => array('class' => 'select-tags'),
         'data' => $options['existingTags'],
+        'required' => false,
       ))
       ->add('save',      SubmitType::class,array(
         'label'=>'Enregistrer',
@@ -78,7 +79,7 @@ class EventType extends AbstractType
   {
     $resolver->setDefaults(array(
       'data_class' => 'Gatomlo\ProjectManagerBundle\Entity\Event',
-      'actual_project' => '',
+      'project' => '',
       'existingTags' => ''
     ));
   }

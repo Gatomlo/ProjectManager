@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Intervenant
  *
- * @ORM\Table(name="intervenant")
+ * @ORM\Table(name="pm_intervenant")
  * @ORM\Entity(repositoryClass="Gatomlo\ProjectManagerBundle\Repository\IntervenantRepository")
  */
 class Intervenant
@@ -22,25 +22,26 @@ class Intervenant
     private $id;
 
     /**
-     * @var \stdClass
-     *
-     * @ORM\Column(name="project", type="object")
-     */
+    * @ORM\ManyToOne(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Project", inversedBy="intervenant", cascade={"persist"})
+    */
     private $project;
 
     /**
-     * @var \stdClass
-     *
-     * @ORM\Column(name="people", type="object")
-     */
+    * @ORM\ManyToOne(targetEntity="Gatomlo\ProjectManagerBundle\Entity\People", inversedBy="intervenant", cascade={"persist"})
+    */
     private $people;
 
     /**
-     * @var \stdClass
+    * @ORM\ManyToOne(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Job", inversedBy="intervenant", cascade={"persist"})
+    */
+    private $job;
+
+    /**
+     * @var string|null
      *
-     * @ORM\Column(name="function", type="object")
+     * @ORM\Column(name="comment", type="text", nullable=true)
      */
-    private $function;
+    private $comment;
 
 
     /**
@@ -102,26 +103,50 @@ class Intervenant
     }
 
     /**
-     * Set function.
+     * Set job.
      *
-     * @param \stdClass $function
+     * @param \Gatomlo\ProjectManagerBundle\Entity\Job|null $job
      *
      * @return Intervenant
      */
-    public function setFunction($function)
+    public function setJob(\Gatomlo\ProjectManagerBundle\Entity\Job $job = null)
     {
-        $this->function = $function;
+        $this->job = $job;
 
         return $this;
     }
 
     /**
-     * Get function.
+     * Get job.
      *
-     * @return \stdClass
+     * @return \Gatomlo\ProjectManagerBundle\Entity\Job|null
      */
-    public function getFunction()
+    public function getJob()
     {
-        return $this->function;
+        return $this->job;
+    }
+
+    /**
+     * Set comment.
+     *
+     * @param string|null $comment
+     *
+     * @return Intervenant
+     */
+    public function setComment($comment = null)
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Get comment.
+     *
+     * @return string|null
+     */
+    public function getComment()
+    {
+        return $this->comment;
     }
 }

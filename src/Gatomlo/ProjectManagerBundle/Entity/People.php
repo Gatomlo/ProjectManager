@@ -112,6 +112,12 @@ class People
      */
     private $comment;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Intervenant", mappedBy="people", cascade={"persist"})
+     *
+     */
+    private $intervenant;
+
 
     /**
      * Get id.
@@ -169,6 +175,16 @@ class People
     public function getLastName()
     {
         return $this->lastName;
+    }
+
+    /**
+     * Get Identity.
+     *
+     * @return string
+     */
+    public function getIdentity()
+    {
+        return $this->lastName.' '.$this->firstName;
     }
 
     /**
@@ -505,5 +521,48 @@ class People
     public function getMatricule()
     {
         return $this->matricule;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->intervenant = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add intervenant.
+     *
+     * @param \Gatomlo\ProjectManagerBundle\Entity\Intervenant $intervenant
+     *
+     * @return People
+     */
+    public function addIntervenant(\Gatomlo\ProjectManagerBundle\Entity\Intervenant $intervenant)
+    {
+        $this->intervenant[] = $intervenant;
+
+        return $this;
+    }
+
+    /**
+     * Remove intervenant.
+     *
+     * @param \Gatomlo\ProjectManagerBundle\Entity\Intervenant $intervenant
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeIntervenant(\Gatomlo\ProjectManagerBundle\Entity\Intervenant $intervenant)
+    {
+        return $this->intervenant->removeElement($intervenant);
+    }
+
+    /**
+     * Get intervenant.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getIntervenant()
+    {
+        return $this->intervenant;
     }
 }

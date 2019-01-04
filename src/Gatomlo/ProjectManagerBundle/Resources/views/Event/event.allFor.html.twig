@@ -16,6 +16,9 @@
       <a class="nav-link" href="{{ path('gatomlo_project_manager_one_project', { 'id': project.id }) }}">Description</a>
     </li>
     <li class="nav-item">
+      <a class="nav-link" href="{{ path('gatomlo_project_manager_all_intervenants_from_a_project', { 'projectId': project.id }) }}">Intervenants</a>
+    </li>
+    <li class="nav-item">
       <a class="nav-link active" href="{{ path('gatomlo_project_manager_all_events_from_a_project', { 'projectId': project.id }) }}">Evénements</a>
     </li>
     <!-- <li class="nav-item">

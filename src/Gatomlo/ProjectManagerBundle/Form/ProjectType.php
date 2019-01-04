@@ -53,9 +53,18 @@ class ProjectType extends AbstractType
         'attr' => array('class'=>'select-parent'),
         'placeholder' => 'Sélectionner un parent',
       ))
+      ->add('parent', EntityType::class, array(
+        'class' => Project::class,
+        'label'=>'Projet parent',
+        'choice_label' => 'name',
+        'required' => false,
+        'attr' => array('class'=>'select-parent'),
+        'placeholder' => 'Sélectionner un parent',
+      ))
       ->add('tagsArray', TextType::class, array(
         'label'=>'Tags',
         'mapped'=> false,
+        'required'=>false,
         'attr' => array('class' => 'select-tags'),
         'data' => $options['existingTags'],
       ))

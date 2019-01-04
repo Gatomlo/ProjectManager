@@ -1,0 +1,78 @@
+{% extends "base.html.twig" %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item">
+    <a href="{{ path('gatomlo_project_manager_all_projects')}}">Projets</a>
+  </li>
+  <li class="breadcrumb-item">
+    <a href="{{ path('gatomlo_project_manager_one_project', { 'id': project.id }) }}">{{project.name}}</a>
+  </li>
+  <li class="breadcrumb-item active">Intervenants</li>
+{% endblock %}
+
+{% block body %}
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link" href="{{ path('gatomlo_project_manager_one_project', { 'id': project.id }) }}">Description</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link  active" href="{{ path('gatomlo_project_manager_all_intervenants_from_a_project', { 'projectId': project.id }) }}">Intervenants</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ path('gatomlo_project_manager_all_events_from_a_project', { 'projectId': project.id }) }}">Evénements</a>
+    </li>
+    <!-- <li class="nav-item">
+      <a class="nav-link" href="#">Tâches</a>
+    </li> -->
+  </ul>
+</br></br>
+
+  <div class="card mb-3">
+    <div class="card-header"><a class="float-right  btn btn-primary " href="{{ path('gatomlo_project_manager_add_Intervenant', { 'id': project.id, 'from':'project' }) }}"><i class="fas fa-plus-circle text-align-right"></i> Nouvel intervenant</a></div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered display responsive nowrap" id="intervenantDatatable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Intervenant</th>
+              <th>Fonction</th>
+              <th>Commentaire</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for intervenant in intervenants %}
+              <tr>
+                <td>{{intervenant.people.lastName}} {{intervenant.people.firstName}}</td>
+                <td>{{intervenant.job.name}}</td>
+                <td>{{intervenant.comment | raw }}</td>
+                <td>
+                  <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-cogs"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="{{ path('gatomlo_project_manager_edit_intervenant', { 'id': intervenant.id,'from':'project' }) }}"><i class="fas fa-pen"></i> Editer</a>
+                      <a class="dropdown-item" href="{{ path('gatomlo_project_manager_delete_intervenant', { 'id': intervenant.id,'from':'project' }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    $(document).ready(function() {
+      $('#intervenantDatatable').DataTable({
+        responsive: true,
+
+      });
+    });
+  </script>
+{% endblock %}

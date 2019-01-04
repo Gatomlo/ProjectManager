@@ -70,9 +70,8 @@ class Project
     private $childs;
 
     /**
-     * @var \stdClass|null
+     * @ORM\OneToMany(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Intervenant", mappedBy="project", cascade={"persist"})
      *
-     * @ORM\Column(name="intervenant", type="object", nullable=true)
      */
     private $intervenant;
 
@@ -617,4 +616,30 @@ class Project
         return $this;
     }
 
+
+    /**
+     * Add intervenant.
+     *
+     * @param \Gatomlo\ProjectManagerBundle\Entity\Intervenant $intervenant
+     *
+     * @return Project
+     */
+    public function addIntervenant(\Gatomlo\ProjectManagerBundle\Entity\Intervenant $intervenant)
+    {
+        $this->intervenant[] = $intervenant;
+
+        return $this;
+    }
+
+    /**
+     * Remove intervenant.
+     *
+     * @param \Gatomlo\ProjectManagerBundle\Entity\Intervenant $intervenant
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeIntervenant(\Gatomlo\ProjectManagerBundle\Entity\Intervenant $intervenant)
+    {
+        return $this->intervenant->removeElement($intervenant);
+    }
 }

@@ -186,6 +186,10 @@ class ProjectController extends Controller
   {
       $em = $this->getDoctrine()->getManager();
       $project = $em->getRepository('GatomloProjectManagerBundle:Project')->find($id);
+      if($project->getParent() != null){
+        $parent = $em->getRepository('GatomloProjectManagerBundle:Project')->find($project->getParent());
+        $project->setParents(null);
+      }
       $em->remove($project);
       $em->flush();
 
@@ -193,6 +197,23 @@ class ProjectController extends Controller
   }
 
   public function addParentAction($idChild,$idParent)
+  {
+      $em = $this->getDoctrine()->getManager();
+      $child = $em->getRepository('GatomloProjectManagerBundle:Project')->find($idChild);
+      $parent = $em->getRepository('GatomloProjectManagerBundle:Project')->find($idParent);
+
+      $parent->addChild($child);
+      $child->setParent($parent);
+
+      $em->persist($child);
+      $em->persist($parent);
+      $em->flush();
+
+      return $this->render('@GatomloProjectManager/Project/project.default.html.twig',array(
+        'child'=>$child,
+        'parent'=>$parent));
+  }
+  public function removeParentAction($idChild,$idParent)
   {
       $em = $this->getDoctrine()->getManager();
       $child = $em->getRepository('GatomloProjectManagerBundle:Project')->find($idChild);

@@ -117,6 +117,14 @@ class People
      *
      */
     private $intervenant;
+    /**
+     * @var \stdClass|null
+     *
+     * @ORM\ManyToMany(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Tags", cascade={"persist"})
+     * @ORM\JoinTable(name="pm_people_tags")
+     */
+    private $tags;
+
 
 
     /**
@@ -564,5 +572,41 @@ class People
     public function getIntervenant()
     {
         return $this->intervenant;
+    }
+
+    /**
+     * Add tag.
+     *
+     * @param \Gatomlo\ProjectManagerBundle\Entity\Tags $tag
+     *
+     * @return People
+     */
+    public function addTag(\Gatomlo\ProjectManagerBundle\Entity\Tags $tag)
+    {
+        $this->tags[] = $tag;
+
+        return $this;
+    }
+
+    /**
+     * Remove tag.
+     *
+     * @param \Gatomlo\ProjectManagerBundle\Entity\Tags $tag
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeTag(\Gatomlo\ProjectManagerBundle\Entity\Tags $tag)
+    {
+        return $this->tags->removeElement($tag);
+    }
+
+    /**
+     * Get tags.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTags()
+    {
+        return $this->tags;
     }
 }

@@ -22,6 +22,7 @@
               <th>Diplome</th>
               <th>Matricule</th>
               <th>Institution</th>
+              <th>Tags</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -46,6 +47,11 @@
                 {% else %}
                   <td>/</td>
                 {% endif %}
+                <td>
+                  {% for tag in people.tags %}
+                    {{tag.name}}{% if not loop.last %}, {% endif %}
+                  {% endfor %}
+                <td>
                 <td>
                   <div class="dropdown">
                     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

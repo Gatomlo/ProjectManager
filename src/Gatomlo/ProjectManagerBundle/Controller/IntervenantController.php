@@ -38,6 +38,7 @@ class IntervenantController extends Controller
       $em = $this->getDoctrine()->getManager();
       $intervenants = $em->getRepository('GatomloProjectManagerBundle:Intervenant')->findBy(array(
         'people'=>$peopleId
+        
       ));
       return $this->render('@GatomloProjectManager/Intervenant/intervenant.allForPeople.html.twig',array('intervenants'=>$intervenants,'people'=>$peopleId));
   }

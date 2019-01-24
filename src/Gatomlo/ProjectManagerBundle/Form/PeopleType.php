@@ -79,6 +79,13 @@ class PeopleType extends AbstractType
         'attr' => array('class'=>'form-control summernote'),
         'required' => false
       ))
+      ->add('tagsArray', TextType::class, array(
+        'label'=>'Tags',
+        'mapped'=> false,
+        'attr' => array('class' => 'select-tags'),
+        'data' => $options['existingTags'],
+        'required' => false,
+      ))
       ->add('save',      SubmitType::class,array(
         'label'=>'Enregistrer',
         'attr' => array('class'=>'btn btn-primary')
@@ -88,7 +95,8 @@ class PeopleType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults(array(
-      'data_class' => 'Gatomlo\ProjectManagerBundle\Entity\People'
+      'data_class' => 'Gatomlo\ProjectManagerBundle\Entity\People',
+      'existingTags' => ''
     ));
   }
 }

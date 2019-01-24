@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
+use Gatomlo\ProjectManagerBundle\Entity\Tags;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Gatomlo\ProjectManagerBundle\Form\PeopleType;
@@ -54,6 +55,23 @@ class PeopleController extends Controller
      if ($form->isValid()) {
        // On enregistre notre objet $advert dans la base de données, par exemple
        $em = $this->getDoctrine()->getManager();
+       $tagsArray = $form['tagsArray']->getData();
+       $tags = explode(",",$tagsArray);
+       foreach ($tags as $tag) {
+         $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
+           'name'=> $tag
+         ));
+
+         if (empty($existingTag)){
+           $newTag = new Tags();
+           $newTag->setName($tag);
+           $people->addTag($newTag);
+         }
+
+         else {
+           $people->addTag($existingTag);
+         }
+       }
        $em->persist($people);
        $em->flush();
 
@@ -78,8 +96,20 @@ class PeopleController extends Controller
     // On crée un objet People
     $em = $this->getDoctrine()->getManager();
     $people = $em->getRepository('GatomloProjectManagerBundle:People')->find($id);
+    //Récupération des tags
+    $existingTags = $people->getTags();
+    //Création d'un tableau vide
+    $existingTagsArray = [];
+    // Pour chaque tag, on récupére le nom et on l'insère dans le tableau vide.
+    foreach ($existingTags as $tag) {
+      $currentTag = $tag->getName();
+      array_push($existingTagsArray, $currentTag);
+    };
+    // On transforme le tableau en string pour pouvoir être inséré dans le champ texte selectize
+    $existingTagsStringFormat = implode(',',$existingTagsArray);
 
-    $form = $this->get('form.factory')->create(PeopleType::class, $people);
+    $form = $this->get('form.factory')->create(PeopleType::class, $people, array(
+      'existingTags'=>$existingTagsStringFormat));
 
     // Si la requête est en POST
    if ($request->isMethod('POST')) {
@@ -90,8 +120,27 @@ class PeopleController extends Controller
      // On vérifie que les valeurs entrées sont correctes
      // (Nous verrons la validation des objets en détail dans le prochain chapitre)
      if ($form->isValid()) {
-       // On enregistre notre objet $advert dans la base de données, par exemple
+       foreach ($existingTags as $tag) {
+         $people->removeTag($tag);
+       };
        $em = $this->getDoctrine()->getManager();
+       $tagsArray = $form['tagsArray']->getData();
+       $tags = explode(",",$tagsArray);
+       foreach ($tags as $tag) {
+         $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
+           'name'=> $tag
+         ));
+
+         if (empty($existingTag)){
+           $newTag = new Tags();
+           $newTag->setName($tag);
+           $people->addTag($newTag);
+         }
+
+         else {
+           $people->addTag($existingTag);
+         }
+       }
        $em->persist($people);
        $em->flush();
 
@@ -106,6 +155,7 @@ class PeopleController extends Controller
     // afin qu'elle puisse afficher le formulaire toute seule
     return $this->render('@GatomloProjectManager/People/people.add.html.twig', array(
       'form' => $form->createView(),
+      'people'=> $people
     ));
   }
 

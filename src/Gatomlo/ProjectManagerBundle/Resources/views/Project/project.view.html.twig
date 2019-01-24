@@ -72,12 +72,6 @@
         </br></br>
         URL : <a target="_blank" href="{{project.url}}">{{project.url}}</a>
       {% endif %}
-      Intervenants
-      {% if not project.intervenant.empty %}
-          {% for intervenant in project.intervenant %}
-            <div class="badge badge-secondary dropdown col-auto">{{ intervenant.People.firstName }}</div>{% if not loop.last %}, {% endif %}
-          {% endfor %}
-      {% endif %}
 
     </div>
     <div class="card-footer text-muted ">

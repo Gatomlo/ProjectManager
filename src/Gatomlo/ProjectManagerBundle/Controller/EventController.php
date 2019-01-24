@@ -140,7 +140,7 @@ class EventController extends Controller
      // On vérifie que les valeurs entrées sont correctes
      // (Nous verrons la validation des objets en détail dans le prochain chapitre)
      if ($form->isValid()) {
-       // On enregistre notre objet $advert dans la base de données, par exemple
+
        foreach ($existingTags as $tag) {
          $event->removeTag($tag);
        };

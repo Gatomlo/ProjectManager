@@ -553,6 +553,31 @@ class Project
     }
 
     /**
+     * Set parent.
+     *
+     * @param \Gatomlo\ProjectManagerBundle\Entity\Project|null $parent
+     *
+     * @return Project
+     */
+    public function setParent(\Gatomlo\ProjectManagerBundle\Entity\Project $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent.
+     *
+     * @return \Gatomlo\ProjectManagerBundle\Entity\Project|null
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+
+    /**
      * Add child.
      *
      * @param \Gatomlo\ProjectManagerBundle\Entity\Project $child
@@ -576,30 +601,6 @@ class Project
     public function removeChild(\Gatomlo\ProjectManagerBundle\Entity\Project $child)
     {
         return $this->childs->removeElement($child);
-    }
-
-    /**
-     * Set parent.
-     *
-     * @param \Gatomlo\ProjectManagerBundle\Entity\Project|null $parent
-     *
-     * @return Project
-     */
-    public function setParent(\Gatomlo\ProjectManagerBundle\Entity\Project $parent = null)
-    {
-        $this->parent = $parent;
-
-        return $this;
-    }
-
-    /**
-     * Get parent.
-     *
-     * @return \Gatomlo\ProjectManagerBundle\Entity\Project|null
-     */
-    public function getParent()
-    {
-        return $this->parent;
     }
 
     /**

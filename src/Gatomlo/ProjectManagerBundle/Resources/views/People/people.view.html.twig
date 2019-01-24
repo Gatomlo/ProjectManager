@@ -101,5 +101,15 @@
         pas de commentaire
       {% endif %}
     </div>
+    <div class="card-footer text-muted">
+      <div class="row">
+        <div class="col-auto mr-auto">
+        {% if not people.tags.empty %}
+            {% for tag in people.tags %}
+              <div class="badge badge-secondary dropdown col-auto">{{ tag.name }}</div>{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        {% endif %}
+      </div>
+    </div>
   </div>
 {% endblock %}

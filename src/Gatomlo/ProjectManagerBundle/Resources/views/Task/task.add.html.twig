@@ -1,0 +1,44 @@
+{% extends "base.html.twig" %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item">
+    <a href="{{ path('gatomlo_project_manager_all_tasks')}}">Tâches</a>
+  </li>
+  <li class="breadcrumb-item active">Nouvelle tâche</li>
+{% endblock %}
+
+{% block body %}
+  {{ form(form) }}
+{% endblock %}
+{% block scripts %}
+  <script>
+    $('.select-project').selectize({
+      sortField: 'text'
+    });
+    $('.select-tags').selectize({
+      plugins: ['remove_button'],
+      valueField: 'text',
+      labelField: 'text',
+      searchField: 'text',
+      create: true,
+      options: [],
+      load: function(query, callback) {
+        if (!query.length) return callback();
+        $.ajax({
+            url: '{{ path('gatomlo_project_manager_tags_json')}}',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                country: query,
+            },
+            error: function() {
+                callback();
+            },
+            success: function(res) {
+                callback(res);
+            }
+        });
+      }
+    });
+  </script>
+{% endblock %}

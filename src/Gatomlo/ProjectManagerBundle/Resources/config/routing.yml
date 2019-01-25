@@ -172,3 +172,44 @@ gatomlo_project_manager_delete_event:
 gatomlo_project_manager_tags_json:
     path:      /tags/
     defaults: { _controller: GatomloProjectManagerBundle:Tags:jsonTagsList }
+
+#tasks
+gatomlo_project_manager_all_tasks:
+    path:      /tasks/all
+    defaults: { _controller: GatomloProjectManagerBundle:Task:all }
+
+gatomlo_project_manager_all_tasks_from_a_project:
+    path:      /tasks/all/{projectId}
+    defaults: { _controller: GatomloProjectManagerBundle:Task:allFor }
+    requirements:
+        projectId: \d+
+
+gatomlo_project_manager_add_task:
+    path:      /tasks/add/
+    defaults: { _controller: GatomloProjectManagerBundle:Task:add }
+
+gatomlo_project_manager_add_task_from_project:
+    path:      /tasks/add/{projectId}
+    defaults: { _controller: GatomloProjectManagerBundle:Task:add }
+    requirements:
+        id: \d+
+
+gatomlo_project_manager_edit_task:
+    path:      /tasks/edit/{id}
+    defaults: { _controller: GatomloProjectManagerBundle:Task:edit }
+    requirements:
+        id: \d+
+
+gatomlo_project_manager_close_task:
+    path:      /tasks/close/{id}/{from}
+    defaults: { _controller: GatomloProjectManagerBundle:Task:close }
+    requirements:
+        id: \d+
+        from: project|tasks
+
+gatomlo_project_manager_delete_task:
+    path:      /tasks/delete/{id}/{from}
+    defaults: { _controller: GatomloProjectManagerBundle:Task:delete }
+    requirements:
+        id: \d+
+        from: project|tasks

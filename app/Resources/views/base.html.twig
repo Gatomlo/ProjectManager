@@ -113,6 +113,16 @@
             <a class="dropdown-item" href="{{ path('gatomlo_project_manager_add_event') }}">Nouvel événement</a>
           </div>
         </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-tasks"></i>
+            <span>Tâches</span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
+            <a class="dropdown-item" href="{{ path('gatomlo_project_manager_all_tasks')}}">Toutes les tâches</a>
+            <a class="dropdown-item" href="{{ path('gatomlo_project_manager_add_task') }}">Nouvelle tâche</a>
+          </div>
+        </li>
         <!-- <li class="nav-item">
           <a class="nav-link" href="tables.html">
             <i class="fas fa-list-ul"></i>

@@ -1,0 +1,68 @@
+{% extends "base.html.twig" %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item active">Toutes les tâches</li>
+{% endblock %}
+
+{% block body %}
+  <div class="card mb-3">
+    <div class="card-header"><a class="float-right  btn btn-primary " href="{{ path('gatomlo_project_manager_add_task') }}"><i class="fas fa-plus-circle text-align-right"></i>Nouvelle tâche</a></div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered display responsive nowrap" id="taskDatatable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Echéance</th>
+              <th>Tags</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for task in tasks %}
+              <tr>
+                {% if task.closed %}
+                  <td><s>{{task.description}}</s></td>
+                {% else %}
+                  <td>{{task.description}}</td>
+                {% endif %}
+                <td>{{task.enddate|date("d/m/Y")}}</td>
+                <td>
+                  {% for tag in task.tags %}
+                    {{tag.name}}{% if not loop.last %}, {% endif %}
+                  {% endfor %}</td>
+                <td>
+                  <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-cogs"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      {% if task.closed %}
+                        <a class="dropdown-item" href="{{ path('gatomlo_project_manager_delete_task', { 'id': task.id,'from':'tasks' }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a>
+                      {% else %}
+                        <a class="dropdown-item" href="{{ path('gatomlo_project_manager_close_task',  { 'id': task.id,'from':'tasks' }) }}"><i class="fas fa-check"></i> Clôturer</a>
+                        <a class="dropdown-item" href="{{ path('gatomlo_project_manager_edit_task', { 'id': task.id }) }}"><i class="fas fa-pen"></i> Editer</a>
+                        <a class="dropdown-item" href="{{ path('gatomlo_project_manager_delete_task', { 'id': task.id,'from':'tasks' }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a>
+                      {% endif %}
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    $(document).ready(function() {
+      $('#taskDatatable').DataTable({
+        responsive: true,
+        stateSave: false,
+      });
+    });
+  </script>
+{% endblock %}

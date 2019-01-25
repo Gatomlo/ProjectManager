@@ -1,0 +1,47 @@
+{% extends "base.html.twig" %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item">
+    <a href="{{ path('gatomlo_project_manager_all_events')}}">Evénements</a>
+  </li>
+  <li class="breadcrumb-item active"> {{event.title}}  </li>
+{% endblock %}
+
+{% block body %}
+  <div class="card">
+  <div class="card-header">
+    <div class="row">
+      <h2 class="col-auto mr-auto">{{event.title}}</h2>
+      <div class="dropdown col-auto">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-cogs"></i>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="{{ path('gatomlo_project_manager_edit_event', { 'id': event.id }) }}"><i class="fas fa-pen"></i> Editer</a>
+          <a class="dropdown-item" href="{{ path('gatomlo_project_manager_delete_event', { 'id': event.id,'from':'events' }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    {{event.description | raw }}
+  </div>
+  <div class="card-footer text-muted">
+    <div class="row">
+      <div class="col-auto mr-auto">
+        {{event.startdate|date("d/m/Y H:m")}}
+        {% if event.enddate is not null %}
+          - {{event.enddate|date("d/m/Y H:m")}}
+          {% endif %}
+      </div>
+      {% if not event.tags.empty %}
+          {% for tag in event.tags %}
+            <div class="badge badge-secondary dropdown col-auto">{{ tag.name }}</div>{% if not loop.last %}, {% endif %}
+          {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

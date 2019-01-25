@@ -20,7 +20,32 @@ class TaskController extends Controller
   {
       $em = $this->getDoctrine()->getManager();
       $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findAll();
-      return $this->render('@GatomloProjectManager/Task/task.all.html.twig',array('tasks'=>$tasks));
+      $taskArray = array();
+
+      foreach ($tasks as $task){
+        $obj['id'] = $task->getId();
+        $obj['description'] = $task->getDescription();
+        $obj['enddate'] = $task->getEnddate();
+        $obj['closed'] = $task->getClosed();
+        $obj['tags'] = $task->getTags();
+
+
+        if($task->getEnddate()->format('Y-m-d') > (new \DateTime("now"))->format('Y-m-d') ){
+          $obj['status'] =-1;
+          $obj['color'] ="green";
+        }
+        elseif ($task->getEnddate()->format('Y-m-d') < (new \DateTime("now"))->format('Y-m-d') ) {
+          $obj['status'] =1;
+          $obj['color'] ="red";
+        }
+        elseif ($task->getEnddate()->format('Y-m-d') == (new \DateTime("now"))->format('Y-m-d') ) {
+          $obj['status'] =0;
+          $obj['color'] ="orange";
+        }
+        array_push($taskArray,$obj);
+
+      }
+      return $this->render('@GatomloProjectManager/Task/task.all.html.twig',array('tasksArray'=>$taskArray));
   }
   public function allForAction(Project $projectId)
   {
@@ -28,7 +53,33 @@ class TaskController extends Controller
       $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findBy(array(
         'project'=>$projectId
       ));
-      return $this->render('@GatomloProjectManager/Task/task.allFor.html.twig',array('tasks'=>$tasks,'project'=>$projectId));
+      $taskArray = array();
+
+      foreach ($tasks as $task){
+        $obj['id'] = $task->getId();
+        $obj['description'] = $task->getDescription();
+        $obj['enddate'] = $task->getEnddate();
+        $obj['closed'] = $task->getClosed();
+        $obj['tags'] = $task->getTags();
+
+
+        if($task->getEnddate()->format('Y-m-d') > (new \DateTime("now"))->format('Y-m-d') ){
+          $obj['status'] =-1;
+          $obj['color'] ="green";
+        }
+        elseif ($task->getEnddate()->format('Y-m-d') < (new \DateTime("now"))->format('Y-m-d') ) {
+          $obj['status'] =1;
+          $obj['color'] ="red";
+        }
+        elseif ($task->getEnddate()->format('Y-m-d') == (new \DateTime("now"))->format('Y-m-d') ) {
+          $obj['status'] =0;
+          $obj['color'] ="orange";
+        }
+        array_push($taskArray,$obj);
+
+      }
+
+      return $this->render('@GatomloProjectManager/Task/task.allFor.html.twig',array('tasksArray'=>$taskArray,'project'=>$projectId));
   }
 
   public function addAction(Request $request, Project $projectId = null )

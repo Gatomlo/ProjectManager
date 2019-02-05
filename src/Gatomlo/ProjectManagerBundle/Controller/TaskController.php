@@ -7,7 +7,7 @@ use Gatomlo\ProjectManagerBundle\Entity\Task;
 use Gatomlo\ProjectManagerBundle\Entity\Project;
 use Gatomlo\ProjectManagerBundle\Entity\Tags;
 use Symfony\Component\HttpFoundation\Request;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Gatomlo\ProjectManagerBundle\Form\EventType;
 use Gatomlo\ProjectManagerBundle\Form\TaskType;
@@ -19,7 +19,10 @@ class TaskController extends Controller
   public function allAction()
   {
       $em = $this->getDoctrine()->getManager();
-      $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findAll();
+      $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findBy(
+        array(),
+        array('closed' => 'asc')
+      );
       $taskArray = array();
 
       foreach ($tasks as $task){
@@ -52,7 +55,8 @@ class TaskController extends Controller
       $em = $this->getDoctrine()->getManager();
       $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findBy(array(
         'project'=>$projectId
-      ));
+      ),
+      array('closed' => 'asc'));
       $taskArray = array();
 
       foreach ($tasks as $task){
@@ -253,6 +257,42 @@ class TaskController extends Controller
       //   return $this->redirectToRoute('gatomlo_project_manager_all_tasks_from_a_project',array('projectId'=>$project));
       // }
 
+  }
+
+  public function jsonPlanTaksListAction()
+  {
+      $em = $this->getDoctrine()->getManager();
+      $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findBy(
+        array(),
+        array('closed' => 'asc')
+      );
+
+      $list_tasks = array();
+      foreach ($tasks as $task){
+        if ($task->getExecutiondate() != null){
+          $obj['title'] = $task->getDescription();
+          $obj['start'] = $task->getExecutiondate()->format("Y-m-d H:m:s");
+          array_push($list_tasks,$obj);
+        }
+      }
+      return new JsonResponse($list_tasks);
+  }
+
+  public function jsonDeadlineTaksListAction()
+  {
+      $em = $this->getDoctrine()->getManager();
+      $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findBy(
+        array(),
+        array('closed' => 'asc')
+      );
+
+      $list_tasks = array();
+      foreach ($tasks as $task){
+          $obj['title'] = $task->getDescription();
+          $obj['start'] = $task->getEnddate()->format("Y-m-d H:m:s");
+          array_push($list_tasks,$obj);
+      }
+      return new JsonResponse($list_tasks);
   }
 
 }

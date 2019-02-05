@@ -253,4 +253,21 @@ class ProjectController extends Controller
     }
 
   }
+  public function jsonDeadlineProjectsListAction()
+  {
+      $em = $this->getDoctrine()->getManager();
+      $projects = $em->getRepository('GatomloProjectManagerBundle:Project')->findAll();
+
+      $list_projects = array();
+      foreach ($projects as $project){
+          if ($project->getEndtime() != null){
+            $obj['title'] = $project->getName();
+            $obj['start'] = $project->getEndtime()->format("Y-m-d H:m:s");
+            $obj['url'] = "{{ path('gatomlo_project_manager_one_project', { 'id':".$project->getId()."}) }}";
+            array_push($list_projects,$obj);
+          }
+
+      }
+      return new JsonResponse($list_projects);
+  }
 }

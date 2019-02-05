@@ -127,6 +127,10 @@ gatomlo_project_manager_delete_intervenant:
         id: \d+
         from: project|people
 
+gatomlo_project_manager_deadline_projects_json:
+    path:      /projects/json/deadline/all
+    defaults: { _controller: GatomloProjectManagerBundle:Project:jsonDeadlineProjectsList }
+
 
 #events
 gatomlo_project_manager_all_events:
@@ -213,3 +217,11 @@ gatomlo_project_manager_delete_task:
     requirements:
         id: \d+
         from: project|tasks
+
+gatomlo_project_manager_deadline_tasks_json:
+    path:      /tasks/json/deadline/all
+    defaults: { _controller: GatomloProjectManagerBundle:Task:jsonDeadlineTaksList }
+
+gatomlo_project_manager_planned_tasks_json:
+    path:      /tasks/json/planned/all
+    defaults: { _controller: GatomloProjectManagerBundle:Task:jsonPlanTaksList }

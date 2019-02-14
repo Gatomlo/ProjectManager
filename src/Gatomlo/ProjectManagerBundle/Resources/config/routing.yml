@@ -182,6 +182,10 @@ gatomlo_project_manager_all_tasks:
     path:      /tasks/all
     defaults: { _controller: GatomloProjectManagerBundle:Task:all }
 
+gatomlo_project_manager_all_tasks_plannificator:
+    path:      /tasks/plannificator/all
+    defaults: { _controller: GatomloProjectManagerBundle:Task:plannificator }
+
 gatomlo_project_manager_all_tasks_from_a_project:
     path:      /tasks/all/{projectId}
     defaults: { _controller: GatomloProjectManagerBundle:Task:allFor }
@@ -203,13 +207,16 @@ gatomlo_project_manager_edit_task:
     defaults: { _controller: GatomloProjectManagerBundle:Task:edit }
     requirements:
         id: \d+
+gatomlo_project_manager_change_planiffied_date_task:
+    path:      /tasks/plannified/
+    defaults: { _controller: GatomloProjectManagerBundle:Task:plannified }
 
 gatomlo_project_manager_close_task:
     path:      /tasks/close/{id}/{from}
     defaults: { _controller: GatomloProjectManagerBundle:Task:close }
     requirements:
         id: \d+
-        from: project|tasks
+        from: project|tasks|index
 
 gatomlo_project_manager_delete_task:
     path:      /tasks/delete/{id}/{from}

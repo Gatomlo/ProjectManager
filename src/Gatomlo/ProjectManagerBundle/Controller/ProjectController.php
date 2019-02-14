@@ -263,7 +263,8 @@ class ProjectController extends Controller
           if ($project->getEndtime() != null){
             $obj['title'] = $project->getName();
             $obj['start'] = $project->getEndtime()->format("Y-m-d H:m:s");
-            $obj['url'] = "{{ path('gatomlo_project_manager_one_project', { 'id':".$project->getId()."}) }}";
+            $obj['url'] = $this->get('router')->generate('gatomlo_project_manager_one_project', array('id' => $project->getId()));
+            $obj['description'] = false;
             array_push($list_projects,$obj);
           }
 

@@ -16,8 +16,7 @@ use Gatomlo\ProjectManagerBundle\Form\TaskType;
 
 class TaskController extends Controller
 {
-  public function allAction()
-  {
+  public function allAction(){
       $em = $this->getDoctrine()->getManager();
       $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findBy(
         array(),
@@ -50,8 +49,24 @@ class TaskController extends Controller
       }
       return $this->render('@GatomloProjectManager/Task/task.all.html.twig',array('tasksArray'=>$taskArray));
   }
-  public function allForAction(Project $projectId)
-  {
+
+  public function plannificatorAction(){
+      $em = $this->getDoctrine()->getManager();
+      $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findBy(
+        array(),
+        array('closed' => 'asc')
+      );
+
+      $list_tasks = array();
+      foreach ($tasks as $task){
+        if ($task->getExecutiondate() == null){
+          array_push($list_tasks,$task);
+        }
+      }
+      return $this->render('@GatomloProjectManager/Task/task.plannificator.html.twig',array('noPlannifiedTasks'=>$list_tasks));
+  }
+
+  public function allForAction(Project $projectId){
       $em = $this->getDoctrine()->getManager();
       $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findBy(array(
         'project'=>$projectId
@@ -86,8 +101,7 @@ class TaskController extends Controller
       return $this->render('@GatomloProjectManager/Task/task.allFor.html.twig',array('tasksArray'=>$taskArray,'project'=>$projectId));
   }
 
-  public function addAction(Request $request, Project $projectId = null )
-  {
+  public function addAction(Request $request, Project $projectId = null ){
 
     $task = new Task();
     if ($projectId == null){
@@ -143,8 +157,6 @@ class TaskController extends Controller
 
      }
    }
-
-
     // On passe la méthode createView() du formulaire à la vue
     // afin qu'elle puisse afficher le formulaire toute seule
     return $this->render('@GatomloProjectManager/Task/task.add.html.twig', array(
@@ -153,8 +165,7 @@ class TaskController extends Controller
     ));
   }
 
-  public function editAction(Request $request, $id)
-  {
+  public function editAction(Request $request, $id){
 
     $em = $this->getDoctrine()->getManager();
     $task = $em->getRepository('GatomloProjectManagerBundle:Task')->find($id);
@@ -225,25 +236,31 @@ class TaskController extends Controller
     ));
   }
 
-  public function closeAction($id,$from)
-  {
+  public function closeAction($id,$from){
       $em = $this->getDoctrine()->getManager();
       $task = $em->getRepository('GatomloProjectManagerBundle:Task')->find($id);
-      $task->setClosed(True);
+      if($task->getClosed()==False){
+        $task->setClosed(True);
+      }
+      else{
+        $task->setClosed(False);
+      }
       $em->persist($task);
       $em->flush();
 
       if($from == 'tasks'){
         return $this->redirectToRoute('gatomlo_project_manager_all_tasks');
       }
-      else{
+      elseif ($from == 'project'){
         return $this->redirectToRoute('gatomlo_project_manager_all_tasks_from_a_project',array('projectId'=>$project));
+      }
+      else{
+        return $this->redirectToRoute('gatomlo_project_manager_homepage');
       }
 
   }
 
-  public function deleteAction($id,$from)
-  {
+  public function deleteAction($id,$from){
       $em = $this->getDoctrine()->getManager();
       $task = $em->getRepository('GatomloProjectManagerBundle:Task')->find($id);
       $project = $em->getRepository('GatomloProjectManagerBundle:Project')->find($task->getProject())->getId();
@@ -259,8 +276,22 @@ class TaskController extends Controller
 
   }
 
-  public function jsonPlanTaksListAction()
-  {
+  public function plannifiedAction(Request $request){
+      $em = $this->getDoctrine()->getManager();
+      $task = $em->getRepository('GatomloProjectManagerBundle:Task')->find($request->get('id'));
+      if($request->get('start')!= null){
+        $task->setExecutiondate(new \DateTime($request->get('start')));
+      }
+      else{
+        $task->setExecutiondate(null);
+      }
+      $em->persist($task);
+      $em->flush();
+      return new JsonResponse(array('success'=> 200));
+
+  }
+
+  public function jsonPlanTaksListAction(){
       $em = $this->getDoctrine()->getManager();
       $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findBy(
         array(),
@@ -270,16 +301,18 @@ class TaskController extends Controller
       $list_tasks = array();
       foreach ($tasks as $task){
         if ($task->getExecutiondate() != null){
+          $obj['id'] = $task->getId();
           $obj['title'] = $task->getDescription();
           $obj['start'] = $task->getExecutiondate()->format("Y-m-d H:m:s");
+          $obj['url'] = $this->get('router')->generate('gatomlo_project_manager_close_task', array('id' => $task->getId(),'from'=>'index'));
+          $obj['description'] = $task->getClosed();
           array_push($list_tasks,$obj);
         }
       }
       return new JsonResponse($list_tasks);
   }
 
-  public function jsonDeadlineTaksListAction()
-  {
+  public function jsonDeadlineTaksListAction(){
       $em = $this->getDoctrine()->getManager();
       $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findBy(
         array(),
@@ -288,8 +321,11 @@ class TaskController extends Controller
 
       $list_tasks = array();
       foreach ($tasks as $task){
+          $obj['id'] = $task->getId();
           $obj['title'] = $task->getDescription();
           $obj['start'] = $task->getEnddate()->format("Y-m-d H:m:s");
+          $obj['url'] = $this->get('router')->generate('gatomlo_project_manager_close_task', array('id' => $task->getId(),'from'=>'index'));
+          $obj['description'] = $task->getClosed();
           array_push($list_tasks,$obj);
       }
       return new JsonResponse($list_tasks);

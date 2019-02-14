@@ -123,6 +123,7 @@
           <div class="dropdown-menu" aria-labelledby="pagesDropdown">
             <a class="dropdown-item" href="{{ path('gatomlo_project_manager_all_tasks')}}">Toutes les tâches</a>
             <a class="dropdown-item" href="{{ path('gatomlo_project_manager_add_task') }}">Nouvelle tâche</a>
+            <a class="dropdown-item" href="{{ path('gatomlo_project_manager_all_tasks_plannificator') }}">Plannificateur</a>
           </div>
         </li>
         <!-- <li class="nav-item">
@@ -206,12 +207,15 @@
       <script src="{{ asset('js/jquery/jquery.min.js')}}"></script>
       <script src="{{ asset('js/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
+
       <!-- Core plugin JavaScript-->
       <script src="{{ asset('js/jquery-easing/jquery.easing.min.js')}}"></script>
 
       <!-- Page level plugin JavaScript-->
       <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/r-2.2.2/datatables.min.js"></script>
 
+      <script
+			  src="https://code.jquery.com/ui/1.12.0/jquery-ui.js" integrity="sha256-0YPKAwZP7Mp3ALMRVB2i8GXeEndvCq3eSl/WsAl1Ryk=" crossorigin="anonymous"></script>
 
       <!-- Custom scripts for all pages-->
       <script src="{{ asset('js/sb-admin.min.js')}}"></script>

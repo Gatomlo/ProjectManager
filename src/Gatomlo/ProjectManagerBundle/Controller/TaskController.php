@@ -5,6 +5,7 @@ namespace Gatomlo\ProjectManagerBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Gatomlo\ProjectManagerBundle\Entity\Task;
 use Gatomlo\ProjectManagerBundle\Entity\Project;
+use Gatomlo\ProjectManagerBundle\Entity\Event;
 use Gatomlo\ProjectManagerBundle\Entity\Tags;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -318,9 +319,17 @@ class TaskController extends Controller
   public function closeAction($id,$from){
       $em = $this->getDoctrine()->getManager();
       $task = $em->getRepository('GatomloProjectManagerBundle:Task')->find($id);
-      $project = $em->getRepository('GatomloProjectManagerBundle:Project')->find($task->getProject())->getId();
+      $type = $em->getRepository('GatomloProjectManagerBundle:Type')->find(1);
+      $project = $em->getRepository('GatomloProjectManagerBundle:Project')->find($task->getProject()->getId());
       if($task->getClosed()==False){
         $task->setClosed(True);
+        $event= new Event();
+        $event->setTitle($task->getDescription());
+        $event->setDescription('Tâche terminée');
+        $event->setType($type);
+        $event->setStartdate(new \DateTime("now"));
+        $event->setProject($project);
+        $em->persist($event);
       }
       else{
         $task->setClosed(False);
@@ -332,7 +341,7 @@ class TaskController extends Controller
         return $this->redirectToRoute('gatomlo_project_manager_all_open_tasks');
       }
       elseif ($from == 'project'){
-        return $this->redirectToRoute('gatomlo_project_manager_all_tasks_from_a_project',array('projectId'=>$project));
+        return $this->redirectToRoute('gatomlo_project_manager_all_tasks_from_a_project',array('projectId'=>$project->getId()));
       }
       else{
         return $this->redirectToRoute('gatomlo_project_manager_homepage');
@@ -441,8 +450,6 @@ class TaskController extends Controller
           else{
             $obj['color'] ="grey";
           }
-
-
           array_push($list_tasks,$obj);
         }
       }

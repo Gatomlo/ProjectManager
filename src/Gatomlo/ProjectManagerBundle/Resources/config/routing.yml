@@ -223,7 +223,7 @@ gatomlo_project_manager_close_task:
     defaults: { _controller: GatomloProjectManagerBundle:Task:close }
     requirements:
         id: \d+
-        from: project|tasks
+        from: project|tasks|index
 
 gatomlo_project_manager_delete_task:
     path:      /tasks/delete/{id}/{from}

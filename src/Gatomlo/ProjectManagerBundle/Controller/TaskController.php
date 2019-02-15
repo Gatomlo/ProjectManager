@@ -231,7 +231,7 @@ class TaskController extends Controller
           return $this->redirectToRoute('gatomlo_project_manager_all_tasks_from_a_project', array('projectId' => $task->getProject()->getId()));
        }
        else{
-          return $this->redirectToRoute('gatomlo_project_manager_all_tasks');
+          return $this->redirectToRoute('gatomlo_project_manager_all_open_tasks');
        }
 
      }

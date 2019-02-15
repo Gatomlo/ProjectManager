@@ -36,14 +36,12 @@ class IntervenantController extends Controller
   public function allForPeopleAction(People $peopleId, $isArchived)
   {
       $em = $this->getDoctrine()->getManager();
-      $intervenants = $em->getRepository('GatomloProjectManagerBundle:Intervenant')->findBy(array(
-        'people'=>$peopleId
-        
-      ));
-      return $this->render('@GatomloProjectManager/Intervenant/intervenant.allForPeople.html.twig',array('intervenants'=>$intervenants,'people'=>$peopleId));
+      $projectsOpen = $em->getRepository('GatomloProjectManagerBundle:Intervenant')->getProjectsArchivedOrNotFromIntervenant($peopleId,$isArchived);
+
+      return $this->render('@GatomloProjectManager/Intervenant/intervenant.allForPeople.html.twig',array('projects'=>$projectsOpen,'people'=>$peopleId,'isArchived'=>$isArchived));
   }
 
-  public function addAction(Request $request, $id = null, $from )
+  public function addAction(Request $request, $id = null, $from , $isArchived = false)
   {
 
     $em = $this->getDoctrine()->getManager();
@@ -81,7 +79,7 @@ class IntervenantController extends Controller
          return $this->redirectToRoute('gatomlo_project_manager_all_intervenants_from_a_project', array('projectId' => $intervenant->getProject()->getId()));
        }
        elseif ($from =='people') {
-         return $this->redirectToRoute('gatomlo_project_manager_all_intervenants_from_a_people',array('peopleId'=>$intervenant->getPeople()->getId()));
+         return $this->redirectToRoute('gatomlo_project_manager_all_intervenants_from_a_people',array('peopleId'=>$intervenant->getPeople()->getId(),'isArchived'=>0));
        }
 
      }

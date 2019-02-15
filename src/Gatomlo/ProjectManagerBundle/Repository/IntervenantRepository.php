@@ -10,4 +10,15 @@ namespace Gatomlo\ProjectManagerBundle\Repository;
  */
 class IntervenantRepository extends \Doctrine\ORM\EntityRepository
 {
+  public function getProjectsArchivedOrNotFromIntervenant($intervenant,$archived)
+  {
+    return $this->createQueryBuilder('e')
+    ->join('e.project', 'p')
+    ->where('e.people = :intervenant')
+    ->setParameter(':intervenant',$intervenant)
+    ->andwhere('p.archived = :archived')
+    ->setParameter(':archived',$archived)
+    ->getQuery()
+    ->getResult();
+  }
 }

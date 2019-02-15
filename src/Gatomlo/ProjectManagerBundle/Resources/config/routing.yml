@@ -178,9 +178,16 @@ gatomlo_project_manager_tags_json:
     defaults: { _controller: GatomloProjectManagerBundle:Tags:jsonTagsList }
 
 #tasks
-gatomlo_project_manager_all_tasks:
-    path:      /tasks/all
-    defaults: { _controller: GatomloProjectManagerBundle:Task:all }
+gatomlo_project_manager_all_open_tasks:
+    path:      /tasks/all/open/
+    defaults: { _controller: GatomloProjectManagerBundle:Task:allOpenTask }
+
+
+gatomlo_project_manager_all_closed_tasks:
+    path:      /tasks/all/closed/
+    defaults: { _controller: GatomloProjectManagerBundle:Task:allClosedTask }
+
+
 
 gatomlo_project_manager_all_tasks_plannificator:
     path:      /tasks/plannificator/all
@@ -216,7 +223,7 @@ gatomlo_project_manager_close_task:
     defaults: { _controller: GatomloProjectManagerBundle:Task:close }
     requirements:
         id: \d+
-        from: project|tasks|index
+        from: project|tasks
 
 gatomlo_project_manager_delete_task:
     path:      /tasks/delete/{id}/{from}

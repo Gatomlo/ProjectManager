@@ -5,8 +5,30 @@
 {% endblock %}
 
 {% block body %}
+<ul class="nav nav-tabs">
+  {% if openTask == false %}
+    <li class="nav-item">
+      <a class="nav-link  active" href="{{ path('gatomlo_project_manager_all_open_tasks')}}">En cours</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ path('gatomlo_project_manager_all_closed_tasks')}}">Terminées</a>
+    </li>
+  {% else %}
+  <li class="nav-item">
+    <a class="nav-link" href="{{ path('gatomlo_project_manager_all_open_tasks')}}">En cours</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="{{ path('gatomlo_project_manager_all_closed_tasks')}}">Terminées</a>
+  </li>
+  {% endif %}
+</ul>
+</br></br>
   <div class="card mb-3">
-    <div class="card-header"><a class="float-right  btn btn-primary " href="{{ path('gatomlo_project_manager_add_task') }}"><i class="fas fa-plus-circle text-align-right"></i> Nouvelle tâche</a></div>
+    <div class="card-header">
+      {% if openTask == false %}
+      <a class="float-right  btn btn-primary " href="{{ path('gatomlo_project_manager_add_task') }}"><i class="fas fa-plus-circle text-align-right"></i> Nouvelle tâche</a>
+      {% endif %}
+    </div>
     <div class="card-body">
       <div class="table-responsive">
         <table class="table   display responsive nowrap" id="taskDatatable" width="100%" cellspacing="0">
@@ -14,6 +36,7 @@
             <tr>
               <th></th>
               <th>Description</th>
+              <th>Projet</th>
               <th>Echéance</th>
               <th>Tags</th>
               <th>Actions</th>
@@ -49,6 +72,7 @@
                 {% else %}
                   <td>{{task.description}}</td>
                 {% endif %}
+                <td>{{task.project.name}}</td>
                 {% if task.enddate != null %}
                 <td>{{task.enddate|date("d/m/Y")}}</td>
                 {% else %}
@@ -89,8 +113,7 @@
     $(document).ready(function() {
       $('#taskDatatable').DataTable({
         responsive: true,
-        stateSave: false,
-        "order": [[ 3, "asc" ]]
+        stateSave: false, onkeyup=""
       });
     });
   </script>

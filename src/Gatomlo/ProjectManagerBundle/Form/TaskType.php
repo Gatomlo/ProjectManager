@@ -31,7 +31,7 @@ class TaskType extends AbstractType
       ->add('enddate',      DatetimeType::class,array(
         'label'=>'Echéance',
         'widget' => 'single_text',
-        'required' => true,
+        'required' => false,
         'html5' => false,
         'attr' => array('class'=>'datetimepicker'),
       ))

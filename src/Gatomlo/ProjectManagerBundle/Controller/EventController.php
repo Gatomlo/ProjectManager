@@ -21,6 +21,13 @@ class EventController extends Controller
       $events = $em->getRepository('GatomloProjectManagerBundle:Event')->findAll();
       return $this->render('@GatomloProjectManager/Event/event.all.html.twig',array('events'=>$events));
   }
+
+  public function reportAction()
+  {
+      $em = $this->getDoctrine()->getManager();
+      $events = $em->getRepository('GatomloProjectManagerBundle:Event')->getReport(null,null,null,5,null,null);
+      return $this->render('@GatomloProjectManager/Event/event.all.html.twig',array('events'=>$events));
+  }
   public function allForAction(Project $projectId)
   {
       $em = $this->getDoctrine()->getManager();

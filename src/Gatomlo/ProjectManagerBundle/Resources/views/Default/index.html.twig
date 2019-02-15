@@ -12,12 +12,32 @@
     <div id='deadline'></div>
   </div>
 </div>
+</br>
+<div class="row">
+  <div class="col">
+    <h4>Derniers événements ajoutés</h4>
+    <ul>
+      {% for event in events %}
+        <li><a href="{{ path('gatomlo_project_manager_one_event', { 'id': event.id }) }}">{{event.title}} ({{event.project.name}})</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="col">
+    <h4>Derniers projets ajoutés</h4>
+    <ul>
+      {% for project in projects %}
+        <li><a href="{{ path('gatomlo_project_manager_one_project', { 'id': project.id }) }}" >{{project.name}}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
 
 {% endblock %}
 {% block scripts %}
   <script>
     $('#deadline').fullCalendar({
     weekends: false,
+    displayEventTime:false,
     titleFormat: '[Echéances : ]MMMM YYYY',
     eventSources: [
       {
@@ -27,7 +47,7 @@
         error: function() {
           alert('Il y a eu une erreur lors de la récupération des projets!');
         },
-        color: '#FF870D',   // a non-ajax option
+        color: '#109DC5',   // a non-ajax option
         textColor: 'black' // a non-ajax option
       },
       {
@@ -37,17 +57,12 @@
         error: function() {
           alert('Il y a eu une erreur lors de la récupération des tâches!');
         },
-        color: '#109DC5',   // a non-ajax option
-        textColor: 'black' // a non-ajax option
       }
     ],
-    eventClick: function(calEvent, jsEvent, view) {
-      window.location = calEvent.url;
-  },
     eventRender: function(event, element)
     {
-      if(event.description){
-        element.find('.fc-title').html('<s>' + event.title + '</s>' +event.description);
+      if(event.closed == true){
+        element.find('.fc-title').html('<s>' + event.title + '</s>');
       }
     }
   });
@@ -59,7 +74,7 @@
   listDay: {
     type: 'list',
     duration: { days: 1 },
-    buttonText: '4 day'
+    buttonText: 'Journée'
   }
 },
   titleFormat: '[Tâches plannifiées : ]D MMMM YYYY',
@@ -71,17 +86,12 @@
 
       error: function() {
         alert('Il y a eu une erreur lors de la récupération des tâches!');
-      },
-      color: '#109DC5',   // a non-ajax option
-      textColor: 'black' // a non-ajax option
+      }
     }
   ],
-  eventClick: function(calEventTwo, jsEventTwo, viewTwo) {
-    window.location = calEventTwo.url;
-  },
-  eventRender: function(event, element){
-    if(event.description){
-      element.find('.fc-title').html('<s>' + event.title + '</s>' +event.description);
+  eventRender: function(event, element, view){
+    if(event.closed == true){
+      element.find('.fc-list-item-title').html('<s>' + event.title + '</s>');
     }},
 });
   </script>

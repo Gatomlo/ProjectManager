@@ -10,20 +10,18 @@
   </div>
   <div class="col-4">
     <div id='external-events' class='h-100'>
-      <div id='external-events-listing'>
-        <h4>Tâches à plannifier</h4>
-        <ul class="list-group list-group-flush">
-          {% for task in noPlannifiedTasks %}
-            <li data-id='{{task.id}}' style="background-color:#109DC5;color:black;" class='fc-event list-group-item border'>
-              {% if task.closed %}
-                <s>{{task.description}}</s>
-              {% else %}
-                {{task.description}}
-              {% endif %}
-            </li>
-          {% endfor %}
-        </ul>
-      </div>
+      <h4>Tâches à plannifier</h4>
+      <ul id='external-events-listing' class="list-group list-group-flush">
+        {% for task in noPlannifiedTasks %}
+          <li data-id='{{task.id}}' data-color='{{task.color}}' style="background-color:{{task.color}};color:black;" class='fc-event list-group-item border'>
+            {% if task.closed %}
+              <s>{{task.description}}</s>
+            {% else %}
+              {{task.description}}
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
     </div>
   </div>
 </div>
@@ -37,7 +35,7 @@
             $(this).data('event', {
                 title: $.trim($(this).text()), // use the element's text as the event title
                 stick: true, // maintain when user navigates (see docs on the renderEvent method
-                color: '#109DC5',
+                color: $(this).data('color'),
                 id: $(this).data('id')
             });
             // make the event draggable using jQuery UI
@@ -53,6 +51,7 @@
     $('#plannificator').fullCalendar({
     editable: true,
     eventStartEditable: true,
+    displayEventTime:false,
     droppable: true,
     weekends: false,
     titleFormat: '[Echéances : ]MMMM YYYY',
@@ -64,8 +63,6 @@
         error: function() {
           alert('Il y a eu une erreur lors de la récupération des tâches!');
         },
-        color: '#109DC5',   // a non-ajax option
-        textColor: 'black' // a non-ajax option
       }
     ],
     eventDrop: function(event, delta, revertFunc) {
@@ -80,14 +77,15 @@
           success: function(msg){
           },
           error: function(){
+            alert('Déplacement impossible, veuillez recharger la page et essayer à nouveau.')
             revertFunc();
           }
       });
     },
     eventRender: function(event, element)
     {
-      if(event.description){
-        element.find('.fc-title').html('<s>' + event.title + '</s>' +event.description);
+      if(event.closed){
+        element.find('.fc-title').html('<s>' + event.title + '</s>');
       }
     },
     drop: function(date,jsEvent,ui,ressourceId) {
@@ -103,18 +101,16 @@
              success: function(msg){
              },
              error: function(){
+               alert('Déplacement impossible, veuillez recharger la page et essayer à nouveau.')
                revertFunc();
              }
          });
 
      },
-     eventReceive:function(event){
-        alert(event.id);
-     },
      eventDragStop: function(event, jsEvent, ui, view) {
        if (isEventOverDiv(jsEvent.clientX, jsEvent.clientY)) {
          $('#plannificator').fullCalendar('removeEvents', event.id);
-         var el = $("<li class='fc-event list-group-item border'>").css({'background-color':'#109DC5','color':'black'}).appendTo('#external-events-listing').text(event.title);
+         var el = $("<li data-id="+event.id+" data-color="+event.color+" class='fc-event list-group-item border'>").css({'background-color':event.color,'color':'black'}).appendTo('#external-events-listing').text(event.title);
          el.draggable({
            zIndex: 999,
            revert: true,
@@ -123,7 +119,8 @@
          el.data('event', {
            title: event.title,
            id: event.id,
-           stick: true
+           stick: true, 
+           color: event.color
          });
          $.ajax({
              type: 'GET',

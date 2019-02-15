@@ -9,7 +9,7 @@
     <div class="card-header"><a class="float-right  btn btn-primary " href="{{ path('gatomlo_project_manager_add_task') }}"><i class="fas fa-plus-circle text-align-right"></i> Nouvelle tâche</a></div>
     <div class="card-body">
       <div class="table-responsive">
-        <table class="table  table-bordered display responsive nowrap" id="taskDatatable" width="100%" cellspacing="0">
+        <table class="table   display responsive nowrap" id="taskDatatable" width="100%" cellspacing="0">
           <thead>
             <tr>
               <th></th>
@@ -25,6 +25,8 @@
                 <td >
                   {% if task.closed %}
                     <i class="fas fa-check"></i>
+                  {% elseif task.enddate == null %}
+                    <i class="fas fa-calendar-times"></i>
                   {% else %}
                     {% if task.status > 0 %}
                     <font color="{{ task.color }}">
@@ -47,7 +49,11 @@
                 {% else %}
                   <td>{{task.description}}</td>
                 {% endif %}
+                {% if task.enddate != null %}
                 <td>{{task.enddate|date("d/m/Y")}}</td>
+                {% else %}
+                <td>Pas d'échéance</td>
+                {% endif %}
                 <td>
                   {% for tag in task.tags %}
                     {{tag.name}}{% if not loop.last %}, {% endif %}

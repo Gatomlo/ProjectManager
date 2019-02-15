@@ -30,19 +30,22 @@ class TaskController extends Controller
         $obj['enddate'] = $task->getEnddate();
         $obj['closed'] = $task->getClosed();
         $obj['tags'] = $task->getTags();
-
-
-        if($task->getEnddate()->format('Y-m-d') > (new \DateTime("now"))->format('Y-m-d') ){
-          $obj['status'] =-1;
-          $obj['color'] ="green";
+        if($task->getEnddate() != null){
+          if($task->getEnddate()->format('Y-m-d') > (new \DateTime("now"))->format('Y-m-d') ){
+            $obj['status'] =-1;
+            $obj['color'] ="green";
+          }
+          elseif ($task->getEnddate()->format('Y-m-d') < (new \DateTime("now"))->format('Y-m-d') ) {
+            $obj['status'] =1;
+            $obj['color'] ="red";
+          }
+          elseif ($task->getEnddate()->format('Y-m-d') == (new \DateTime("now"))->format('Y-m-d') ) {
+            $obj['status'] =0;
+            $obj['color'] ="orange";
+          }
         }
-        elseif ($task->getEnddate()->format('Y-m-d') < (new \DateTime("now"))->format('Y-m-d') ) {
-          $obj['status'] =1;
-          $obj['color'] ="red";
-        }
-        elseif ($task->getEnddate()->format('Y-m-d') == (new \DateTime("now"))->format('Y-m-d') ) {
-          $obj['status'] =0;
-          $obj['color'] ="orange";
+        else{
+          $obj['color'] ="grey";
         }
         array_push($taskArray,$obj);
 
@@ -60,7 +63,27 @@ class TaskController extends Controller
       $list_tasks = array();
       foreach ($tasks as $task){
         if ($task->getExecutiondate() == null){
-          array_push($list_tasks,$task);
+          $obj['id'] = $task->getId();
+          $obj['description'] = $task->getDescription();
+          $obj['closed'] = $task->getClosed();
+          if($task->getEnddate() != null){
+            if($task->getEnddate()->format('Y-m-d') > (new \DateTime("now"))->format('Y-m-d') ){
+              $obj['status'] =-1;
+              $obj['color'] ="green";
+            }
+            elseif ($task->getEnddate()->format('Y-m-d') < (new \DateTime("now"))->format('Y-m-d') ) {
+              $obj['status'] =1;
+              $obj['color'] ="red";
+            }
+            elseif ($task->getEnddate()->format('Y-m-d') == (new \DateTime("now"))->format('Y-m-d') ) {
+              $obj['status'] =0;
+              $obj['color'] ="orange";
+            }
+          }
+          else{
+            $obj['color'] ="grey";
+          }
+          array_push($list_tasks,$obj);
         }
       }
       return $this->render('@GatomloProjectManager/Task/task.plannificator.html.twig',array('noPlannifiedTasks'=>$list_tasks));
@@ -75,27 +98,26 @@ class TaskController extends Controller
       $taskArray = array();
 
       foreach ($tasks as $task){
-        $obj['id'] = $task->getId();
-        $obj['description'] = $task->getDescription();
-        $obj['enddate'] = $task->getEnddate();
-        $obj['closed'] = $task->getClosed();
-        $obj['tags'] = $task->getTags();
-
-
-        if($task->getEnddate()->format('Y-m-d') > (new \DateTime("now"))->format('Y-m-d') ){
-          $obj['status'] =-1;
-          $obj['color'] ="green";
+        if($task->getEnddate() != null){
+          $obj['id'] = $task->getId();
+          $obj['description'] = $task->getDescription();
+          $obj['enddate'] = $task->getEnddate();
+          $obj['closed'] = $task->getClosed();
+          $obj['tags'] = $task->getTags();
+          if($task->getEnddate()->format('Y-m-d') > (new \DateTime("now"))->format('Y-m-d') ){
+            $obj['status'] =-1;
+            $obj['color'] ="green";
+          }
+          elseif ($task->getEnddate()->format('Y-m-d') < (new \DateTime("now"))->format('Y-m-d') ) {
+            $obj['status'] =1;
+            $obj['color'] ="red";
+          }
+          elseif ($task->getEnddate()->format('Y-m-d') == (new \DateTime("now"))->format('Y-m-d') ) {
+            $obj['status'] =0;
+            $obj['color'] ="orange";
+          }
+          array_push($taskArray,$obj);
         }
-        elseif ($task->getEnddate()->format('Y-m-d') < (new \DateTime("now"))->format('Y-m-d') ) {
-          $obj['status'] =1;
-          $obj['color'] ="red";
-        }
-        elseif ($task->getEnddate()->format('Y-m-d') == (new \DateTime("now"))->format('Y-m-d') ) {
-          $obj['status'] =0;
-          $obj['color'] ="orange";
-        }
-        array_push($taskArray,$obj);
-
       }
 
       return $this->render('@GatomloProjectManager/Task/task.allFor.html.twig',array('tasksArray'=>$taskArray,'project'=>$projectId));
@@ -305,7 +327,21 @@ class TaskController extends Controller
           $obj['title'] = $task->getDescription();
           $obj['start'] = $task->getExecutiondate()->format("Y-m-d H:m:s");
           $obj['url'] = $this->get('router')->generate('gatomlo_project_manager_close_task', array('id' => $task->getId(),'from'=>'index'));
-          $obj['description'] = $task->getClosed();
+          $obj['closed'] = $task->getClosed();
+          if($task->getEnddate() != null){
+            if($task->getEnddate()->format('Y-m-d') > (new \DateTime("now"))->format('Y-m-d') ){
+              $obj['color'] ="green";
+            }
+            elseif ($task->getEnddate()->format('Y-m-d') < (new \DateTime("now"))->format('Y-m-d') ) {
+              $obj['color'] ="red";
+            }
+            elseif ($task->getEnddate()->format('Y-m-d') == (new \DateTime("now"))->format('Y-m-d') ) {
+              $obj['color'] ="orange";
+            }
+          }
+          else{
+            $obj['color'] ="grey";
+          }
           array_push($list_tasks,$obj);
         }
       }
@@ -321,12 +357,30 @@ class TaskController extends Controller
 
       $list_tasks = array();
       foreach ($tasks as $task){
+        if($task->getEnddate() != null){
           $obj['id'] = $task->getId();
           $obj['title'] = $task->getDescription();
           $obj['start'] = $task->getEnddate()->format("Y-m-d H:m:s");
           $obj['url'] = $this->get('router')->generate('gatomlo_project_manager_close_task', array('id' => $task->getId(),'from'=>'index'));
-          $obj['description'] = $task->getClosed();
+          $obj['closed'] = $task->getClosed();
+          if($task->getClosed() == 0){
+            if($task->getEnddate()->format('Y-m-d') > (new \DateTime("now"))->format('Y-m-d') ){
+              $obj['color'] ="green";
+            }
+            elseif ($task->getEnddate()->format('Y-m-d') < (new \DateTime("now"))->format('Y-m-d') ) {
+              $obj['color'] ="red";
+            }
+            elseif ($task->getEnddate()->format('Y-m-d') == (new \DateTime("now"))->format('Y-m-d') ) {
+              $obj['color'] ="orange";
+            }
+          }
+          else{
+            $obj['color'] ="grey";
+          }
+
+
           array_push($list_tasks,$obj);
+        }
       }
       return new JsonResponse($list_tasks);
   }

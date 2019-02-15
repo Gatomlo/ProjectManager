@@ -15,8 +15,10 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
+      $em = $this->getDoctrine()->getManager();
+      $lastProjects = $em->getRepository('GatomloProjectManagerBundle:Project')->getLastProjects(10);
+      $lastEvents = $em->getRepository('GatomloProjectManagerBundle:Event')->getLastEvents(10);
 
-
-        return $this->render('@GatomloProjectManager/Default/index.html.twig');
+        return $this->render('@GatomloProjectManager/Default/index.html.twig',array('projects'=> $lastProjects,'events'=>$lastEvents));
     }
 }

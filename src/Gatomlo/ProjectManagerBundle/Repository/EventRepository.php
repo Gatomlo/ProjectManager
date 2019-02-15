@@ -10,4 +10,12 @@ namespace Gatomlo\ProjectManagerBundle\Repository;
  */
 class EventRepository extends \Doctrine\ORM\EntityRepository
 {
+  public function getLastEvents($limit)
+  {
+    return $this->createQueryBuilder('e')
+    ->setMaxResults($limit)
+    ->getQuery()
+    ->getResult();
+  }
+  
 }

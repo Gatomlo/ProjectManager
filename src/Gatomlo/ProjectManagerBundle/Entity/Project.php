@@ -643,4 +643,6 @@ class Project
     {
         return $this->intervenant->removeElement($intervenant);
     }
+
+  
 }

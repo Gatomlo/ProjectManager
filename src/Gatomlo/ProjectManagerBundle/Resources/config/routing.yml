@@ -141,6 +141,10 @@ gatomlo_project_manager_events_report:
     path:      /events/report
     defaults: { _controller: GatomloProjectManagerBundle:Event:report }
 
+gatomlo_project_manager_events_print_report:
+    path:      /events/report/print
+    defaults: { _controller: GatomloProjectManagerBundle:Event:printReport }
+
 gatomlo_project_manager_all_events_from_a_project:
     path:      /events/all/{projectId}
     defaults: { _controller: GatomloProjectManagerBundle:Event:allFor }

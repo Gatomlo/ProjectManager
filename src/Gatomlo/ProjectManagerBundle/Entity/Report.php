@@ -29,13 +29,6 @@ class Report
     private $name;
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="intervenant", type="string", length=255, nullable=true)
-     */
-    private $intervenant;
-
-    /**
      * @var \DateTime|null
      *
      * @ORM\Column(name="startDate", type="datetime", nullable=true)
@@ -48,6 +41,13 @@ class Report
      * @ORM\Column(name="endDate", type="datetime", nullable=true)
      */
     private $endDate;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="Project", type="string", length=255, nullable=true)
+     */
+    private $project;
 
     /**
      * @var string|null

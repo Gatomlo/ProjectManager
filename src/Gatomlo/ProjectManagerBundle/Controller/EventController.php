@@ -7,6 +7,8 @@ use Gatomlo\ProjectManagerBundle\Entity\Event;
 use Gatomlo\ProjectManagerBundle\Entity\Project;
 use Gatomlo\ProjectManagerBundle\Entity\Tags;
 use Symfony\Component\HttpFoundation\Request;
+use Spipu\Html2Pdf\Html2Pdf;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Gatomlo\ProjectManagerBundle\Form\EventType;
@@ -22,12 +24,6 @@ class EventController extends Controller
       return $this->render('@GatomloProjectManager/Event/event.all.html.twig',array('events'=>$events));
   }
 
-  public function reportAction()
-  {
-      $em = $this->getDoctrine()->getManager();
-      $events = $em->getRepository('GatomloProjectManagerBundle:Event')->getReport(null,null,null,5,null,null);
-      return $this->render('@GatomloProjectManager/Event/event.all.html.twig',array('events'=>$events));
-  }
   public function allForAction(Project $projectId)
   {
       $em = $this->getDoctrine()->getManager();
@@ -201,6 +197,40 @@ class EventController extends Controller
         return $this->redirectToRoute('gatomlo_project_manager_all_events_from_a_project',array('projectId'=>$project));
       }
 
+  }
+
+  public function reportAction()
+  {
+      $em = $this->getDoctrine()->getManager();
+      $events = $em->getRepository('GatomloProjectManagerBundle:Event')->getReport(array());
+      return $this->render('@GatomloProjectManager/Event/report.html.twig',array('events'=>$events));
+  }
+  public function printReportAction(\Knp\Snappy\Pdf $snappy)
+  {
+    $em = $this->getDoctrine()->getManager();
+    $events = $em->getRepository('GatomloProjectManagerBundle:Event')->getReport(array());
+    $html = $this->renderView('@GatomloProjectManager/Event/report.html.twig',array('events'=>$events));
+
+      return new PdfResponse(
+        $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+        'file.pdf'
+      );
+      // $em = $this->getDoctrine()->getManager();
+      // $events = $em->getRepository('GatomloProjectManagerBundle:Event')->getReport(array());
+      // $content='';
+      // foreach ($events as $event) {
+      //   $content = $content.
+      //     '<div class="card">
+      //       <div class="card-body">
+      //         <h5 class="card-title">'.$event->getTitle().' ['.$event->getType()->getName().']</h5>
+      //         <h6 class="card-subtitle mb-2 text-muted">'.date_format($event->getStartDate(),"Y/m/d H:i:").'</h6>
+      //         <p>'.$event->getDescription().'</p>
+      //       </div>
+      //     </div>';
+      // };
+      // $html2pdf = new Html2Pdf();
+      // $html2pdf->writeHTML($content);
+      // $html2pdf->output();
   }
 
 }

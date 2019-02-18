@@ -21,30 +21,35 @@ class EventRepository extends \Doctrine\ORM\EntityRepository
   public function getReport(array $filters = [])
   {
     $qb = $this->createQueryBuilder('e');
-    foreach ($filters as $filterName, $filterValue){
+    foreach ($filters as $filterName => $filterValue){
        switch ($filterName) {
           case 'project':
-            $qb->andWhere('e.project = :project');
+            $qb->andWhere('e.project = :project')
                ->setParameter(':project', $filterValue);
-            break;
+          break;
           case 'intervenant':
-            // join à faire avec people
+            $qb->join('e.intervenant','i')
+               ->andWhere('i.people = :people')
+               ->setParameter(':people', $filterValue);
             break;
           case 'tags':
-              //code à écrire
-              break;
+            $qb->join('e.tags','t')
+               ->andWhere('t.id = :tags')
+               ->setParameter(':tags', $filterValue);
+            break;
           case 'type':
-                //code à écrire
-                break;
+            $qb->andWhere('e.type = :type')
+               ->setParameter(':type', $filterValue);
+            break;
           case 'startDate':
-            $qb->andWhere('e.startDate BETWEEN :start AND :end');
+            $qb->andWhere('e.startDate BETWEEN :start AND :end')
                ->setParameter('start', new \Datetime(date('Y').'-01-01')) // Date entre le 1er janvier de cette année
-               ->setParameter('end', new \Datetime(date('Y').'-12-31')) // Et le 31 décembre de cette année
+               ->setParameter('end', new \Datetime(date('Y').'-12-31'));   // Et le 31 décembre de cette année
             break;
           case 'endDate': //some code case 'people': //some code
         }
-      }
-      return $qb->getQuery->getResult();
+      };
+      return $qb->getQuery()->getResult();
     }
 
 }

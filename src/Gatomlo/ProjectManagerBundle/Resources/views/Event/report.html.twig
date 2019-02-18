@@ -1,0 +1,69 @@
+{% extends "base.html.twig" %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item">
+    <a href="{{ path('gatomlo_project_manager_all_peoples')}}">Evénements</a>
+  </li>
+  <li class="breadcrumb-item active">Rapport</li>
+{% endblock %}
+
+{% block body %}
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" href="#">Nouveau rapport</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="">Historique</a>
+  </li>
+</ul>
+</br></br>
+
+  <div class="card mb-3">
+    <div class="card-header">
+      <a class="float-right  btn btn-primary " href="{{ path('gatomlo_project_manager_add_event') }}">
+        <i class="fas fa-print"></i> Imprimer
+      </a>
+    </div>
+    <div class="card-body">
+      {% for event in events %}
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{event.title}} [{{event.type.name}}]</h5>
+          <h6 class="card-subtitle mb-2 text-muted">
+          {{event.startdate|date("d/m/Y H:m")}}
+          {% if not event.endDate %}
+          - {{event.endDate|date("d/m/Y H:m")}}
+          {% endif %}
+          </h6>
+          <p>{{event.description}}</p>
+          {% if not event.tags.empty %}
+              {% for tag in event.tags %}
+                <div class="badge badge-secondary dropdown col-auto">{{ tag.name }}</div>{% if not loop.last %}, {% endif %}
+              {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    </br>
+      {% endfor %}
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    $(document).ready(function() {
+      $('#eventDatatable').DataTable({
+        responsive: true,
+        stateSave: true,
+        "columnDefs": [
+              {
+                  "targets": [ 3 ],
+                  "visible": false,
+                  "searchable": true
+              },
+
+          ]
+      });
+    });
+  </script>
+{% endblock %}

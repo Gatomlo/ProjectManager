@@ -1,0 +1,57 @@
+{% extends "base.html.twig" %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item">
+    <a href="{{ path('gatomlo_project_manager_events_all_reports')}}">Rapports</a>
+  </li>
+  <li class="breadcrumb-item active">Tous les rapports</li>
+{% endblock %}
+
+{% block body %}
+  <div class="card mb-3">
+    <div class="card-header"><a class="float-right  btn btn-primary " href="{{ path('gatomlo_project_manager_events_add_report') }}"><i class="fas fa-plus-circle text-align-right"></i> Nouveau rapport</a></div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered display responsive nowrap" id="reportDatatable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for report in reports %}
+              <tr>
+                <td>{{report.name}}</td>
+                <td>
+                  <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-cogs"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="{{ path('gatomlo_project_manager_events_view_report', { 'reportId': report.id }) }}"><i class="fas fa-eye"></i> Voir</a>
+                      <a class="dropdown-item" href="{{ path('gatomlo_project_manager_events_print_report',{ 'reportId': report.id }) }}"><i class="fas fa-print"></i> Imprimer
+                      </a>
+                      <a class="dropdown-item" href="{{ path('gatomlo_project_manager_events_delete_report', { 'reportId': report.id }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    $(document).ready(function() {
+      $('#reportDatatable').DataTable({
+        responsive: true,
+        stateSave: true,
+      });
+    });
+  </script>
+{% endblock %}

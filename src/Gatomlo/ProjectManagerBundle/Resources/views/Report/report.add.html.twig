@@ -1,0 +1,51 @@
+{% extends "base.html.twig" %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+      <a href="{{ path('gatomlo_project_manager_events_all_reports')}}">Rapports</a>
+    </li>
+    <li class="breadcrumb-item active">Nouveau rapport</li>
+{% endblock %}
+
+{% block body %}
+  {{ form(form) }}
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    $('.select-project').selectize({
+      sortField: 'text'
+    });
+    $('.select-people').selectize({
+      sortField: 'text'
+    });
+    $('.select-function').selectize({
+      sortField: 'text'
+    });
+    $('.select-tags').selectize({
+      plugins: ['remove_button'],
+      valueField: 'text',
+      labelField: 'text',
+      searchField: 'text',
+      create: false,
+      options: [],
+      load: function(query, callback) {
+        if (!query.length) return callback();
+        $.ajax({
+            url: '{{ path('gatomlo_project_manager_tags_json')}}',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                country: query,
+            },
+            error: function() {
+                callback();
+            },
+            success: function(res) {
+                callback(res);
+            }
+        });
+      }
+    });
+  </script>
+{% endblock %}

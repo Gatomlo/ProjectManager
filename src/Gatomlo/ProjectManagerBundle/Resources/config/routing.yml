@@ -137,13 +137,38 @@ gatomlo_project_manager_all_events:
     path:      /events/all
     defaults: { _controller: GatomloProjectManagerBundle:Event:all }
 
-gatomlo_project_manager_events_report:
-    path:      /events/report
-    defaults: { _controller: GatomloProjectManagerBundle:Event:report }
+gatomlo_project_manager_events_all_reports:
+    path:      /events/report/all
+    defaults: { _controller: GatomloProjectManagerBundle:Event:allReport }
+
+gatomlo_project_manager_events_add_report:
+    path:      /events/report/add
+    defaults: { _controller: GatomloProjectManagerBundle:Event:addReport }
+
+gatomlo_project_manager_events_delete_report:
+    path:      /events/delete/{reportId}/
+    defaults: { _controller: GatomloProjectManagerBundle:Event:deleteReport }
+    requirements:
+        reportId: \d+
+
+gatomlo_project_manager_events_view_report:
+    path:      /events/report/view/{reportId}
+    defaults: { _controller: GatomloProjectManagerBundle:Event:viewReport }
+    requirements:
+        reportId: \d+
+
+gatomlo_project_manager_events_view_report_criters:
+    path:      /events/report/view/criters/{reportId}
+    defaults: { _controller: GatomloProjectManagerBundle:Event:reportCriters }
+    requirements:
+        reportId: \d+
 
 gatomlo_project_manager_events_print_report:
-    path:      /events/report/print
+    path:      /events/report/print/{reportId}/
     defaults: { _controller: GatomloProjectManagerBundle:Event:printReport }
+    requirements:
+        reportId: \d+
+
 
 gatomlo_project_manager_all_events_from_a_project:
     path:      /events/all/{projectId}

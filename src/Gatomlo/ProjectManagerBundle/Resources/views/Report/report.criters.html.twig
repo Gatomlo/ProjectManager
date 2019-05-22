@@ -1,0 +1,74 @@
+{% extends "base.html.twig" %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item">
+    <a href="{{ path('gatomlo_project_manager_events_all_reports')}}">Rapports</a>
+  </li>
+  <li class="breadcrumb-item active">{{report.name}}</li>
+{% endblock %}
+
+{% block body %}
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link" href="{{ path('gatomlo_project_manager_events_view_report',{ 'reportId': report.id }) }}">Rapport</a>
+  </li>
+  <li>
+    <a class="nav-link active" href="{{ path('gatomlo_project_manager_events_view_report_criters',{ 'reportId': report.id }) }}">Critères</a>
+  </li>
+</ul>
+</br></br>
+  <div class="card mb-3">
+    <div class="card-header">
+      <div class=" row">
+        <h2 class="col-auto mr-auto">{{report.name}}</h2>
+        <div class="col-auto">
+          <a class="btn btn-primary" target="_blank" href="{{ path('gatomlo_project_manager_events_print_report',{ 'reportId': report.id }) }}">
+            <i class="fas fa-print"></i> Imprimer
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      {% if report.startDate is not null %}
+      <div>Période : du {{report.startDate|date("d/m/Y")}} au {{report.endDate|date("d/m/Y")}}</div>
+      {% else %}
+      <div>Période : Tous les événements</div>
+      {% endif %}
+      {% if report.project is not null %}
+      <div>Projet: {{report.project.name}} </div>
+      {% endif %}
+      {% if report.type is not null %}
+      <div>Type d'évènement: {{report.type.name}}</div>
+      {% endif %}
+      {% if report.project is not null %}
+      <div>Intervenant concerné: {{report.intervenant.identity}}</div>
+      {% endif %}
+      {% if report.tags is not empty %}
+      <div>Mots clés:
+        {% for tag in report.tags %}
+          {{ tag.name }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    $(document).ready(function() {
+      $('#eventDatatable').DataTable({
+        responsive: true,
+        stateSave: true,
+        "columnDefs": [
+              {
+                  "targets": [ 3 ],
+                  "visible": false,
+                  "searchable": true
+              },
+
+          ]
+      });
+    });
+  </script>
+{% endblock %}

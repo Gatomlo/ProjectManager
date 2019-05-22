@@ -246,37 +246,4 @@ class Report
     {
         return $this->tags;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add tag.
-     *
-     * @param \Gatomlo\ProjectManagerBundle\Entity\Tags $tag
-     *
-     * @return Report
-     */
-    public function addTag(\Gatomlo\ProjectManagerBundle\Entity\Tags $tag)
-    {
-        $this->tags[] = $tag;
-
-        return $this;
-    }
-
-    /**
-     * Remove tag.
-     *
-     * @param \Gatomlo\ProjectManagerBundle\Entity\Tags $tag
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeTag(\Gatomlo\ProjectManagerBundle\Entity\Tags $tag)
-    {
-        return $this->tags->removeElement($tag);
-    }
 }

@@ -1,0 +1,88 @@
+
+<head>
+  <link rel="icon"
+    type="image/png"
+    href={{ asset('PM_favicon.png') }}>
+
+  <style>
+  @import url('https://fonts.googleapis.com/css?family=Open+Sans');
+  @page { margin: 100px 25px; }
+    header { position: fixed; top: -60px; left: 0px; right: 0px; height: 50px; }
+    footer { position: fixed; bottom: -60px; left: 0px; right: 0px; height: 50px; }
+
+  .card{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.8em;
+  }
+    .card-body{
+      border:solid 1px lightgrey;
+      padding:5px;
+      margin-bottom: 10px;
+      border-radius: 2px;
+    }
+    .card-title{
+      font-weight:bolder;
+    }
+    .card-subtitle{
+      color: #999;
+    }
+    .badge{
+
+      font-size: 12.025px;
+      color: #999;
+
+    }
+
+    .muted{
+      color: #999;
+    }
+  </style>
+</head>
+{% block body %}
+  <header>
+    <div  id="title">Titre du rapport: {{report.name}}</div>
+    <div>Date d'impression : {{now}}</div>
+  </header>
+  {% if report.startDate is not null %}
+  <div>Période : du {{report.startDate|date("d/m/Y")}} au {{report.endDate|date("d/m/Y")}}</div>
+  {% else %}
+  <div>Période : Tous les événements</div>
+  {% endif %}
+  {% if report.project is not null %}
+  <div>Projet: {{report.project.name}} </div>
+  {% endif %}
+  {% if report.type is not null %}
+  <div>Type d'évènement: {{report.type.name}}</div>
+  {% endif %}
+  {% if report.project is not null %}
+  <div>Intervenant concerné: {{report.intervenant.identity}}</div>
+  {% endif %}
+  {% if report.tags is not empty %}
+  <div>Mots clés:
+    {% for tag in report.tags %}
+      {{ tag.name }}{% if not loop.last %}, {% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% for event in events %}
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title">{{event.title}} [{{event.type.name}}]</div>
+        <div class="card-subtitle mb-2 text-muted">
+        {{event.startdate|date("d/m/Y H:m")}}
+        {% if not event.endDate %}
+        - {{event.endDate|date("d/m/Y H:m")}}
+        {% endif %}
+      </div>
+        <p>{{event.description | raw }}</p>
+        {% if not event.tags.empty %}
+            {% for tag in event.tags %}
+              <span class="badge badge-secondary dropdown col-auto">{{ tag.name }}</span>{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+    </br>
+  {% endfor %}
+{% endblock %}

@@ -18,6 +18,7 @@
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
           <a class="dropdown-item" href="{{ path('gatomlo_project_manager_edit_event', { 'id': event.id }) }}"><i class="fas fa-pen"></i> Editer</a>
+          <a class="dropdown-item" href="{{ path('gatomlo_project_manager_one_project', { 'id': event.project.id }) }}"><i class="fas fa-fw fa-folder"></i> Projet</a>
           <a class="dropdown-item" href="{{ path('gatomlo_project_manager_delete_event', { 'id': event.id,'from':'events' }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a>
         </div>
       </div>

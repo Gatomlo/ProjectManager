@@ -2,27 +2,31 @@
 
 {% block breadcrumb %}
   <li class="breadcrumb-item">
-    <a href="{{ path('gatomlo_project_manager_all_peoples')}}">Evénements</a>
+    <a href="{{ path('gatomlo_project_manager_events_all_reports')}}">Rapports</a>
   </li>
-  <li class="breadcrumb-item active">Rapport</li>
+  <li class="breadcrumb-item active">{{report.name}}</li>
 {% endblock %}
 
 {% block body %}
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link active" href="#">Nouveau rapport</a>
+    <a class="nav-link active" href="#">Rapport</a>
   </li>
-  <li class="nav-item">
-    <a class="nav-link" href="">Historique</a>
+  <li>
+    <a class="nav-link" href="{{ path('gatomlo_project_manager_events_view_report_criters',{ 'reportId': report.id }) }}">Critères</a>
   </li>
 </ul>
 </br></br>
-
   <div class="card mb-3">
     <div class="card-header">
-      <a class="float-right  btn btn-primary " href="{{ path('gatomlo_project_manager_add_event') }}">
-        <i class="fas fa-print"></i> Imprimer
-      </a>
+      <div class=" row">
+        <h2 class="col-auto mr-auto">{{report.name}}</h2>
+        <div class="col-auto">
+          <a class="btn btn-primary" target="_blank" href="{{ path('gatomlo_project_manager_events_print_report',{ 'reportId': report.id }) }}">
+            <i class="fas fa-print"></i> Imprimer
+          </a>
+        </div>
+      </div>
     </div>
     <div class="card-body">
       {% for event in events %}
@@ -35,7 +39,7 @@
           - {{event.endDate|date("d/m/Y H:m")}}
           {% endif %}
           </h6>
-          <p>{{event.description}}</p>
+          <p>{{event.description | raw }}</p>
           {% if not event.tags.empty %}
               {% for tag in event.tags %}
                 <div class="badge badge-secondary dropdown col-auto">{{ tag.name }}</div>{% if not loop.last %}, {% endif %}

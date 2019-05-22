@@ -43,14 +43,14 @@ class Event
     private $creation;
 
     /**
-     * @var \Date|null
+     * @var \DateTime|null
      *
      * @ORM\Column(name="enddate", type="datetime", nullable=true)
      */
     private $enddate;
 
     /**
-     * @var \Date
+     * @var \DateTime
      *
      * @ORM\Column(name="startdate", type="datetime")
      */
@@ -348,7 +348,7 @@ class Event
     {
         return $this->tags;
     }
-  
+
     /**
      * Remove tag.
      *

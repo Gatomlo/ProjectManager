@@ -74,7 +74,7 @@ class ReportType extends AbstractType
         'mapped'=> false,
         'required'=>false,
         'attr' => array('class' => 'select-tags'),
-
+        'data' => $options['existingTags'],
       ))
       ->add('save',      SubmitType::class,array(
         'label'=>'Enregistrer',
@@ -85,7 +85,8 @@ class ReportType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults(array(
-      'data_class' => 'Gatomlo\ProjectManagerBundle\Entity\Report'
+      'data_class' => 'Gatomlo\ProjectManagerBundle\Entity\Report',
+      'existingTags' => ''
     ));
   }
 }

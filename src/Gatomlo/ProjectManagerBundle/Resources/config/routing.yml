@@ -157,6 +157,12 @@ gatomlo_project_manager_events_view_report:
     requirements:
         reportId: \d+
 
+gatomlo_project_manager_events_edit_report:
+    path:      /events/report/edit/{reportId}
+    defaults: { _controller: GatomloProjectManagerBundle:Event:editReport }
+    requirements:
+        reportId: \d+
+
 gatomlo_project_manager_events_view_report_criters:
     path:      /events/report/view/criters/{reportId}
     defaults: { _controller: GatomloProjectManagerBundle:Event:reportCriters }

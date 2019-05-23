@@ -281,8 +281,75 @@ class EventController extends Controller
         $params['endDate'] = date("Y-m-d");
       }
 
-      $events = $em->getRepository('GatomloProjectManagerBundle:Event')->getReport($params);/*test with 'type'=>1,'tags'=>14, 'project'=>18 */
+      $events = $em->getRepository('GatomloProjectManagerBundle:Event')->getReport($params);
       return $this->render('@GatomloProjectManager/Report/report.view.html.twig',array('events'=>$events,'report'=>$report));
+  }
+
+  public function editReportAction(Request $request,$reportId)
+  {
+      $em = $this->getDoctrine()->getManager();
+      $report = $em->getRepository('GatomloProjectManagerBundle:Report')->find($reportId);
+
+      //Récupération des tags
+      $existingTags = $report->getTags();
+      //Création d'un tableau vide
+      $existingTagsArray = [];
+      // Pour chaque tag, on récupére le nom et on l'insère dans le tableau vide.
+      foreach ($existingTags as $tag) {
+        $currentTag = $tag->getName();
+        array_push($existingTagsArray, $currentTag);
+      };
+      // On transforme le tableau en string pour pouvoir être inséré dans le champ texte selectize
+      $existingTagsStringFormat = implode(',',$existingTagsArray);
+
+      $form = $this->get('form.factory')->create(ReportType::class, $report, array(
+        'existingTags'=>$existingTagsStringFormat));
+
+        // Si la requête est en POST
+       if ($request->isMethod('POST')) {
+         // On fait le lien Requête <-> Formulaire
+         // À partir de maintenant, la variable $advert contient les valeurs entrées dans le formulaire par le visiteur
+         $form->handleRequest($request);
+
+         // On vérifie que les valeurs entrées sont correctes
+         // (Nous verrons la validation des objets en détail dans le prochain chapitre)
+         if ($form->isValid()) {
+
+           foreach ($existingTags as $tag) {
+             $report->removeTag($tag);
+           };
+           // On enregistre notre objet $advert dans la base de données, par exemple
+           $em = $this->getDoctrine()->getManager();
+            // On enregistre notre objet $advert dans la base de données, par exemple
+            $tagsArray = $form['tagsArray']->getData();
+            $tags = explode(",",$tagsArray);
+            foreach ($tags as $tag) {
+              $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
+                'name'=> $tag
+              ));
+
+              if (empty($existingTag)){
+                $newTag = new Tags();
+                $newTag->setName($tag);
+                $event->addTag($newTag);
+              }
+
+              else {
+                $report->addTag($existingTag);
+              }
+            }
+           $em->persist($report);
+           $em->flush();
+
+           return $this->redirectToRoute('gatomlo_project_manager_events_view_report',array('reportId'=>$report->getId()));
+         }
+       }
+
+      return $this->render('@GatomloProjectManager/Report/report.add.html.twig', array(
+      'form' => $form->createView()));
+
+
+
   }
 
   public function deleteReportAction($reportId)

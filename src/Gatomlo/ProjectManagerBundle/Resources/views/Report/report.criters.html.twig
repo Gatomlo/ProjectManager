@@ -21,10 +21,15 @@
     <div class="card-header">
       <div class=" row">
         <h2 class="col-auto mr-auto">{{report.name}}</h2>
-        <div class="col-auto">
-          <a class="btn btn-primary" target="_blank" href="{{ path('gatomlo_project_manager_events_print_report',{ 'reportId': report.id }) }}">
-            <i class="fas fa-print"></i> Imprimer
-          </a>
+        <div class="dropdown col-auto">
+          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-cogs"></i>
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" target="_blank" href="{{ path('gatomlo_project_manager_events_print_report',{ 'reportId': report.id }) }}"><i class="fas fa-print"></i> Imprimer</a>
+            <a class="dropdown-item" href="{{ path('gatomlo_project_manager_events_edit_report', { 'reportId': report.id }) }}"><i class="fas fa-pen"></i> Editer</a>
+            <a class="dropdown-item" href="{{ path('gatomlo_project_manager_events_delete_report', { 'reportId': report.id }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a>
+          </div>
         </div>
       </div>
     </div>

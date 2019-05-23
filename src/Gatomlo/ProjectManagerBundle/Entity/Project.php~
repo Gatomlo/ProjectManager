@@ -652,28 +652,4 @@ class Project
     }
 
 
-
-    /**
-     * Set matricule.
-     *
-     * @param string|null $matricule
-     *
-     * @return Project
-     */
-    public function setMatricule($matricule = null)
-    {
-        $this->matricule = $matricule;
-
-        return $this;
-    }
-
-    /**
-     * Get matricule.
-     *
-     * @return string|null
-     */
-    public function getMatricule()
-    {
-        return $this->matricule;
-    }
 }

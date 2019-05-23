@@ -28,6 +28,10 @@ class ProjectType extends AbstractType
         'label'=>'Titre du projet',
         'attr' => array('class'=>'form-control')
       ))
+      ->add('matricule',      TextType::class,array(
+        'label'=>'Numéro de référence',
+        'attr' => array('class'=>'form-control')
+      ))
       ->add('description',      TextareaType::class,array(
         'label'=>'Description du projet',
         'attr' => array('class'=>'form-control summernote'),

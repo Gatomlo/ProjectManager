@@ -56,7 +56,10 @@
     <div class="card-body">
       <h5>Description:</h5>
       {{project.description | raw  }}
-
+      {% if project.matricule is not null %}
+        </br></br>
+        <h5>Numéro de référence:</h5> {{project.matricule}}
+      {% endif %}
       {% if project.parent is not null %}
       </br></br><h5>Projet parent:</h5>
         <a href="{{ path('gatomlo_project_manager_one_project', { 'id': project.parent.id }) }}">{{project.parent.name}}</a>

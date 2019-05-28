@@ -22,7 +22,12 @@ class EventController extends Controller
   public function allAction()
   {
       $em = $this->getDoctrine()->getManager();
-      $events = $em->getRepository('GatomloProjectManagerBundle:Event')->findAll();
+      if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        $events = $em->getRepository('GatomloProjectManagerBundle:Event')->findAll();
+       }
+      else{
+        $events = $em->getRepository('GatomloProjectManagerBundle:Event')->getEventsFromOwner($this->getUser());
+      }
       return $this->render('@GatomloProjectManager/Event/event.all.html.twig',array('events'=>$events));
   }
 
@@ -88,6 +93,7 @@ class EventController extends Controller
             $event->addTag($existingTag);
           }
         }
+       $event->addOwner($this->getUser());
        $em->persist($event);
        $em->flush();
 
@@ -203,7 +209,12 @@ class EventController extends Controller
   public function allReportAction()
   {
     $em = $this->getDoctrine()->getManager();
-    $reports = $em->getRepository('GatomloProjectManagerBundle:Report')->findAll();
+    if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+      $reports = $em->getRepository('GatomloProjectManagerBundle:Report')->findAll();
+     }
+    else{
+      $reports = $em->getRepository('GatomloProjectManagerBundle:Report')->getReportsFromOwner($this->getUser());
+    }
     return $this->render('@GatomloProjectManager/Report/report.all.html.twig',array('reports'=>$reports));
   }
 
@@ -232,7 +243,7 @@ class EventController extends Controller
          ));
          $report->addTag($existingTag);
        }
-
+       $report->addOwner($this->getUser());
        $em->persist($report);
        $em->flush();
      }
@@ -347,8 +358,6 @@ class EventController extends Controller
 
       return $this->render('@GatomloProjectManager/Report/report.add.html.twig', array(
       'form' => $form->createView()));
-
-
 
   }
 

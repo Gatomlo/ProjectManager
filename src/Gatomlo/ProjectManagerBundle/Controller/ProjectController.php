@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Gatomlo\ProjectManagerBundle\Form\ProjectType;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 
 
@@ -17,10 +18,15 @@ class ProjectController extends Controller
 {
   public function allAction($archived)
   {
-      $em = $this->getDoctrine()->getManager();
+    $em = $this->getDoctrine()->getManager();
+    if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
       $projects = $em->getRepository('GatomloProjectManagerBundle:Project')->findBy(array(
         'archived'=> $archived
       ));
+     }
+    else{
+      $projects = $em->getRepository('GatomloProjectManagerBundle:Project')->getProjectsFromOwner($archived,$this->getUser());
+    }
       return $this->render('@GatomloProjectManager/Project/project.all.html.twig',array('projects'=>$projects, 'archived'=>$archived));
   }
 
@@ -41,7 +47,14 @@ class ProjectController extends Controller
   public function jsonProjectsListAction()
   {
       $em = $this->getDoctrine()->getManager();
-      $projects = $em->getRepository('GatomloProjectManagerBundle:Project')->findAll();
+      if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        $projects = $em->getRepository('GatomloProjectManagerBundle:Project')->findBy(
+          array('archived'=>false)
+        );
+       }
+      else{
+        $projects = $em->getRepository('GatomloProjectManagerBundle:Project')->getProjectsFromOwner(false,$this->getUser());
+      }
 
       $list_Projects = array();
       foreach ($projects as $project){
@@ -87,6 +100,9 @@ class ProjectController extends Controller
            $project->addTag($existingTag);
          }
        }
+
+       $project->addOwner($this->getUser());
+
        $em->persist($project);
        $em->flush();
 
@@ -256,8 +272,12 @@ class ProjectController extends Controller
   public function jsonDeadlineProjectsListAction()
   {
       $em = $this->getDoctrine()->getManager();
-      $projects = $em->getRepository('GatomloProjectManagerBundle:Project')->findAll();
-
+      if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        $projects = $em->getRepository('GatomloProjectManagerBundle:Project')->findAll();
+       }
+      else{
+        $projects = $em->getRepository('GatomloProjectManagerBundle:Project')->getProjectsFromOwner(false,$this->getUser());
+      }
       $list_projects = array();
       foreach ($projects as $project){
           if ($project->getEndtime() != null){

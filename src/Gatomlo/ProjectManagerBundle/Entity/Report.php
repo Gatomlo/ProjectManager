@@ -68,6 +68,14 @@ class Report
      */
     private $intervenant;
 
+    /**
+     * @var \stdClass|null
+     *
+     * @ORM\ManyToMany(targetEntity="Gatomlo\UserBundle\Entity\User", cascade={"persist"})
+     * @ORM\JoinTable(name="pm_report_owner")
+     */
+    private $owner;
+
 
     /**
      * Get id.
@@ -278,5 +286,41 @@ class Report
     public function removeTag(\Gatomlo\ProjectManagerBundle\Entity\Tags $tag)
     {
         return $this->tags->removeElement($tag);
+    }
+
+    /**
+     * Add owner.
+     *
+     * @param \Gatomlo\UserBundle\Entity\User $owner
+     *
+     * @return Report
+     */
+    public function addOwner(\Gatomlo\UserBundle\Entity\User $owner)
+    {
+        $this->owner[] = $owner;
+
+        return $this;
+    }
+
+    /**
+     * Remove owner.
+     *
+     * @param \Gatomlo\UserBundle\Entity\User $owner
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeOwner(\Gatomlo\UserBundle\Entity\User $owner)
+    {
+        return $this->owner->removeElement($owner);
+    }
+
+    /**
+     * Get owner.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOwner()
+    {
+        return $this->owner;
     }
 }

@@ -17,4 +17,16 @@ class ProjectRepository extends \Doctrine\ORM\EntityRepository
     ->getQuery()
     ->getResult();
   }
+  public function getProjectsFromOwner($isArchived,$user)
+  {
+    $qb = $this->createQueryBuilder('e');
+    $qb->join('e.owner','o')
+       ->andWhere('o = :o')
+       ->setParameter(':o',$user)
+       ->andWhere('e.archived = :archived')
+       ->setParameter(':archived',$isArchived);
+
+       return $qb->getQuery()->getResult();
+  }
+
 }

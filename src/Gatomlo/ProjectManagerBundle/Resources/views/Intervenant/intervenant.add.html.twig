@@ -1,29 +1,31 @@
 {% extends "base.html.twig" %}
 
 {% block breadcrumb %}
-  {% if project is not null %}
-    <li class="breadcrumb-item">
-      <a href="{{ path('gatomlo_project_manager_one_project', { 'id': project.id }) }}">{{project.name}}</a>
-    </li>
-    <li class="breadcrumb-item">
-      <a href="{{ path('gatomlo_project_manager_all_intervenants_from_a_project', { 'projectId': project.id }) }}">Intervenants</a>
-    </li>
-    {% if new %}
-      <li class="breadcrumb-item active"> Nouvel intervenant  </li>
+  <ol class="breadcrumb">
+    {% if project is not null %}
+      <li class="breadcrumb-item">
+        <a href="{{ path('gatomlo_project_manager_one_project', { 'id': project.id }) }}">{{project.name}}</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{{ path('gatomlo_project_manager_all_intervenants_from_a_project', { 'projectId': project.id }) }}">Intervenants</a>
+      </li>
+      {% if new %}
+        <li class="breadcrumb-item active"> Nouvel intervenant  </li>
+      {% else %}
+        <li class="breadcrumb-item active"> {{intervenant.people.firstName}} {{intervenant.people.lastName}} - {{intervenant.job.name}} </li>
+      {% endif %}
     {% else %}
-      <li class="breadcrumb-item active"> {{intervenant.people.firstName}} {{intervenant.people.lastName}} - {{intervenant.job.name}} </li>
+      <li class="breadcrumb-item">
+        <a href="{{ path('gatomlo_project_manager_all_peoples')}}">Contacts</a>
+      </li>
+      <li class="breadcrumb-item active"><a href="{{ path('gatomlo_project_manager_one_people', { 'id': people.id }) }}">{{people.firstName}} {{people.lastName}}</a> </li>
+      {% if new %}
+        <li class="breadcrumb-item active"> Nouvelle participation  </li>
+      {% else %}
+        <li class="breadcrumb-item active"> {{intervenant.project.name}}</li>
+      {% endif %}
     {% endif %}
-  {% else %}
-    <li class="breadcrumb-item">
-      <a href="{{ path('gatomlo_project_manager_all_peoples')}}">Contacts</a>
-    </li>
-    <li class="breadcrumb-item active"><a href="{{ path('gatomlo_project_manager_one_people', { 'id': people.id }) }}">{{people.firstName}} {{people.lastName}}</a> </li>
-    {% if new %}
-      <li class="breadcrumb-item active"> Nouvelle participation  </li>
-    {% else %}
-      <li class="breadcrumb-item active"> {{intervenant.project.name}}</li>
-    {% endif %}
-  {% endif %}
+  </ol>
 {% endblock %}
 
 {% block body %}
@@ -41,7 +43,7 @@
     $('.select-function').selectize({
       sortField: 'text'
     });
-    
+
 
   </script>
 {% endblock %}

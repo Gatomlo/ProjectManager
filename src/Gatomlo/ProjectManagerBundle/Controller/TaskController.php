@@ -19,10 +19,12 @@ class TaskController extends Controller
 {
   public function allOpenTaskAction(){
       $em = $this->getDoctrine()->getManager();
-      $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findBy(
-        array('closed'=> false),
-        array('enddate' => 'asc')
-      );
+      if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findAll();
+       }
+      else{
+        $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->getOpenTasksFromOwner($this->getUser());
+      }
       $taskArray = array();
 
       foreach ($tasks as $task){
@@ -32,6 +34,7 @@ class TaskController extends Controller
         $obj['enddate'] = $task->getEnddate();
         $obj['closed'] = $task->getClosed();
         $obj['tags'] = $task->getTags();
+        $obj['owner'] = $task->getOwner();
         if($task->getEnddate() != null){
           if($task->getEnddate()->format('Y-m-d') > (new \DateTime("now"))->format('Y-m-d') ){
             $obj['status'] =-1;
@@ -57,10 +60,12 @@ class TaskController extends Controller
 
   public function allClosedTaskAction(){
       $em = $this->getDoctrine()->getManager();
-      $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findBy(
-        array('closed'=> true),
-        array('closed' => 'asc')
-      );
+      if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findAll();
+       }
+      else{
+        $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->getOpenTasksFromOwner($this->getUser());
+      }
       $taskArray = array();
 
       foreach ($tasks as $task){
@@ -70,6 +75,7 @@ class TaskController extends Controller
         $obj['enddate'] = $task->getEnddate();
         $obj['closed'] = $task->getClosed();
         $obj['tags'] = $task->getTags();
+        $obj['owner'] = $task->getOwner();
         if($task->getEnddate() != null){
           if($task->getEnddate()->format('Y-m-d') > (new \DateTime("now"))->format('Y-m-d') ){
             $obj['status'] =-1;
@@ -95,10 +101,16 @@ class TaskController extends Controller
 
   public function plannificatorAction(){
       $em = $this->getDoctrine()->getManager();
-      $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findBy(
-        array(),
-        array('closed' => 'asc')
-      );
+
+      if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findBy(
+          array(),
+          array('closed' => 'asc')
+        );
+       }
+      else{
+        $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->getAllTasksFromOwner($this->getUser());
+      }
 
       $list_tasks = array();
       foreach ($tasks as $task){
@@ -223,6 +235,7 @@ class TaskController extends Controller
             $task->addTag($existingTag);
           }
         }
+       $task->addOwner($this->getUser());
        $em->persist($task);
        $em->flush();
 
@@ -374,6 +387,7 @@ class TaskController extends Controller
   public function plannifiedAction(Request $request){
       $em = $this->getDoctrine()->getManager();
       $task = $em->getRepository('GatomloProjectManagerBundle:Task')->find($request->get('id'));
+
       if($request->get('start')!= null){
         $task->setExecutiondate(new \DateTime($request->get('start')));
       }
@@ -388,11 +402,15 @@ class TaskController extends Controller
 
   public function jsonPlanTaksListAction(){
       $em = $this->getDoctrine()->getManager();
-      $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findBy(
-        array(),
-        array('closed' => 'asc')
-      );
-
+      if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findBy(
+          array(),
+          array('closed' => 'asc')
+        );
+       }
+      else{
+        $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->getAllTasksFromOwner($this->getUser());
+      }
       $list_tasks = array();
       foreach ($tasks as $task){
         if ($task->getExecutiondate() != null){
@@ -423,10 +441,15 @@ class TaskController extends Controller
 
   public function jsonDeadlineTaksListAction(){
       $em = $this->getDoctrine()->getManager();
-      $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findBy(
-        array(),
-        array('closed' => 'asc')
-      );
+      if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findBy(
+          array(),
+          array('closed' => 'asc')
+        );
+       }
+      else{
+        $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->getAllTasksFromOwner($this->getUser());
+      }
 
       $list_tasks = array();
       foreach ($tasks as $task){

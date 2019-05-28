@@ -10,5 +10,14 @@ namespace Gatomlo\ProjectManagerBundle\Repository;
  */
 class ReportRepository extends \Doctrine\ORM\EntityRepository
 {
+  public function getReportsFromOwner($user)
+  {
+    $qb = $this->createQueryBuilder('e');
+    $qb->join('e.owner','o')
+       ->andWhere('o = :o')
+       ->setParameter(':o',$user);
+
+       return $qb->getQuery()->getResult();
+  }
 
 }

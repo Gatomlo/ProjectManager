@@ -83,11 +83,12 @@ class Project
     private $intervenant;
 
     /**
-     * @var \stdClass
+     * @var \stdClass|null
      *
-     * @ORM\Column(name="creator", type="string")
+     * @ORM\ManyToMany(targetEntity="Gatomlo\UserBundle\Entity\User", cascade={"persist"})
+     * @ORM\JoinTable(name="pm_project_owner")
      */
-    private $creator = "ThomasV";
+    private $owner;
 
     /**
      * @var \stdClass|null
@@ -675,5 +676,41 @@ class Project
     public function getMatricule()
     {
         return $this->matricule;
+    }
+
+    /**
+     * Add owner.
+     *
+     * @param \Gatomlo\UserBundle\Entity\User $owner
+     *
+     * @return Project
+     */
+    public function addOwner(\Gatomlo\UserBundle\Entity\User $owner)
+    {
+        $this->owner[] = $owner;
+
+        return $this;
+    }
+
+    /**
+     * Remove owner.
+     *
+     * @param \Gatomlo\UserBundle\Entity\User $owner
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeOwner(\Gatomlo\UserBundle\Entity\User $owner)
+    {
+        return $this->owner->removeElement($owner);
+    }
+
+    /**
+     * Get owner.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOwner()
+    {
+        return $this->owner;
     }
 }

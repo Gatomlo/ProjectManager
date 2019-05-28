@@ -15,7 +15,12 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
+
       $em = $this->getDoctrine()->getManager();
+      // $user = $em->getRepository('GatomloUserBundle:User')->findOneBy(array('username'=>'admin'));
+      // $user->addRole('ROLE_ADMIN');
+      // $em->persist($user);
+      // $em->flush();
       $lastProjects = $em->getRepository('GatomloProjectManagerBundle:Project')->getLastProjects(10);
       $lastEvents = $em->getRepository('GatomloProjectManagerBundle:Event')->getLastEvents(10);
 

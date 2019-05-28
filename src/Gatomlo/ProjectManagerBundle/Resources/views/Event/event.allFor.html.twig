@@ -1,13 +1,15 @@
 {% extends "base.html.twig" %}
 
 {% block breadcrumb %}
-  <li class="breadcrumb-item">
-    <a href="{{ path('gatomlo_project_manager_all_projects')}}">Projets</a>
-  </li>
-  <li class="breadcrumb-item">
-    <a href="{{ path('gatomlo_project_manager_one_project', { 'id': project.id }) }}">{{project.name}}</a>
-  </li>
-  <li class="breadcrumb-item active">Evénements</li>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a href="{{ path('gatomlo_project_manager_all_projects')}}">Projets</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="{{ path('gatomlo_project_manager_one_project', { 'id': project.id }) }}">{{project.name}}</a>
+    </li>
+    <li class="breadcrumb-item active">Evénements</li>
+  </ol>
 {% endblock %}
 
 {% block body %}
@@ -38,6 +40,9 @@
               <th>Date</th>
               <th>Type</th>
               <th>Intervenants</th>
+              {% if is_granted('ROLE_ADMIN') %}
+                <th>Propriétaires</th>
+              {% endif %}
               <th>Actions</th>
             </tr>
           </thead>
@@ -59,6 +64,13 @@
                   </td>
                 {% else %}
                   <td>/</td>
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
+                  <td>
+                    {% for owner in event.owner %}
+                      {{owner.username}}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                  </td>
                 {% endif %}
                 <td>
                   <div class="dropdown">

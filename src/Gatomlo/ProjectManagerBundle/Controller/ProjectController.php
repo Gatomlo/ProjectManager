@@ -32,16 +32,16 @@ class ProjectController extends Controller
 
   public function viewAction($id)
   {
+
     $em = $this->getDoctrine()->getManager();
     $project = $em->getRepository('GatomloProjectManagerBundle:Project')->find($id);
-
-      if (null === $project) {
-        throw new NotFoundHttpException("L'annonce d'id ".$id." n'existe pas.");
-      }
-
-
+    if($project->isOwner($this->getUser()) || $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') ){
       return $this->render('@GatomloProjectManager/Project/project.view.html.twig',array(
         'project'=>$project));
+    }
+    else{
+      return $this->redirectToRoute('gatomlo_project_manager_homepage');
+    }
   }
 
   public function jsonProjectsListAction()
@@ -124,92 +124,87 @@ class ProjectController extends Controller
 
   public function editAction(Request $request, $id)
   {
-    // On crée un objet Project
     $em = $this->getDoctrine()->getManager();
     $project = $em->getRepository('GatomloProjectManagerBundle:Project')->find($id);
-
-
-    //Récupération des tags
-    $existingTags = $project->getTags();
-    //Création d'un tableau vide
-    $existingTagsArray = [];
-    // Pour chaque tag, on récupére le nom et on l'insère dans le tableau vide.
-    foreach ($existingTags as $tag) {
-      $currentTag = $tag->getName();
-      array_push($existingTagsArray, $currentTag);
-    };
-    // On transforme le tableau en string pour pouvoir être inséré dans le champ texte selectize
-    $existingTagsStringFormat = implode(',',$existingTagsArray);
-
-    $form = $this->get('form.factory')->create(ProjectType::class, $project, array('existingTags'=>$existingTagsStringFormat));
-
-    // Si la requête est en POST
-   if ($request->isMethod('POST')) {
-     // On fait le lien Requête <-> Formulaire
-     // À partir de maintenant, la variable $advert contient les valeurs entrées dans le formulaire par le visiteur
-     $form->handleRequest($request);
-
-     // On vérifie que les valeurs entrées sont correctes
-     // (Nous verrons la validation des objets en détail dans le prochain chapitre)
-     if ($form->isValid()) {
-
-       foreach ($existingTags as $tag) {
-         $project->removeTag($tag);
-       };
-       // On enregistre notre objet $advert dans la base de données, par exemple
-       $em = $this->getDoctrine()->getManager();
-        // On enregistre notre objet $advert dans la base de données, par exemple
-        $tagsArray = $form['tagsArray']->getData();
-        $tags = explode(",",$tagsArray);
-        foreach ($tags as $tag) {
-          $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
-            'name'=> $tag
-          ));
-
-          if (empty($existingTag)){
-            $newTag = new Tags();
-            $newTag->setName($tag);
-            $project->addTag($newTag);
+    if($project->isOwner($this->getUser()) || $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') ){
+      //Récupération des tags
+      $existingTags = $project->getTags();
+      //Création d'un tableau vide
+      $existingTagsArray = [];
+      // Pour chaque tag, on récupére le nom et on l'insère dans le tableau vide.
+      foreach ($existingTags as $tag) {
+        $currentTag = $tag->getName();
+        array_push($existingTagsArray, $currentTag);
+      };
+      // On transforme le tableau en string pour pouvoir être inséré dans le champ texte selectize
+      $existingTagsStringFormat = implode(',',$existingTagsArray);
+      $form = $this->get('form.factory')->create(ProjectType::class, $project, array('existingTags'=>$existingTagsStringFormat));
+      // Si la requête est en POST
+     if ($request->isMethod('POST')) {
+       // On fait le lien Requête <-> Formulaire
+       // À partir de maintenant, la variable $advert contient les valeurs entrées dans le formulaire par le visiteur
+       $form->handleRequest($request);
+       // On vérifie que les valeurs entrées sont correctes
+       // (Nous verrons la validation des objets en détail dans le prochain chapitre)
+       if ($form->isValid()) {
+         foreach ($existingTags as $tag) {
+           $project->removeTag($tag);
+         };
+         // On enregistre notre objet $advert dans la base de données, par exemple
+         $em = $this->getDoctrine()->getManager();
+          // On enregistre notre objet $advert dans la base de données, par exemple
+          $tagsArray = $form['tagsArray']->getData();
+          $tags = explode(",",$tagsArray);
+          foreach ($tags as $tag) {
+            $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
+              'name'=> $tag
+            ));
+            if (empty($existingTag)){
+              $newTag = new Tags();
+              $newTag->setName($tag);
+              $project->addTag($newTag);
+            }
+            else {
+              $project->addTag($existingTag);
+            }
           }
-
-          else {
-            $project->addTag($existingTag);
-          }
-        }
-
-
-       $em->persist($project);
-       $em->flush();
-
-       $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
-
-       // On redirige vers la page de visualisation de l'annonce nouvellement créée
-       return $this->redirectToRoute('gatomlo_project_manager_one_project', array('id' => $project->getId()));
+         $em->persist($project);
+         $em->flush();
+         $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+         // On redirige vers la page de visualisation de l'annonce nouvellement créée
+         return $this->redirectToRoute('gatomlo_project_manager_one_project', array('id' => $project->getId()));
+       }
      }
-   }
-
-
-    // On passe la méthode createView() du formulaire à la vue
-    // afin qu'elle puisse afficher le formulaire toute seule
-    return $this->render('@GatomloProjectManager/Project/project.add.html.twig', array(
-      'form' => $form->createView(),
-      'project'=>$project,
-      'tags'=>$existingTagsArray,
-    ));
+      // On passe la méthode createView() du formulaire à la vue
+      // afin qu'elle puisse afficher le formulaire toute seule
+      return $this->render('@GatomloProjectManager/Project/project.add.html.twig', array(
+        'form' => $form->createView(),
+        'project'=>$project,
+        'tags'=>$existingTagsArray,
+      ));
+    }
+    else{
+      return $this->redirectToRoute('gatomlo_project_manager_homepage');
+    }
   }
 
   public function deleteAction($id)
   {
       $em = $this->getDoctrine()->getManager();
       $project = $em->getRepository('GatomloProjectManagerBundle:Project')->find($id);
-      if($project->getParent() != null){
-        $parent = $em->getRepository('GatomloProjectManagerBundle:Project')->find($project->getParent());
-        $project->setParents(null);
-      }
-      $em->remove($project);
-      $em->flush();
+      if($project->isOwner($this->getUser()) || $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') ){
+        if($project->getParent() != null){
+          $parent = $em->getRepository('GatomloProjectManagerBundle:Project')->find($project->getParent());
+          $project->setParents(null);
+        }
+        $em->remove($project);
+        $em->flush();
 
-       return $this->redirectToRoute('gatomlo_project_manager_all_projects');
+         return $this->redirectToRoute('gatomlo_project_manager_all_projects');
+       }
+       else{
+         return $this->redirectToRoute('gatomlo_project_manager_homepage');
+       }
   }
 
   public function addParentAction($idChild,$idParent)
@@ -251,23 +246,26 @@ class ProjectController extends Controller
   {
     $em = $this->getDoctrine()->getManager();
     $project = $em->getRepository('GatomloProjectManagerBundle:Project')->find($id);
+    if($project->isOwner($this->getUser()) || $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') ){
+      if ($project->getArchived()== FALSE){
+        $project->SetArchived(TRUE);
+      }
+      else{
+        $project->SetArchived(FALSE);
+      }
 
-    if ($project->getArchived()== FALSE){
-      $project->SetArchived(TRUE);
+      $em->persist($project);
+      $em->flush();
+      if ($project->getArchived()== TRUE){
+        return $this->redirectToRoute('gatomlo_project_manager_all_projects');
+      }
+      else{
+        return $this->redirectToRoute('gatomlo_project_manager_all_projects',array('archived'=>1));
+      }
     }
     else{
-      $project->SetArchived(FALSE);
+      return $this->redirectToRoute('gatomlo_project_manager_homepage');
     }
-
-    $em->persist($project);
-    $em->flush();
-    if ($project->getArchived()== TRUE){
-      return $this->redirectToRoute('gatomlo_project_manager_all_projects');
-    }
-    else{
-      return $this->redirectToRoute('gatomlo_project_manager_all_projects',array('archived'=>1));
-    }
-
   }
   public function jsonDeadlineProjectsListAction()
   {

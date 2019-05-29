@@ -531,4 +531,15 @@ class Event
     {
         return $this->owner;
     }
+    
+    public function isOwner($owner)
+    {
+      $realOwner = $this->owner;
+      foreach ($realOwner as $key => $value) {
+        if($value == $owner){
+          return true;
+        }
+      }
+      return false;
+    }
 }

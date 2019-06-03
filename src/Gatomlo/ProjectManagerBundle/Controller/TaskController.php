@@ -262,142 +262,158 @@ class TaskController extends Controller
 
     $em = $this->getDoctrine()->getManager();
     $task = $em->getRepository('GatomloProjectManagerBundle:Task')->find($id);
-    $project = $task->getProject();
+    if($task->isOwner($this->getUser()) || $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') ){
+      $project = $task->getProject();
 
-    //Récupération des tags
-    $existingTags = $task->getTags();
-    //Création d'un tableau vide
-    $existingTagsArray = [];
-    // Pour chaque tag, on récupére le nom et on l'insère dans le tableau vide.
-    foreach ($existingTags as $tag) {
-      $currentTag = $tag->getName();
-      array_push($existingTagsArray, $currentTag);
-    };
-    // On transforme le tableau en string pour pouvoir être inséré dans le champ texte selectize
-    $existingTagsStringFormat = implode(',',$existingTagsArray);
+      //Récupération des tags
+      $existingTags = $task->getTags();
+      //Création d'un tableau vide
+      $existingTagsArray = [];
+      // Pour chaque tag, on récupére le nom et on l'insère dans le tableau vide.
+      foreach ($existingTags as $tag) {
+        $currentTag = $tag->getName();
+        array_push($existingTagsArray, $currentTag);
+      };
+      // On transforme le tableau en string pour pouvoir être inséré dans le champ texte selectize
+      $existingTagsStringFormat = implode(',',$existingTagsArray);
 
 
-    $form = $this->get('form.factory')->create(TaskType::class, $task, array(
-      'existingTags'=>$existingTagsStringFormat,
-      'project'=>$project));
+      $form = $this->get('form.factory')->create(TaskType::class, $task, array(
+        'existingTags'=>$existingTagsStringFormat,
+        'project'=>$project));
 
-    // Si la requête est en POST
-   if ($request->isMethod('POST')) {
-     // On fait le lien Requête <-> Formulaire
-     // À partir de maintenant, la variable $advert contient les valeurs entrées dans le formulaire par le visiteur
-     $form->handleRequest($request);
+      // Si la requête est en POST
+     if ($request->isMethod('POST')) {
+       // On fait le lien Requête <-> Formulaire
+       // À partir de maintenant, la variable $advert contient les valeurs entrées dans le formulaire par le visiteur
+       $form->handleRequest($request);
 
-     // On vérifie que les valeurs entrées sont correctes
-     // (Nous verrons la validation des objets en détail dans le prochain chapitre)
-     if ($form->isValid()) {
+       // On vérifie que les valeurs entrées sont correctes
+       // (Nous verrons la validation des objets en détail dans le prochain chapitre)
+       if ($form->isValid()) {
 
-       foreach ($existingTags as $tag) {
-         $task->removeTag($tag);
-       };
-       // On enregistre notre objet $advert dans la base de données, par exemple
-       $em = $this->getDoctrine()->getManager();
-        // On enregistre notre objet $advert dans la base de données, par exemple
-        $tagsArray = $form['tagsArray']->getData();
-        $tags = explode(",",$tagsArray);
-        foreach ($tags as $tag) {
-          $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
-            'name'=> $tag
-          ));
+         foreach ($existingTags as $tag) {
+           $task->removeTag($tag);
+         };
+         // On enregistre notre objet $advert dans la base de données, par exemple
+         $em = $this->getDoctrine()->getManager();
+          // On enregistre notre objet $advert dans la base de données, par exemple
+          $tagsArray = $form['tagsArray']->getData();
+          $tags = explode(",",$tagsArray);
+          foreach ($tags as $tag) {
+            $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
+              'name'=> $tag
+            ));
 
-          if (empty($existingTag)){
-            $newTag = new Tags();
-            $newTag->setName($tag);
-            $task->addTag($newTag);
+            if (empty($existingTag)){
+              $newTag = new Tags();
+              $newTag->setName($tag);
+              $task->addTag($newTag);
+            }
+
+            else {
+              $task->addTag($existingTag);
+            }
           }
+         $em->persist($task);
+         $em->flush();
 
-          else {
-            $task->addTag($existingTag);
-          }
-        }
-       $em->persist($task);
-       $em->flush();
+         $request->getSession()->getFlashBag()->add('notice', 'Evénement bien enregistré.');
 
-       $request->getSession()->getFlashBag()->add('notice', 'Evénement bien enregistré.');
-
-       // On redirige vers la page de visualisation de l'annonce nouvellement créée
-       return $this->redirectToRoute('gatomlo_project_manager_all_open_tasks');
+         // On redirige vers la page de visualisation de l'annonce nouvellement créée
+         return $this->redirectToRoute('gatomlo_project_manager_all_open_tasks');
+       }
      }
-   }
-    return $this->render('@GatomloProjectManager/Task/task.add.html.twig', array(
-      'form' => $form->createView(),
-      'task'=> $task,
-    ));
+      return $this->render('@GatomloProjectManager/Task/task.add.html.twig', array(
+        'form' => $form->createView(),
+        'task'=> $task,
+      ));
+      }
+    else{
+      return $this->redirectToRoute('gatomlo_project_manager_homepage');
+    }
   }
 
   public function closeAction($id,$from){
       $em = $this->getDoctrine()->getManager();
       $task = $em->getRepository('GatomloProjectManagerBundle:Task')->find($id);
-      $type = $em->getRepository('GatomloProjectManagerBundle:Type')->find(1);
-      $project = $em->getRepository('GatomloProjectManagerBundle:Project')->find($task->getProject()->getId());
-      if($task->getClosed()==False){
-        $task->setClosed(True);
-        $event= new Event();
-        $event->setTitle($task->getDescription());
-        $event->setDescription('Tâche terminée');
-        $event->setType($type);
-        $event->setStartdate(new \DateTime("now"));
-        $event->setProject($project);
-        $em->persist($event);
-      }
-      else{
-        $task->setClosed(False);
-      }
-      $em->persist($task);
-      $em->flush();
+      if($task->isOwner($this->getUser()) || $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') ){
+        $type = $em->getRepository('GatomloProjectManagerBundle:Type')->find(1);
+        $project = $em->getRepository('GatomloProjectManagerBundle:Project')->find($task->getProject()->getId());
+        if($task->getClosed()==False){
+          $task->setClosed(True);
+          $event= new Event();
+          $event->setTitle($task->getDescription());
+          $event->setDescription('Tâche terminée');
+          $event->setType($type);
+          $event->setStartdate(new \DateTime("now"));
+          $event->setProject($project);
+          $em->persist($event);
+        }
+        else{
+          $task->setClosed(False);
+        }
+        $em->persist($task);
+        $em->flush();
 
-      if($from == 'tasks'){
-        return $this->redirectToRoute('gatomlo_project_manager_all_open_tasks');
-      }
-      elseif ($from == 'project'){
-        return $this->redirectToRoute('gatomlo_project_manager_all_tasks_from_a_project',array('projectId'=>$project->getId()));
+        if($from == 'tasks'){
+          return $this->redirectToRoute('gatomlo_project_manager_all_open_tasks');
+        }
+        elseif ($from == 'project'){
+          return $this->redirectToRoute('gatomlo_project_manager_all_tasks_from_a_project',array('projectId'=>$project->getId()));
+        }
+        else{
+          return $this->redirectToRoute('gatomlo_project_manager_homepage');
+        }
       }
       else{
         return $this->redirectToRoute('gatomlo_project_manager_homepage');
       }
-
   }
 
   public function deleteAction($id,$from){
       $em = $this->getDoctrine()->getManager();
       $task = $em->getRepository('GatomloProjectManagerBundle:Task')->find($id);
-      $project = $em->getRepository('GatomloProjectManagerBundle:Project')->find($task->getProject())->getId();
-      $em->remove($task);
-      $em->flush();
+      if($task->isOwner($this->getUser()) || $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') ){
+        $project = $em->getRepository('GatomloProjectManagerBundle:Project')->find($task->getProject())->getId();
+        $em->remove($task);
+        $em->flush();
 
-      if($from == 'openTasks'){
-        return $this->redirectToRoute('gatomlo_project_manager_all_open_tasks');
-      }
-      elseif ($from == 'project'){
-        return $this->redirectToRoute('gatomlo_project_manager_all_tasks_from_a_project',array('projectId'=>$project));
-      }
-      elseif ($from =='closedTask'){
-        return $this->redirectToRoute('gatomlo_project_manager_all_closed_tasks');
+        if($from == 'openTasks'){
+          return $this->redirectToRoute('gatomlo_project_manager_all_open_tasks');
+        }
+        elseif ($from == 'project'){
+          return $this->redirectToRoute('gatomlo_project_manager_all_tasks_from_a_project',array('projectId'=>$project));
+        }
+        elseif ($from =='closedTask'){
+          return $this->redirectToRoute('gatomlo_project_manager_all_closed_tasks');
+        }
+        else{
+          return $this->redirectToRoute('gatomlo_project_manager_homepage');
+        }
       }
       else{
         return $this->redirectToRoute('gatomlo_project_manager_homepage');
       }
-
   }
 
   public function plannifiedAction(Request $request){
       $em = $this->getDoctrine()->getManager();
       $task = $em->getRepository('GatomloProjectManagerBundle:Task')->find($request->get('id'));
-
-      if($request->get('start')!= null){
-        $task->setExecutiondate(new \DateTime($request->get('start')));
+      if($task->isOwner($this->getUser()) || $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') ){
+        if($request->get('start')!= null){
+          $task->setExecutiondate(new \DateTime($request->get('start')));
+        }
+        else{
+          $task->setExecutiondate(null);
+        }
+        $em->persist($task);
+        $em->flush();
+        return new JsonResponse(array('success'=> 200));
       }
       else{
-        $task->setExecutiondate(null);
+        return $this->redirectToRoute('gatomlo_project_manager_homepage');
       }
-      $em->persist($task);
-      $em->flush();
-      return new JsonResponse(array('success'=> 200));
-
   }
 
   public function jsonPlanTaksListAction(){

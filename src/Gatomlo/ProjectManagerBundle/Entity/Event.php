@@ -69,11 +69,12 @@ class Event
     private $project;
 
     /**
-     * @var \stdClass
+     * @var \stdClass|null
      *
-     * @ORM\Column(name="creator", type="object")
+     * @ORM\ManyToMany(targetEntity="Gatomlo\UserBundle\Entity\User", cascade={"persist"})
+     * @ORM\JoinTable(name="pm_event_owner")
      */
-    private $creator;
+    private $owner;
 
     /**
      * @var \stdClass|null
@@ -493,5 +494,52 @@ class Event
     public function getStarttime()
     {
         return $this->starttime;
+    }
+
+    /**
+     * Add owner.
+     *
+     * @param \Gatomlo\UserBundle\Entity\User $owner
+     *
+     * @return Event
+     */
+    public function addOwner(\Gatomlo\UserBundle\Entity\User $owner)
+    {
+        $this->owner[] = $owner;
+
+        return $this;
+    }
+
+    /**
+     * Remove owner.
+     *
+     * @param \Gatomlo\UserBundle\Entity\User $owner
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeOwner(\Gatomlo\UserBundle\Entity\User $owner)
+    {
+        return $this->owner->removeElement($owner);
+    }
+
+    /**
+     * Get owner.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+    
+    public function isOwner($owner)
+    {
+      $realOwner = $this->owner;
+      foreach ($realOwner as $key => $value) {
+        if($value == $owner){
+          return true;
+        }
+      }
+      return false;
     }
 }

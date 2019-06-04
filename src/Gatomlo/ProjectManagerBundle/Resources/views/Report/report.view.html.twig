@@ -1,10 +1,12 @@
 {% extends "base.html.twig" %}
 
 {% block breadcrumb %}
-  <li class="breadcrumb-item">
-    <a href="{{ path('gatomlo_project_manager_events_all_reports')}}">Rapports</a>
-  </li>
-  <li class="breadcrumb-item active">{{report.name}}</li>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a href="{{ path('gatomlo_project_manager_events_all_reports')}}">Rapports</a>
+    </li>
+    <li class="breadcrumb-item active">{{report.name}}</li>
+  </ol>
 {% endblock %}
 
 {% block body %}

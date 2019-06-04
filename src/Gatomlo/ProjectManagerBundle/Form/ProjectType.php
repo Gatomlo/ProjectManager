@@ -30,7 +30,8 @@ class ProjectType extends AbstractType
       ))
       ->add('matricule',      TextType::class,array(
         'label'=>'Numéro de référence',
-        'attr' => array('class'=>'form-control')
+        'attr' => array('class'=>'form-control'),
+        'required' => false
       ))
       ->add('description',      TextareaType::class,array(
         'label'=>'Description du projet',

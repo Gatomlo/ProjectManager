@@ -10,4 +10,39 @@ namespace Gatomlo\ProjectManagerBundle\Repository;
  */
 class TaskRepository extends \Doctrine\ORM\EntityRepository
 {
+  public function getOpenTasksFromOwner($user)
+  {
+    $qb = $this->createQueryBuilder('e');
+    $qb->join('e.owner','o')
+       ->andWhere('o = :o')
+       ->setParameter(':o',$user)
+       ->andWhere('e.closed = :closed')
+       ->setParameter(':closed',false);
+
+       return $qb->getQuery()->getResult();
+  }
+  public function getClosedTasksFromOwner($user)
+  {
+    $qb = $this->createQueryBuilder('e');
+    $qb->join('e.owner','o')
+       ->andWhere('o = :o')
+       ->setParameter(':o',$user)
+       ->andWhere('e.closed = :closed')
+       ->setParameter(':closed',true)
+       ->orderBy('e.closed','ASC');
+
+       return $qb->getQuery()->getResult();
+  }
+
+  public function getAllTasksFromOwner($user)
+  {
+    $qb = $this->createQueryBuilder('e');
+    $qb->join('e.owner','o')
+       ->andWhere('o = :o')
+       ->setParameter(':o',$user)
+       ->orderBy('e.closed','ASC');
+
+
+       return $qb->getQuery()->getResult();
+  }
 }

@@ -1,10 +1,12 @@
 {% extends "base.html.twig" %}
 
 {% block breadcrumb %}
-  <li class="breadcrumb-item">
-    <a href="{{ path('gatomlo_project_manager_all_open_tasks')}}">Tâches</a>
-  </li>
-  <li class="breadcrumb-item active">Nouvelle tâche</li>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a href="{{ path('gatomlo_project_manager_all_open_tasks')}}">Tâches</a>
+    </li>
+    <li class="breadcrumb-item active">Nouvelle tâche</li>
+  </ol>
 {% endblock %}
 
 {% block body %}

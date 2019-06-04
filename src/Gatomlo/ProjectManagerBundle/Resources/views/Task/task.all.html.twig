@@ -1,7 +1,9 @@
 {% extends "base.html.twig" %}
 
 {% block breadcrumb %}
-  <li class="breadcrumb-item active">Toutes les tâches</li>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active">Toutes les tâches</li>
+  </ol>
 {% endblock %}
 
 {% block body %}
@@ -39,6 +41,9 @@
               <th>Projet</th>
               <th>Echéance</th>
               <th>Tags</th>
+              {% if is_granted('ROLE_ADMIN') %}
+                <th>Propriétaires</th>
+              {% endif %}
               <th>Actions</th>
             </tr>
           </thead>
@@ -82,6 +87,13 @@
                   {% for tag in task.tags %}
                     {{tag.name}}{% if not loop.last %}, {% endif %}
                   {% endfor %}</td>
+                  {% if is_granted('ROLE_ADMIN') %}
+                    <td>
+                      {% for owner in task.owner %}
+                        {{owner.username}}{% if not loop.last %}, {% endif %}
+                      {% endfor %}
+                    </td>
+                  {% endif %}
                 <td>
                   <div class="dropdown">
                     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

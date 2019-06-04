@@ -1,16 +1,18 @@
 {% extends "base.html.twig" %}
 
 {% block breadcrumb %}
-  <li class="breadcrumb-item">
-    <a href="{{ path('gatomlo_project_manager_all_projects')}}">Projets</a>
-  </li>
-  <li class="breadcrumb-item active">
-    {% if archived %}
-      Archives
-    {% else %}
-      Actifs
-    {% endif %}
-  </li>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a href="{{ path('gatomlo_project_manager_all_projects')}}">Projets</a>
+    </li>
+    <li class="breadcrumb-item active">
+      {% if archived %}
+        Archives
+      {% else %}
+        Actifs
+      {% endif %}
+    </li>
+  </ol>
 {% endblock %}
 
 {% block body %}
@@ -27,6 +29,9 @@
               <th>Nom</th>
               <th>Status</th>
               <th>Tags</th>
+              {% if is_granted('ROLE_ADMIN') %}
+                <th>Propriétaires</th>
+              {% endif %}
               <th>Actions</th>
             </tr>
           </thead>
@@ -43,6 +48,13 @@
                   {% for tag in project.tags %}
                     {{tag.name}}{% if not loop.last %}, {% endif %}
                   {% endfor %}
+                {% if is_granted('ROLE_ADMIN') %}
+                  <td>
+                    {% for owner in project.owner %}
+                      {{owner.username}}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                  </td>
+                {% endif %}
                 <td>
                   <div class="dropdown">
                     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

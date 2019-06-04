@@ -1,10 +1,12 @@
 {% extends "base.html.twig" %}
 
 {% block breadcrumb %}
-  <li class="breadcrumb-item">
-    <a href="{{ path('gatomlo_project_manager_events_all_reports')}}">Rapports</a>
-  </li>
-  <li class="breadcrumb-item active">Tous les rapports</li>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a href="{{ path('gatomlo_project_manager_events_all_reports')}}">Rapports</a>
+    </li>
+    <li class="breadcrumb-item active">Tous les rapports</li>
+  </ol>
 {% endblock %}
 
 {% block body %}
@@ -16,6 +18,9 @@
           <thead>
             <tr>
               <th>Nom</th>
+              {% if is_granted('ROLE_ADMIN') %}
+                <th>Propriétaires</th>
+              {% endif %}
               <th>Actions</th>
             </tr>
           </thead>
@@ -23,6 +28,13 @@
             {% for report in reports %}
               <tr>
                 <td>{{report.name}}</td>
+                {% if is_granted('ROLE_ADMIN') %}
+                  <td>
+                    {% for owner in report.owner %}
+                      {{owner.username}}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                  </td>
+                {% endif %}
                 <td>
                   <div class="dropdown">
                     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

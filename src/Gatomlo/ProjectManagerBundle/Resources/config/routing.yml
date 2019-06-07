@@ -278,3 +278,20 @@ gatomlo_project_manager_deadline_tasks_json:
 gatomlo_project_manager_planned_tasks_json:
     path:      /tasks/json/planned/all
     defaults: { _controller: GatomloProjectManagerBundle:Task:jsonPlanTaksList }
+
+#admin users
+gatomlo_user_admin_all_users:
+    path:      /admin/users/all
+    defaults: { _controller: GatomloUserBundle:User:all }
+
+gatomlo_user_admin_add_users:
+    path:      /admin/users/add
+    defaults: { _controller: GatomloUserBundle:User:add }
+
+gatomlo_user_admin_delete_users:
+    path:      /admin/users/delete/{id}
+    defaults: { _controller: GatomloUserBundle:User:delete }
+
+gatomlo_user_admin_edit_users:
+    path:      /admin/users/edit/{id}
+    defaults: { _controller: GatomloUserBundle:User:edit }

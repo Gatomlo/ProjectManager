@@ -2,7 +2,7 @@
 
 security:
   encoders:
-    Symfony\Component\Security\Core\User: plaintext
+    # Symfony\Component\Security\Core\User: plaintext
     Gatomlo\UserBundle\Entity\User: sha512
 
   role_hierarchy:

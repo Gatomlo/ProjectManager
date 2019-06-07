@@ -40,8 +40,8 @@
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item" href="{{ path('gatomlo_project_manager_edit_project', { 'id': project.id }) }}"><i class="fas fa-pen"></i> Editer</a>
-            <a class="dropdown-item" href="{{ path('gatomlo_project_manager_delete_project', { 'id': project.id }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a>
             {% if project.archived %}
+              <a class="dropdown-item" href="{{ path('gatomlo_project_manager_delete_project', { 'id': project.id }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a>
               <a class="dropdown-item" href="{{ path('gatomlo_project_manager_archived_project', { 'id': project.id }) }}"><i class="fas fa-undo"></i>
                 Désarchiver
               </a>

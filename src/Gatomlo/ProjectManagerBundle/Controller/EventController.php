@@ -205,7 +205,7 @@ class EventController extends Controller
       }
       else{
         return $this->redirectToRoute('gatomlo_project_manager_all_events_from_a_project',array('projectId'=>$project));
-      }
+      }}
     else{
       return $this->redirectToRoute('gatomlo_project_manager_homepage');
     }

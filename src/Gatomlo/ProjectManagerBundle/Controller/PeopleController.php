@@ -4,12 +4,6 @@ namespace Gatomlo\ProjectManagerBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Gatomlo\ProjectManagerBundle\Entity\People;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Gatomlo\ProjectManagerBundle\Entity\Tags;
 
@@ -81,7 +75,6 @@ class PeopleController extends Controller
        return $this->redirectToRoute('gatomlo_project_manager_one_people', array('id' => $people->getId()));
      }
    }
-
 
     // On passe la méthode createView() du formulaire à la vue
     // afin qu'elle puisse afficher le formulaire toute seule

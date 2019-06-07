@@ -69,11 +69,11 @@
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
 
             {% if is_granted('ROLE_ADMIN') %}
+              <a class="dropdown-item" href="{{ path('gatomlo_user_admin_all_users')}}">Utilisateurs</a>
               <a class="dropdown-item" href="#">Status</a>
               <a class="dropdown-item" href="#">Jobs</a>
               <a class="dropdown-item" href="#">Types</a>
               <a class="dropdown-item" href="#">Tags</a>
-              <a class="dropdown-item" href="#">Utilisateurs</a>
               <div class="dropdown-divider"></div>
             {% endif %}
 

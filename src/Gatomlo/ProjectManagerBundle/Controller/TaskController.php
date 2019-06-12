@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Gatomlo\ProjectManagerBundle\Form\EventType;
 use Gatomlo\ProjectManagerBundle\Form\TaskType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 
 
@@ -204,7 +205,8 @@ class TaskController extends Controller
     }
 
     $form = $this->get('form.factory')->create(TaskType::class, $task, array(
-      'project'=>$projectId
+      'project'=>$projectId,
+      'curentUser'=>$this->getUser()
     ));
 
     // Si la requête est en POST
@@ -281,7 +283,8 @@ class TaskController extends Controller
 
       $form = $this->get('form.factory')->create(TaskType::class, $task, array(
         'existingTags'=>$existingTagsStringFormat,
-        'project'=>$project));
+        'project'=>$project,
+        'curentUser'=>$this->getUser()));
 
       // Si la requête est en POST
      if ($request->isMethod('POST')) {

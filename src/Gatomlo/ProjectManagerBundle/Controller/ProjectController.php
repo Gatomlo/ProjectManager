@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Gatomlo\ProjectManagerBundle\Form\ProjectType;
+
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
@@ -69,7 +70,7 @@ class ProjectController extends Controller
   {
     // On crée un objet Project
     $project = new Project();
-    $form = $this->get('form.factory')->create(ProjectType::class, $project);
+    $form = $this->get('form.factory')->create(ProjectType::class, $project,array('curentUser'=>$this->getUser()));
     // Si la requête est en POST
    if ($request->isMethod('POST')) {
      // On fait le lien Requête <-> Formulaire
@@ -129,7 +130,7 @@ class ProjectController extends Controller
       };
       // On transforme le tableau en string pour pouvoir être inséré dans le champ texte selectize
       $existingTagsStringFormat = implode(',',$existingTagsArray);
-      $form = $this->get('form.factory')->create(ProjectType::class, $project, array('existingTags'=>$existingTagsStringFormat));
+      $form = $this->get('form.factory')->create(ProjectType::class, $project, array('existingTags'=>$existingTagsStringFormat,'curentUser'=>$this->getUser()));
       // Si la requête est en POST
      if ($request->isMethod('POST')) {
        // On fait le lien Requête <-> Formulaire

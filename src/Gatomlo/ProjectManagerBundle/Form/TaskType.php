@@ -17,13 +17,14 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Gatomlo\ProjectManagerBundle\Repository\ProjectRepository;
 
 class TaskType extends AbstractType
 {
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
+    $user = $options['curentUser'];
     $builder
-
       ->add('description',      TextareaType::class,array(
         'label'=>'Description',
         'required' => true
@@ -49,7 +50,11 @@ class TaskType extends AbstractType
         'required' => true,
         'placeholder' => 'Choisir un projet',
         'attr' => array('class'=>'select-project'),
-        'data' => $options['project']
+        'data' => $options['project'],
+        'query_builder' => function(ProjectRepository $er) use ($user)
+               {
+                  return $er->getOwnerProjectsForList($user);
+               },
       ))
       ->add('tagsArray', TextType::class, array(
         'label'=>'Tags',
@@ -71,5 +76,6 @@ class TaskType extends AbstractType
       'project' => '',
       'existingTags' => ''
     ));
+    $resolver->setRequired(['curentUser']);
   }
 }

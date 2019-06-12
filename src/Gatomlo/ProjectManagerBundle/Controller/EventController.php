@@ -67,7 +67,8 @@ class EventController extends Controller
     }
 
     $form = $this->get('form.factory')->create(EventType::class, $event, array(
-      'project'=>$projectId
+      'project'=>$projectId,
+      'curentUser'=>$this->getUser()
     ));
 
     // Si la requête est en POST
@@ -143,7 +144,8 @@ class EventController extends Controller
       $existingTagsStringFormat = implode(',',$existingTagsArray);
       $form = $this->get('form.factory')->create(EventType::class, $event, array(
         'existingTags'=>$existingTagsStringFormat,
-        'project'=>$project));
+        'project'=>$project,
+        'curentUser'=>$this->getUser()));
       // Si la requête est en POST
      if ($request->isMethod('POST')) {
        // On fait le lien Requête <-> Formulaire
@@ -226,7 +228,7 @@ class EventController extends Controller
   {
     $em = $this->getDoctrine()->getManager();
     $report = new Report();
-    $form = $this->get('form.factory')->create(ReportType::class, $report,array());
+    $form = $this->get('form.factory')->create(ReportType::class, $report,array('curentUser'=>$this->getUser()));
 
     // Si la requête est en POST
    if ($request->isMethod('POST')) {
@@ -325,7 +327,8 @@ class EventController extends Controller
         $existingTagsStringFormat = implode(',',$existingTagsArray);
 
         $form = $this->get('form.factory')->create(ReportType::class, $report, array(
-          'existingTags'=>$existingTagsStringFormat));
+          'existingTags'=>$existingTagsStringFormat,
+          'curentUser'=>$this->getUser()));
 
           // Si la requête est en POST
          if ($request->isMethod('POST')) {

@@ -70,10 +70,10 @@
 
             {% if is_granted('ROLE_ADMIN') %}
               <a class="dropdown-item" href="{{ path('gatomlo_user_admin_all_users')}}">Utilisateurs</a>
-              <a class="dropdown-item" href="#">Status</a>
-              <a class="dropdown-item" href="#">Jobs</a>
-              <a class="dropdown-item" href="#">Types</a>
-              <a class="dropdown-item" href="#">Tags</a>
+              <a class="dropdown-item" href="{{ path('gatomlo_project_manager_admin_all_jobs')}}">Fonctions d'intervenant</a>
+              <a class="dropdown-item" href="{{ path('gatomlo_project_manager_admin_all_status')}}">Status de projet</a>
+              <a class="dropdown-item" href="{{ path('gatomlo_project_manager_admin_all_type')}}">Types d'événement</a>
+              <a class="dropdown-item" href="{{ path('gatomlo_project_manager_admin_all_tags')}}">Tags plateforme</a>
               <div class="dropdown-divider"></div>
             {% endif %}
 

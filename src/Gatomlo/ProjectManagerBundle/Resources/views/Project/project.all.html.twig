@@ -40,9 +40,9 @@
               <tr>
                 <td>{{project.name}}</td>
                 <td>
-                  {% for statu in project.status %}
-                    {{statu.name}}
-                  {% endfor %}
+                  {% if project.status is not null %}
+                    <span data-toggle="tooltip" data-placement="top" title="{{project.status.description}}">{{project.status.name}}</span>
+                  {% endif %}
                 </td>
                 <td>
                   {% for tag in project.tags %}

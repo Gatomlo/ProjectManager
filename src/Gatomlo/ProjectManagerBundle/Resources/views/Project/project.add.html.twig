@@ -6,7 +6,7 @@
       <a href="{{ path('gatomlo_project_manager_all_projects')}}">Projets</a>
     </li>
     <li class="breadcrumb-item active"> {{project.name}}  </li>
-  </ol>  
+  </ol>
 {% endblock %}
 
 {% block body %}
@@ -30,7 +30,7 @@
       load: function(query, callback) {
         if (!query.length) return callback();
         $.ajax({
-            url: '{{ path('gatomlo_project_manager_tags_json')}}',
+            url: '{{ path('gatomlo_project_manager_tags_json',{ 'type': 3 })}}',
             type: 'GET',
             dataType: 'json',
             data: {

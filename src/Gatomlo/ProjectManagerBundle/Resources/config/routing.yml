@@ -213,8 +213,10 @@ gatomlo_project_manager_delete_event:
 
 #tags
 gatomlo_project_manager_tags_json:
-    path:      /tags/
+    path:      /tags/{type}
     defaults: { _controller: GatomloProjectManagerBundle:Tags:jsonTagsList }
+    requirements:
+        type: \d+
 
 #tasks
 gatomlo_project_manager_all_open_tasks:
@@ -246,7 +248,7 @@ gatomlo_project_manager_add_task_from_project:
     path:      /tasks/add/{projectId}
     defaults: { _controller: GatomloProjectManagerBundle:Task:add }
     requirements:
-        id: \d+
+        projectId: \d+
 
 gatomlo_project_manager_edit_task:
     path:      /tasks/edit/{id}
@@ -291,7 +293,95 @@ gatomlo_user_admin_add_users:
 gatomlo_user_admin_delete_users:
     path:      /admin/users/delete/{id}
     defaults: { _controller: GatomloUserBundle:User:delete }
+    requirements:
+        id: \d+
 
 gatomlo_user_admin_edit_users:
     path:      /admin/users/edit/{id}
     defaults: { _controller: GatomloUserBundle:User:edit }
+    requirements:
+        id: \d+
+
+#admin tags
+gatomlo_project_manager_admin_all_tags:
+    path:      /admin/tags/all
+    defaults: { _controller: GatomloProjectManagerBundle:Tags:all }
+
+gatomlo_project_manager_admin_add_tags:
+    path:      /admin/tags/add
+    defaults: { _controller: GatomloProjectManagerBundle:Tags:add }
+
+gatomlo_project_manager_admin_delete_tags:
+    path:      /admin/tags/delete/{id}
+    defaults: { _controller: GatomloProjectManagerBundle:Tags:delete }
+    requirements:
+        id: \d+
+
+gatomlo_project_manager_admin_edit_tags:
+    path:      /admin/tags/edit/{id}
+    defaults: { _controller: GatomloProjectManagerBundle:Tags:edit }
+    requirements:
+        id: \d+
+
+#admin tags
+gatomlo_project_manager_admin_all_jobs:
+    path:      /admin/jobs/all
+    defaults: { _controller: GatomloProjectManagerBundle:Job:all }
+
+gatomlo_project_manager_admin_add_jobs:
+    path:      /admin/jobs/add
+    defaults: { _controller: GatomloProjectManagerBundle:Job:add }
+
+gatomlo_project_manager_admin_delete_jobs:
+    path:      /admin/jobs/delete/{id}
+    defaults: { _controller: GatomloProjectManagerBundle:Job:delete }
+    requirements:
+        id: \d+
+
+gatomlo_project_manager_admin_edit_jobs:
+    path:      /admin/jobs/edit/{id}
+    defaults: { _controller: GatomloProjectManagerBundle:Job:edit }
+    requirements:
+        id: \d+
+
+#admin status
+gatomlo_project_manager_admin_all_status:
+    path:      /admin/status/all
+    defaults: { _controller: GatomloProjectManagerBundle:Status:all }
+
+gatomlo_project_manager_admin_add_status:
+    path:      /admin/status/add
+    defaults: { _controller: GatomloProjectManagerBundle:Status:add }
+
+gatomlo_project_manager_admin_delete_status:
+    path:      /admin/status/delete/{id}
+    defaults: { _controller: GatomloProjectManagerBundle:Status:delete }
+    requirements:
+        id: \d+
+
+gatomlo_project_manager_admin_edit_status:
+    path:      /admin/status/edit/{id}
+    defaults: { _controller: GatomloProjectManagerBundle:Status:edit }
+    requirements:
+        id: \d+
+
+#admin type
+gatomlo_project_manager_admin_all_type:
+    path:      /admin/type/all
+    defaults: { _controller: GatomloProjectManagerBundle:Type:all }
+
+gatomlo_project_manager_admin_add_type:
+    path:      /admin/type/add
+    defaults: { _controller: GatomloProjectManagerBundle:Type:add }
+
+gatomlo_project_manager_admin_delete_type:
+    path:      /admin/type/delete/{id}
+    defaults: { _controller: GatomloProjectManagerBundle:Type:delete }
+    requirements:
+        id: \d+
+
+gatomlo_project_manager_admin_edit_type:
+    path:      /admin/type/edit/{id}
+    defaults: { _controller: GatomloProjectManagerBundle:Type:edit }
+    requirements:
+        id: \d+

@@ -4,6 +4,7 @@ namespace Gatomlo\ProjectManagerBundle\Form;
 
 use Gatomlo\ProjectManagerBundle\Entity\Project;
 use Gatomlo\ProjectManagerBundle\Entity\Tags;
+use Gatomlo\ProjectManagerBundle\Entity\Status;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -38,10 +39,18 @@ class ProjectType extends AbstractType
         'attr' => array('class'=>'form-control summernote'),
         'required' => false
       ))
+      ->add('status', EntityType::class, array(
+        'class' => Status::class,
+        'label'=>'Status du projet',
+        'choice_label' => 'name',
+        'required' => false,
+        'attr' => array('class'=>'select-parent'),
+        'placeholder' => 'Sélectionner un status',
+      ))
       ->add('url',      TextType::class,array(
         'label'=>'URL du projet',
         'attr' => array('class'=>'form-control'),
-      'required' => false
+        'required' => false
       ))
       ->add('endtime',      DatetimeType::class,array(
         'label'=>'Date d\'échéance',

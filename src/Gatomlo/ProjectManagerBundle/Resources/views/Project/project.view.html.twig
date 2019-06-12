@@ -29,11 +29,14 @@
   </br></br>
   <div class="card">
     <div class="card-header">
-      <!-- {% for status in project.status %}
-        Status : {{status.name}}
-      {% endfor %} -->
       <div class="row">
-        <h2 class="col-auto mr-auto">{{project.name}}</h2>
+        <div class="col-auto mr-auto">
+          <h2>{{project.name}}
+          {% if project.status is not null %}
+            <span data-toggle="tooltip" data-placement="top" title="{{project.status.description}}">({{project.status.name}})</span>
+          {% endif %}
+          </h2>
+        </div>
         <div class="dropdown col-auto">
           <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-cogs"></i>

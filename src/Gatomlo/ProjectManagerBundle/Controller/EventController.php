@@ -91,6 +91,7 @@ class EventController extends Controller
           if (empty($existingTag)){
             $newTag = new Tags();
             $newTag->setName($tag);
+            $newTag->setType(2);
             $event->addTag($newTag);
           }
 
@@ -163,13 +164,12 @@ class EventController extends Controller
             $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
               'name'=> $tag
             ));
-
             if (empty($existingTag)){
               $newTag = new Tags();
               $newTag->setName($tag);
+              $newTag->setType(2);
               $event->addTag($newTag);
             }
-
             else {
               $event->addTag($existingTag);
             }
@@ -245,7 +245,15 @@ class EventController extends Controller
          $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
            'name'=> $tag
          ));
-         $report->addTag($existingTag);
+         if (empty($existingTag)){
+           $newTag = new Tags();
+           $newTag->setName($tag);
+           $newTag->setType(2);
+           $event->addTag($newTag);
+         }
+         else {
+           $event->addTag($existingTag);
+         }
        }
        $report->addOwner($this->getUser());
        $em->persist($report);
@@ -345,6 +353,7 @@ class EventController extends Controller
                 if (empty($existingTag)){
                   $newTag = new Tags();
                   $newTag->setName($tag);
+                  $newTag->setType(4);
                   $event->addTag($newTag);
                 }
 

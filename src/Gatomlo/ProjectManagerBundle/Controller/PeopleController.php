@@ -59,6 +59,7 @@ class PeopleController extends Controller
          if (empty($existingTag)){
            $newTag = new Tags();
            $newTag->setName($tag);
+           $newTag->setType(0);
            $people->addTag($newTag);
          }
 
@@ -127,6 +128,7 @@ class PeopleController extends Controller
          if (empty($existingTag)){
            $newTag = new Tags();
            $newTag->setName($tag);
+           $newTag->setType(0);
            $people->addTag($newTag);
          }
 

@@ -228,6 +228,7 @@ class TaskController extends Controller
           if (empty($existingTag)){
             $newTag = new Tags();
             $newTag->setName($tag);
+            $newTag->setType(1);
             $task->addTag($newTag);
           }
 
@@ -308,6 +309,7 @@ class TaskController extends Controller
             if (empty($existingTag)){
               $newTag = new Tags();
               $newTag->setName($tag);
+              $newTag->setType(1);
               $task->addTag($newTag);
             }
 

@@ -39,7 +39,11 @@
       {% for event in events %}
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">{{event.title}} [{{event.type.name}}]</h5>
+          <h5 class="card-title">{{event.title}}
+            {% if event.type is not null %}
+            [{{event.type.name}}]
+            {% endif %}
+          </h5>
           <h6 class="card-subtitle mb-2 text-muted">
           {{event.startdate|date("d/m/Y H:m")}}
           {% if not event.endDate %}

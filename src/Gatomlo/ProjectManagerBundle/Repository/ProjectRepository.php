@@ -28,5 +28,13 @@ class ProjectRepository extends \Doctrine\ORM\EntityRepository
 
        return $qb->getQuery()->getResult();
   }
+  public function getOwnerProjectsForList($user)
+  {
+    $qb = $this->createQueryBuilder('e');
+    $qb->join('e.owner','o')
+       ->andWhere('o = :o')
+       ->setParameter(':o',$user);
 
+       return $qb;
+  }
 }

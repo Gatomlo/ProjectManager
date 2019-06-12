@@ -1,0 +1,72 @@
+{% extends "base.html.twig" %}
+
+{% block breadcrumb %}
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      Tags
+    </li>
+  </ol>
+{% endblock %}
+
+{% block body %}
+
+
+  <div class="card mb-3">
+    <div class="card-header"><a class="float-right  btn btn-primary " href="{{ path('gatomlo_project_manager_admin_add_tags') }}"><i class="fas fa-plus-circle text-align-right"></i> Nouveau tag</a></div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped display responsive nowrap" id="usersDatatable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Nom du tag</th>
+              <th>Type de tag</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for tag in tags %}
+              <tr>
+                <td>{{tag.name}}</td>
+                <td>
+                  {% if tag.type == 0 %}
+                    contact
+                  {% elseif tag.type == 1 %}
+                    tâche
+                  {% elseif tag.type == 2 %}
+                    événement
+                  {% elseif tag.type == 3 %}
+                      projet
+                  {% endif %}
+                </td>
+                <td>
+                  <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-cogs"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="{{ path('gatomlo_project_manager_admin_edit_tags',{ 'id': tag.id }) }}"><i class="fas fa-pen"></i> Editer</a>
+                      <a class="dropdown-item" href="{{ path('gatomlo_project_manager_admin_delete_tags',{ 'id': tag.id }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    $(document).ready(function() {
+      $('#usersDatatable').DataTable({
+        responsive: true,
+        stateSave: true,
+
+      });
+    });
+  </script>
+{% endblock %}

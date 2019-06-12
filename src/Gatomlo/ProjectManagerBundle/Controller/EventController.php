@@ -57,7 +57,6 @@ class EventController extends Controller
 
   public function addAction(Request $request, Project $projectId = null )
   {
-
     $event = new Event();
     if ($projectId == null){
       $fromProject = FALSE;
@@ -65,17 +64,15 @@ class EventController extends Controller
     else{
       $fromProject = TRUE;
     }
-
     $form = $this->get('form.factory')->create(EventType::class, $event, array(
-      'project'=>$projectId
+      'project'=>$projectId,
+      'curentUser'=>$this->getUser()
     ));
-
     // Si la requête est en POST
    if ($request->isMethod('POST')) {
      // On fait le lien Requête <-> Formulaire
      // À partir de maintenant, la variable $advert contient les valeurs entrées dans le formulaire par le visiteur
      $form->handleRequest($request);
-
      // On vérifie que les valeurs entrées sont correctes
      // (Nous verrons la validation des objets en détail dans le prochain chapitre)
      if ($form->isValid()) {
@@ -87,13 +84,12 @@ class EventController extends Controller
           $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
             'name'=> $tag
           ));
-
           if (empty($existingTag)){
             $newTag = new Tags();
             $newTag->setName($tag);
+            $newTag->setType(2);
             $event->addTag($newTag);
           }
-
           else {
             $event->addTag($existingTag);
           }
@@ -101,7 +97,6 @@ class EventController extends Controller
        $event->addOwner($this->getUser());
        $em->persist($event);
        $em->flush();
-
        $request->getSession()->getFlashBag()->add('notice', 'Evénement bien enregistré.');
 
        if($fromProject){
@@ -110,11 +105,8 @@ class EventController extends Controller
        else{
           return $this->redirectToRoute('gatomlo_project_manager_all_events');
        }
-
      }
    }
-
-
     // On passe la méthode createView() du formulaire à la vue
     // afin qu'elle puisse afficher le formulaire toute seule
     return $this->render('@GatomloProjectManager/Event/event.add.html.twig', array(
@@ -142,7 +134,8 @@ class EventController extends Controller
       $existingTagsStringFormat = implode(',',$existingTagsArray);
       $form = $this->get('form.factory')->create(EventType::class, $event, array(
         'existingTags'=>$existingTagsStringFormat,
-        'project'=>$project));
+        'project'=>$project,
+        'curentUser'=>$this->getUser()));
       // Si la requête est en POST
      if ($request->isMethod('POST')) {
        // On fait le lien Requête <-> Formulaire
@@ -163,13 +156,12 @@ class EventController extends Controller
             $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
               'name'=> $tag
             ));
-
             if (empty($existingTag)){
               $newTag = new Tags();
               $newTag->setName($tag);
+              $newTag->setType(2);
               $event->addTag($newTag);
             }
-
             else {
               $event->addTag($existingTag);
             }
@@ -226,7 +218,7 @@ class EventController extends Controller
   {
     $em = $this->getDoctrine()->getManager();
     $report = new Report();
-    $form = $this->get('form.factory')->create(ReportType::class, $report,array());
+    $form = $this->get('form.factory')->create(ReportType::class, $report,array('curentUser'=>$this->getUser()));
 
     // Si la requête est en POST
    if ($request->isMethod('POST')) {
@@ -245,7 +237,15 @@ class EventController extends Controller
          $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
            'name'=> $tag
          ));
-         $report->addTag($existingTag);
+         if (empty($existingTag)){
+           $newTag = new Tags();
+           $newTag->setName($tag);
+           $newTag->setType(2);
+           $report->addTag($newTag);
+         }
+         else {
+           $report->addTag($existingTag);
+         }
        }
        $report->addOwner($this->getUser());
        $em->persist($report);
@@ -290,7 +290,7 @@ class EventController extends Controller
         $params['endDate'] = $report->getEndDate();
       }
       else{
-        $params['endDate'] = date("Y-m-d");
+        $params['endDate'] = new \DateTime()->format('Y-m-d H:i:s');
       }
       $events = $em->getRepository('GatomloProjectManagerBundle:Event')->getReport($params);
       return $this->render('@GatomloProjectManager/Report/report.view.html.twig',array('events'=>$events,'report'=>$report));
@@ -317,7 +317,8 @@ class EventController extends Controller
         $existingTagsStringFormat = implode(',',$existingTagsArray);
 
         $form = $this->get('form.factory')->create(ReportType::class, $report, array(
-          'existingTags'=>$existingTagsStringFormat));
+          'existingTags'=>$existingTagsStringFormat,
+          'curentUser'=>$this->getUser()));
 
           // Si la requête est en POST
          if ($request->isMethod('POST')) {
@@ -345,6 +346,7 @@ class EventController extends Controller
                 if (empty($existingTag)){
                   $newTag = new Tags();
                   $newTag->setName($tag);
+                  $newTag->setType(4);
                   $event->addTag($newTag);
                 }
 

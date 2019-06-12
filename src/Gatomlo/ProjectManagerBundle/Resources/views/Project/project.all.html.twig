@@ -22,7 +22,7 @@
     <div class="card-header"><a class="float-right  btn btn-primary " href="{{ path('gatomlo_project_manager_add_project') }}"><i class="fas fa-plus-circle text-align-right"></i> Nouveau projet</a></div>
     <div class="card-body">
       <div class="table-responsive">
-          <table class="table" id="projectDataTable" width="100%" cellspacing="0">
+          <table class="table table-striped display responsive nowrap" id="projectDataTable" width="100%" cellspacing="0">
 
           <thead>
             <tr>
@@ -40,9 +40,9 @@
               <tr>
                 <td>{{project.name}}</td>
                 <td>
-                  {% for statu in project.status %}
-                    {{statu.name}}
-                  {% endfor %}
+                  {% if project.status is not null %}
+                    <span data-toggle="tooltip" data-placement="top" title="{{project.status.description}}">{{project.status.name}}</span>
+                  {% endif %}
                 </td>
                 <td>
                   {% for tag in project.tags %}
@@ -65,8 +65,8 @@
                       {% if not archived%}
                         <a class="dropdown-item" href="{{ path('gatomlo_project_manager_edit_project', { 'id': project.id }) }}"><i class="fas fa-pen"></i> Editer</a>
                       {% endif %}
-                      <a class="dropdown-item" href="{{ path('gatomlo_project_manager_delete_project', { 'id': project.id }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a>
                       {% if archived%}
+                        <a class="dropdown-item" href="{{ path('gatomlo_project_manager_delete_project', { 'id': project.id }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a>
                         <a class="dropdown-item" href="{{ path('gatomlo_project_manager_archived_project', { 'id': project.id }) }}"><i class="fas fa-undo"></i>
                           Désarchiver
                         </a>

@@ -113,7 +113,7 @@ class People
     private $comment;
 
     /**
-     * @ORM\OneToMany(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Intervenant", mappedBy="people", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Intervenant", mappedBy="people", cascade={"persist","remove"})
      *
      */
     private $intervenant;

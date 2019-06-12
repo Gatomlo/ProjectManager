@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Gatomlo\ProjectManagerBundle\Form\ProjectType;
+
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
@@ -69,45 +70,36 @@ class ProjectController extends Controller
   {
     // On crée un objet Project
     $project = new Project();
-
-    $form = $this->get('form.factory')->create(ProjectType::class, $project);
-
+    $form = $this->get('form.factory')->create(ProjectType::class, $project,array('curentUser'=>$this->getUser()));
     // Si la requête est en POST
    if ($request->isMethod('POST')) {
      // On fait le lien Requête <-> Formulaire
      // À partir de maintenant, la variable $advert contient les valeurs entrées dans le formulaire par le visiteur
      $form->handleRequest($request);
-
      // On vérifie que les valeurs entrées sont correctes
      // (Nous verrons la validation des objets en détail dans le prochain chapitre)
      if ($form->isValid()) {
       $em = $this->getDoctrine()->getManager();
-
        $tagsArray = $form['tagsArray']->getData();
        $tags = explode(",",$tagsArray);
        foreach ($tags as $tag) {
          $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
            'name'=> $tag
          ));
-
          if (empty($existingTag)){
            $newTag = new Tags();
            $newTag->setName($tag);
+           $newTag->setType(3);
            $project->addTag($newTag);
          }
-
          else {
            $project->addTag($existingTag);
          }
        }
-
        $project->addOwner($this->getUser());
-
        $em->persist($project);
        $em->flush();
-
        $request->getSession()->getFlashBag()->add('notice', 'Projet bien enregistrée.');
-
        // On redirige vers la page de visualisation de l'annonce nouvellement créée
        return $this->redirectToRoute('gatomlo_project_manager_one_project', array('id' => $project->getId()));
      }
@@ -138,7 +130,7 @@ class ProjectController extends Controller
       };
       // On transforme le tableau en string pour pouvoir être inséré dans le champ texte selectize
       $existingTagsStringFormat = implode(',',$existingTagsArray);
-      $form = $this->get('form.factory')->create(ProjectType::class, $project, array('existingTags'=>$existingTagsStringFormat));
+      $form = $this->get('form.factory')->create(ProjectType::class, $project, array('existingTags'=>$existingTagsStringFormat,'curentUser'=>$this->getUser()));
       // Si la requête est en POST
      if ($request->isMethod('POST')) {
        // On fait le lien Requête <-> Formulaire
@@ -162,6 +154,7 @@ class ProjectController extends Controller
             if (empty($existingTag)){
               $newTag = new Tags();
               $newTag->setName($tag);
+              $newTag->setType(3);
               $project->addTag($newTag);
             }
             else {

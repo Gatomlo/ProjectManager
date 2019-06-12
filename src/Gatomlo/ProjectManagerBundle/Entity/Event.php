@@ -531,7 +531,7 @@ class Event
     {
         return $this->owner;
     }
-    
+
     public function isOwner($owner)
     {
       $realOwner = $this->owner;

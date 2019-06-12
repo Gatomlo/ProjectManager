@@ -16,7 +16,7 @@
     <div class="card-header"><a class="float-right  btn btn-primary " href="{{ path('gatomlo_project_manager_add_people') }}"><i class="fas fa-plus-circle text-align-right"></i> Nouveau contact</a></div>
     <div class="card-body">
       <div class="table-responsive">
-        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <table class="table table-striped display responsive nowrap" id="peopleDatatable" width="100%" cellspacing="0">
           <thead>
             <tr>
               <th>Nom</th>
@@ -44,7 +44,7 @@
                   <td>/</td>
                 {% endif %}
                 {% if people.institution is not null %}
-                <td>{{people.institution}}</td>
+                  <td>{{people.institution}}</td>
                 {% else %}
                   <td>/</td>
                 {% endif %}
@@ -52,7 +52,7 @@
                   {% for tag in people.tags %}
                     {{tag.name}}{% if not loop.last %}, {% endif %}
                   {% endfor %}
-                <td>
+                </td>
                 <td>
                   <div class="dropdown">
                     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -78,16 +78,9 @@
 {% block scripts %}
   <script>
     $(document).ready(function() {
-      $('#eventDatatable').DataTable({
+      $('#peopleDatatable').DataTable({
         responsive: true,
         stateSave: true,
-        "columnDefs": [
-              {
-                  "targets": [ 3 ],
-                  "visible": true,
-                  "searchable": true
-              },
-          ]
       });
     });
   </script>

@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+
+{% block breadcrumb %}
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a href="{{ path('gatomlo_project_manager_admin_all_status') }}">Tous les status de projet</a>
+    </li>
+    <li class="breadcrumb-item">
+      Nouveau status de projet
+    </li>
+  </ol>
+{% endblock %}
+
+{% block body %}
+  {{ form(form) }}
+{% endblock %}

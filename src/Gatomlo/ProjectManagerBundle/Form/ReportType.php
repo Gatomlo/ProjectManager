@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Gatomlo\ProjectManagerBundle\Repository\ProjectRepository;
 
 
 
@@ -25,7 +26,7 @@ class ReportType extends AbstractType
 {
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
-
+    $user = $options['curentUser'];
     $builder
       ->add('name',      TextType::class,array(
         'label'=>'Titre du rapport',
@@ -52,6 +53,10 @@ class ReportType extends AbstractType
         'required' => false,
         'attr' => array('class'=>'select-parent'),
         'placeholder' => 'Sélectionner un projet',
+        'query_builder' => function(ProjectRepository $er) use ($user)
+               {
+                  return $er->getOwnerProjectsForList($user);
+               },
       ))
       ->add('type', EntityType::class, array(
         'class' => Type::class,
@@ -88,5 +93,6 @@ class ReportType extends AbstractType
       'data_class' => 'Gatomlo\ProjectManagerBundle\Entity\Report',
       'existingTags' => ''
     ));
+    $resolver->setRequired(['curentUser']);
   }
 }

@@ -34,7 +34,13 @@ class Tags
      * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
-
+    
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="type", type="integer")
+     */
+    private $type;
 
     /**
      * Get id.
@@ -92,5 +98,30 @@ class Tags
     public function getDescription()
     {
         return $this->description;
+    }
+
+
+    /**
+     * Set type.
+     *
+     * @param int $type
+     *
+     * @return Tags
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type.
+     *
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }

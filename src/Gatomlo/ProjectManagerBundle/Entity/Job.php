@@ -29,7 +29,7 @@ class Job
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Intervenant", mappedBy="job", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Intervenant", mappedBy="job", cascade={"persist","remove"})
      *
      */
     private $intervenant;

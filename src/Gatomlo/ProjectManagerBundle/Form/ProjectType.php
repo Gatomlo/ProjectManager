@@ -2,8 +2,11 @@
 
 namespace Gatomlo\ProjectManagerBundle\Form;
 
+use Doctrine\ORM\EntityRepository;
 use Gatomlo\ProjectManagerBundle\Entity\Project;
 use Gatomlo\ProjectManagerBundle\Entity\Tags;
+use Gatomlo\ProjectManagerBundle\Entity\Status;
+use Gatomlo\UserBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -15,14 +18,15 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
+use Gatomlo\ProjectManagerBundle\Repository\ProjectRepository;
 
 
 class ProjectType extends AbstractType
 {
+
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
-
+    $user = $options['curentUser'];
     $builder
       ->add('name',      TextType::class,array(
         'label'=>'Titre du projet',
@@ -38,10 +42,18 @@ class ProjectType extends AbstractType
         'attr' => array('class'=>'form-control summernote'),
         'required' => false
       ))
+      ->add('status', EntityType::class, array(
+        'class' => Status::class,
+        'label'=>'Status du projet',
+        'choice_label' => 'name',
+        'required' => false,
+        'attr' => array('class'=>'select-parent'),
+        'placeholder' => 'Sélectionner un status',
+      ))
       ->add('url',      TextType::class,array(
         'label'=>'URL du projet',
         'attr' => array('class'=>'form-control'),
-      'required' => false
+        'required' => false
       ))
       ->add('endtime',      DatetimeType::class,array(
         'label'=>'Date d\'échéance',
@@ -57,6 +69,10 @@ class ProjectType extends AbstractType
         'required' => false,
         'attr' => array('class'=>'select-parent'),
         'placeholder' => 'Sélectionner un parent',
+        'query_builder' => function(ProjectRepository $er) use ($user)
+               {
+                  return $er->getOwnerProjectsForList($user);
+               },
       ))
       ->add('tagsArray', TextType::class, array(
         'label'=>'Tags',
@@ -73,9 +89,11 @@ class ProjectType extends AbstractType
 
   public function configureOptions(OptionsResolver $resolver)
   {
-    $resolver->setDefaults(array(
+    $resolver
+    ->setDefaults(array(
       'data_class' => 'Gatomlo\ProjectManagerBundle\Entity\Project',
-      'existingTags' => ''
+      'existingTags' => '',
     ));
+    $resolver->setRequired(['curentUser']);
   }
 }

@@ -290,7 +290,7 @@ class EventController extends Controller
         $params['endDate'] = $report->getEndDate();
       }
       else{
-        $params['endDate'] = new \DateTime()->format('Y-m-d H:i:s');
+        $params['endDate'] = '3000-01-01';
       }
       $events = $em->getRepository('GatomloProjectManagerBundle:Event')->getReport($params);
       return $this->render('@GatomloProjectManager/Report/report.view.html.twig',array('events'=>$events,'report'=>$report));

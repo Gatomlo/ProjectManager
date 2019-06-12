@@ -68,6 +68,7 @@ class Project
     /**
     * @ORM\ManyToOne(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Project", inversedBy="childs", cascade={"persist"})
     */
+
     private $parent;
 
     /**

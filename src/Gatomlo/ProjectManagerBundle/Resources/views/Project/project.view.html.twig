@@ -33,7 +33,7 @@
         <div class="col-auto mr-auto">
           <h2>{{project.name}}
           {% if project.status is not null %}
-            <span data-toggle="tooltip" data-placement="top" title="{{project.status.description}}">({{project.status.name}})</span>
+            <span data-toggle="tooltip" data-placement="top" title="{{project.status.description | raw }}">({{project.status.name}})</span>
           {% endif %}
           </h2>
         </div>
@@ -70,11 +70,13 @@
         <a href="{{ path('gatomlo_project_manager_one_project', { 'id': project.parent.id }) }}">{{project.parent.name}}</a>
       {% endif %}
 
-      {% if project.childs =='' %}
+      {% if project.childs is not empty %}
         </br></br><h5>Projets enfants:</h5>
-        {% for child in project.childs %}
-          <a href="{{ path('gatomlo_project_manager_one_project', { 'id': child.id }) }}">{{child.name}}</a>{% if not loop.last %}</br> {% endif %}
-        {% endfor %}
+        <ul>
+          {% for child in project.childs %}
+            <li><a href="{{ path('gatomlo_project_manager_one_project', { 'id': child.id }) }}">{{child.name}}</a></li>
+          {% endfor %}
+        </ul>
       {% endif %}
       {% if  project.url is not empty %}
         </br></br>

@@ -18,8 +18,7 @@ class StatusType extends AbstractType
         'label'=>'Nom du status',
       ))
       ->add('description', TextareaType::class,array(
-        'label'=>'Description du status',
-        'attr' => array('class'=>'form-control summernote'),
+        'label'=>'Description du status'
       ))
       ->add('save',      SubmitType::class,array(
         'label'=>'Enregistrer',

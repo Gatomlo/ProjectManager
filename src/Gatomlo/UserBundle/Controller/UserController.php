@@ -29,8 +29,9 @@ class UserController extends Controller
        if ($form->isValid()) {
          $em = $this->getDoctrine()->getManager();
          $password = $form['password']->getData();
+         $enabled = $form['enabled']->getData();
          $user->setPlainPassword($password);
-         $user->setEnabled(false);
+         $user->setEnabled($enabled);
          $adminUser = $form['admin']->getData();
          if($adminUser){
            $user->addRole("ROLE_ADMIN");

@@ -15,7 +15,8 @@
 {% block scripts %}
   <script>
     $('.select-project').selectize({
-      sortField: 'text'
+      sortField: 'text',
+      allowEmptyOption: true
     });
     $('.select-tags').selectize({
       plugins: ['remove_button'],

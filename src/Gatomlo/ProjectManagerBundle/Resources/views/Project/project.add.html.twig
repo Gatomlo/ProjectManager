@@ -5,7 +5,13 @@
     <li class="breadcrumb-item">
       <a href="{{ path('gatomlo_project_manager_all_projects')}}">Projets</a>
     </li>
-    <li class="breadcrumb-item active"> {{project.name}}  </li>
+    <li class="breadcrumb-item active">
+      {% if project.name is not null %}
+        {{project.name}}
+      {% else %}
+        Nouveau projet
+      {% endif %}
+     </li>
   </ol>
 {% endblock %}
 
@@ -18,7 +24,8 @@
 {% block scripts %}
   <script>
     $('.select-parent').selectize({
-      sortField: 'text'
+      sortField: 'text',
+      allowEmptyOption: true
     });
     $('.select-tags').selectize({
       plugins: ['remove_button'],

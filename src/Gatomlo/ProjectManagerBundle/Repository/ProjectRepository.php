@@ -31,10 +31,14 @@ class ProjectRepository extends \Doctrine\ORM\EntityRepository
   public function getOwnerProjectsForList($user)
   {
     $qb = $this->createQueryBuilder('e');
-    $qb->join('e.owner','o')
-       ->andWhere('o = :o')
-       ->setParameter(':o',$user);
-
-       return $qb;
+    $roles = $user->getRoles();
+    if(in_array("ROLE_ADMIN", $roles)){
+      }
+    else{
+      $qb->join('e.owner','o')
+         ->andWhere('o = :o')
+         ->setParameter(':o',$user);
+      }
+     return $qb;
   }
 }

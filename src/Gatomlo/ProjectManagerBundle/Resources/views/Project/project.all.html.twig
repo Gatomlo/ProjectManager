@@ -41,7 +41,7 @@
                 <td>{{project.name}}</td>
                 <td>
                   {% if project.status is not null %}
-                    <span data-toggle="tooltip" data-placement="top" title="{{project.status.description}}">{{project.status.name}}</span>
+                    <span data-toggle="tooltip" data-placement="top" title="{{project.status.description | raw }}">{{project.status.name}}</span>
                   {% endif %}
                 </td>
                 <td>

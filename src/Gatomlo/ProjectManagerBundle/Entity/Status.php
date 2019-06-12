@@ -36,15 +36,6 @@ class Status
     private $description;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="type", type="integer")
-     */
-     //0 = status pour projet, 1 = status pour événement,  2 = status pour todo
-     //combinaisons possibles exemple 012 -> pour tous et 02 -> projet + todo
-    private $type;
-
-    /**
      * @ORM\OneToMany(targetEntity="Gatomlo\ProjectManagerBundle\Entity\Project", mappedBy="status", cascade={"persist"})
      *
      */
@@ -108,30 +99,6 @@ class Status
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Set type.
-     *
-     * @param int $type
-     *
-     * @return Status
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get type.
-     *
-     * @return int
-     */
-    public function getType()
-    {
-        return $this->type;
     }
 
     /**

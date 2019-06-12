@@ -5,6 +5,7 @@ namespace Gatomlo\ProjectManagerBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Gatomlo\ProjectManagerBundle\Entity\Project;
 use Gatomlo\ProjectManagerBundle\Entity\Tags;
+use Gatomlo\ProjectManagerBundle\Entity\Report;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -185,10 +186,24 @@ class ProjectController extends Controller
   {
       $em = $this->getDoctrine()->getManager();
       $project = $em->getRepository('GatomloProjectManagerBundle:Project')->find($id);
+      $reports = $em->getRepository('GatomloProjectManagerBundle:Report')->findBy(array(
+        'project'=>$project
+      ));
+      $childs = $project->getChilds();
       if($project->isOwner($this->getUser()) || $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') ){
         if($project->getParent() != null){
-          $parent = $em->getRepository('GatomloProjectManagerBundle:Project')->find($project->getParent());
-          $project->setParents(null);
+          $project->setParent(null);
+        }
+        if(!empty($reports)){
+          foreach ($reports as $key => $report) {
+            $em->remove($report);
+          }
+        }
+
+        if(!empty($childs)){
+          foreach ($childs as $key => $child) {
+            $child->setParent(null);
+          }
         }
         $em->remove($project);
         $em->flush();

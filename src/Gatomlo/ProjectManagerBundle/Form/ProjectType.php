@@ -72,7 +72,7 @@ class ProjectType extends AbstractType
         'query_builder' => function(ProjectRepository $er) use ($user)
                {
                   return $er->getOwnerProjectsForList($user);
-               },
+               },       
       ))
       ->add('tagsArray', TextType::class, array(
         'label'=>'Tags',

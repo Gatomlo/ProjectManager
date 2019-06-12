@@ -55,7 +55,13 @@
   <div>Type d'évènement: {{report.type.name}}</div>
   {% endif %}
   {% if report.project is not null %}
-  <div>Intervenant concerné: {{report.intervenant.identity}}</div>
+  <div>Intervenant concerné:
+    {% if report.intervenant is not null %}
+      {{report.intervenant.identity}}
+    {% else %}
+        Cet intervenant a été supprimé de la base de données.
+    {% endif %}
+  </div>
   {% endif %}
   {% if report.tags is not empty %}
   <div>Mots clés:

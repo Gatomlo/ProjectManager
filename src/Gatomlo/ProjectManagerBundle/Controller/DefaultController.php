@@ -21,8 +21,8 @@ class DefaultController extends Controller
       // $user->addRole('ROLE_ADMIN');
       // $em->persist($user);
       // $em->flush();
-      $lastProjects = $em->getRepository('GatomloProjectManagerBundle:Project')->getLastProjects(10);
-      $lastEvents = $em->getRepository('GatomloProjectManagerBundle:Event')->getLastEvents(10);
+      $lastProjects = $em->getRepository('GatomloProjectManagerBundle:Project')->getLastProjects(10,$this->getUser());
+      $lastEvents = $em->getRepository('GatomloProjectManagerBundle:Event')->getLastEvents(10,$this->getUser());
 
         return $this->render('@GatomloProjectManager/Default/index.html.twig',array('projects'=> $lastProjects,'events'=>$lastEvents));
     }

@@ -54,19 +54,19 @@
                   {% if task.closed %}
                     <i class="fas fa-check"></i>
                   {% elseif task.enddate == null %}
-                    <i class="fas fa-calendar-times"></i>
+                    <i data-toggle="tooltip" data-placement="top" title="Tâche sans échéance." class="fas fa-calendar-times"></i>
                   {% else %}
                     {% if task.status > 0 %}
                     <font color="{{ task.color }}">
-                      <i class="fas fa-bell"></i>
+                      <i data-toggle="tooltip" data-placement="top" title="Echéance dépassée !" class="fas fa-bell"></i>
                     </font>
                     {% elseif task.status < 0 %}
                       <font color="{{ task.color }}">
-                        <i class="far fa-clock"></i>
+                        <i data-toggle="tooltip" data-placement="top" title="Echéance dans le futur." class="far fa-clock"></i>
                       </font>
                     {% elseif task.status == 0 %}
                      <font color="{{ task.color }}">
-                       <i class="fas fa-clock"></i>
+                       <i data-toggle="tooltip" data-placement="top" title="Echéance aujourd'hui !" class="fas fa-clock"></i>
                      </font>
                     {% endif %}
 

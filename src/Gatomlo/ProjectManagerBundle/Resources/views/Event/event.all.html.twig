@@ -30,7 +30,7 @@
           <tbody>
             {% for event in events %}
               <tr>
-                <td>{{event.title}}</td>
+                <td><a  href="{{ path('gatomlo_project_manager_one_event', { 'id': event.id }) }}">{{event.title}}</a></td>
                 <td>{{event.startdate|date("d/m/Y")}}</td>
                 {% if event.type is not null %}
                     <td>{{event.type.name}}</td>

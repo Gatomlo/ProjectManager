@@ -10,9 +10,12 @@ namespace Gatomlo\ProjectManagerBundle\Repository;
  */
 class ProjectRepository extends \Doctrine\ORM\EntityRepository
 {
-  public function getLastProjects($limit)
+  public function getLastProjects($limit,$user)
   {
     return $this->createQueryBuilder('e')
+    ->join('e.owner','o')
+    ->andWhere('o = :o')
+    ->setParameter(':o',$user)
     ->setMaxResults($limit)
     ->getQuery()
     ->getResult();

@@ -65,7 +65,7 @@ class TaskController extends Controller
         $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findAll();
        }
       else{
-        $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->getOpenTasksFromOwner($this->getUser());
+        $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->getClosedTasksFromOwner($this->getUser());
       }
       $taskArray = array();
 
@@ -105,12 +105,12 @@ class TaskController extends Controller
 
       if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
         $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->findBy(
-          array(),
+          array('closed' => false),
           array('closed' => 'asc')
         );
        }
       else{
-        $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')->getAllTasksFromOwner($this->getUser());
+        $tasks = $em->getRepository('GatomloProjectManagerBundle:Task')-> getOpenTasksFromOwner($this->getUser());
       }
 
       $list_tasks = array();

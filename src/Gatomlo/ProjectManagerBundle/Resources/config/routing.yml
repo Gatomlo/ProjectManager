@@ -211,6 +211,8 @@ gatomlo_project_manager_delete_event:
         id: \d+
         from: project|events
 
+
+
 #tags
 gatomlo_project_manager_tags_json:
     path:      /tags/{type}
@@ -280,6 +282,11 @@ gatomlo_project_manager_deadline_tasks_json:
 gatomlo_project_manager_planned_tasks_json:
     path:      /tasks/json/planned/all
     defaults: { _controller: GatomloProjectManagerBundle:Task:jsonPlanTaksList }
+
+#users
+gatomlo_project_manager_user_json:
+    path:      /json/user
+    defaults: { _controller: GatomloUserBundle:User:jsonUserList }
 
 #admin users
 gatomlo_user_admin_all_users:

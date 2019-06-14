@@ -98,6 +98,14 @@ class ProjectController extends Controller
          }
        }
        $project->addOwner($this->getUser());
+       $ownersArray = $form['owner']->getData();
+       $owners = explode(",",$ownersArray);
+       foreach ($owners as $key => $owner) {
+         $thisOwner = $em->getRepository('GatomloUserBundle:User')->findOneBy(array(
+           'username'=> $owner
+         ));
+         $project->addOwner($thisOwner);
+       }
        $em->persist($project);
        $em->flush();
        $request->getSession()->getFlashBag()->add('notice', 'Projet bien enregistrée.');
@@ -120,18 +128,23 @@ class ProjectController extends Controller
     $em = $this->getDoctrine()->getManager();
     $project = $em->getRepository('GatomloProjectManagerBundle:Project')->find($id);
     if($project->isOwner($this->getUser()) || $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') ){
-      //Récupération des tags
+      $actualOwners = $project->getOwner();
       $existingTags = $project->getTags();
-      //Création d'un tableau vide
       $existingTagsArray = [];
-      // Pour chaque tag, on récupére le nom et on l'insère dans le tableau vide.
+      $actualOwnersArray = [];
       foreach ($existingTags as $tag) {
         $currentTag = $tag->getName();
         array_push($existingTagsArray, $currentTag);
       };
-      // On transforme le tableau en string pour pouvoir être inséré dans le champ texte selectize
+      foreach ($actualOwners as $actualOwner) {
+        if($actualOwner != $this->getUser()){
+          $currentOwner = $actualOwner->getUsername();
+          array_push($actualOwnersArray, $currentOwner);
+        }
+      };
       $existingTagsStringFormat = implode(',',$existingTagsArray);
-      $form = $this->get('form.factory')->create(ProjectType::class, $project, array('existingTags'=>$existingTagsStringFormat,'curentUser'=>$this->getUser()));
+      $actualOwnersFormat = implode(',',$actualOwnersArray);
+      $form = $this->get('form.factory')->create(ProjectType::class, $project, array('existingTags'=>$existingTagsStringFormat,'actualOwners'=>$actualOwnersFormat,'curentUser'=>$this->getUser()));
       // Si la requête est en POST
      if ($request->isMethod('POST')) {
        // On fait le lien Requête <-> Formulaire
@@ -142,6 +155,9 @@ class ProjectController extends Controller
        if ($form->isValid()) {
          foreach ($existingTags as $tag) {
            $project->removeTag($tag);
+         };
+         foreach ($actualOwners as $owner) {
+           $project->removeOwner($owner);
          };
          // On enregistre notre objet $advert dans la base de données, par exemple
          $em = $this->getDoctrine()->getManager();
@@ -162,6 +178,14 @@ class ProjectController extends Controller
               $project->addTag($existingTag);
             }
           }
+         $ownersArray = $form['owner']->getData();
+         $owners = explode(",",$ownersArray);
+         foreach ($owners as $key => $owner) {
+           $thisOwner = $em->getRepository('GatomloUserBundle:User')->findOneBy(array(
+             'username'=> $owner
+           ));
+           $project->addOwner($thisOwner);
+         }
          $em->persist($project);
          $em->flush();
          $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');

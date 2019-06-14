@@ -7,6 +7,7 @@ use Gatomlo\UserBundle\Form\UserType;
 use Gatomlo\UserBundle\Form\EditUserType;
 use Gatomlo\UserBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends Controller
@@ -105,5 +106,18 @@ class UserController extends Controller
       return $this->redirectToRoute('gatomlo_user_admin_all_users');
     }
     return $this->redirectToRoute('gatomlo_user_admin_all_users');
+  }
+
+  public function jsonUserListAction()
+  {
+      $em = $this->getDoctrine()->getManager();
+      $users = $em->getRepository('GatomloUserBundle:User')->getUserListWithoutOneUser($this->getUser());
+      $list_user = array();
+      foreach ($users as $user){
+          $obj['id'] = $user->getId();
+          $obj['text'] = $user->getUsername();
+          array_push($list_user,$obj);
+      }
+      return new JsonResponse($list_user);
   }
 }

@@ -10,4 +10,12 @@ namespace Gatomlo\UserBundle\Repository;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
+  public function getUserListWithoutOneUser($user)
+  {
+    $qb = $this->createQueryBuilder('o');
+    $qb->where('o != :o')
+       ->setParameter(':o',$user);
+
+       return $qb->getQuery()->getResult();
+  }
 }

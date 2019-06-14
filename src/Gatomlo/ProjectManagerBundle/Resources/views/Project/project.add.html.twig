@@ -25,7 +25,7 @@
   <script>
     $('.select-parent').selectize({
       sortField: 'text',
-      allowEmptyOption: true
+      plugins: ['remove_button'],
     });
     $('.select-tags').selectize({
       plugins: ['remove_button'],
@@ -38,6 +38,31 @@
         if (!query.length) return callback();
         $.ajax({
             url: '{{ path('gatomlo_project_manager_tags_json',{ 'type': 3 })}}',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                country: query,
+            },
+            error: function() {
+                callback();
+            },
+            success: function(res) {
+                callback(res);
+            }
+        });
+      }
+    });
+    $('.select-user').selectize({
+      plugins: ['remove_button'],
+      valueField: 'text',
+      labelField: 'text',
+      searchField: 'text',
+      hideSelected: true,
+      options: [],
+      load: function(query, callback) {
+        if (!query.length) return callback();
+        $.ajax({
+            url: '{{ path('gatomlo_project_manager_user_json')}}',
             type: 'GET',
             dataType: 'json',
             data: {

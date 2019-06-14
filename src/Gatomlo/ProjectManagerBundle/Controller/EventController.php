@@ -437,5 +437,4 @@ class EventController extends Controller
       return $this->redirectToRoute('gatomlo_project_manager_homepage');
     }
   }
-
 }

@@ -72,7 +72,14 @@ class ProjectType extends AbstractType
         'query_builder' => function(ProjectRepository $er) use ($user)
                {
                   return $er->getOwnerProjectsForList($user);
-               },       
+               },
+      ))
+      ->add('owner', TextType::class, array(
+        'label'=>'Autres gestionnaires du projet',
+        'mapped'=> false,
+        'required' => false,
+        'attr' => array('class'=>'select-user'),
+        'data' => $options['actualOwners'],
       ))
       ->add('tagsArray', TextType::class, array(
         'label'=>'Tags',
@@ -93,6 +100,7 @@ class ProjectType extends AbstractType
     ->setDefaults(array(
       'data_class' => 'Gatomlo\ProjectManagerBundle\Entity\Project',
       'existingTags' => '',
+      'actualOwners' => '',
     ));
     $resolver->setRequired(['curentUser']);
   }

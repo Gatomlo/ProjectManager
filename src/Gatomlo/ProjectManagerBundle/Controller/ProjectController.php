@@ -106,6 +106,9 @@ class ProjectController extends Controller
          ));
          $project->addOwner($thisOwner);
        }
+       if(!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+         $project->addOwner($this->getUser());
+       }
        $em->persist($project);
        $em->flush();
        $request->getSession()->getFlashBag()->add('notice', 'Projet bien enregistrée.');
@@ -185,6 +188,9 @@ class ProjectController extends Controller
              'username'=> $owner
            ));
            $project->addOwner($thisOwner);
+         }
+         if(!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+           $project->addOwner($this->getUser());
          }
          $em->persist($project);
          $em->flush();

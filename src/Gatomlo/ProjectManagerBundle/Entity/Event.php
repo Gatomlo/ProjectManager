@@ -534,7 +534,8 @@ class Event
 
     public function isOwner($owner)
     {
-      $realOwner = $this->owner;
+      $project= $this->project;
+      $realOwner = $project->getOwner();
       foreach ($realOwner as $key => $value) {
         if($value == $owner){
           return true;

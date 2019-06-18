@@ -23,7 +23,8 @@ class EventRepository extends \Doctrine\ORM\EntityRepository
   public function getEventsFromOwner($user)
   {
     $qb = $this->createQueryBuilder('e');
-    $qb->join('e.owner','o')
+    $qb->join('e.project','p')
+       ->join('p.owner', 'o')
        ->andWhere('o = :o')
        ->setParameter(':o',$user);
 

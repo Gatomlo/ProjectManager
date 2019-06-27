@@ -1,9 +1,7 @@
 ProjectManager
 ==============
 
-
-
-
+![screenshot dashboard](https://github.com/Gatomlo/ProjectManager/blob/master/Screenshot_14.png)
 
 
 Pour installer :

@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Gatomlo\ProjectManagerBundle\Entity\Project;
 use Gatomlo\ProjectManagerBundle\Entity\Tags;
 use Gatomlo\ProjectManagerBundle\Entity\Report;
+use Gatomlo\ProjectManagerBundle\Entity\Event;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -72,13 +73,8 @@ class ProjectController extends Controller
     // On crée un objet Project
     $project = new Project();
     $form = $this->get('form.factory')->create(ProjectType::class, $project,array('curentUser'=>$this->getUser()));
-    // Si la requête est en POST
-   if ($request->isMethod('POST')) {
-     // On fait le lien Requête <-> Formulaire
-     // À partir de maintenant, la variable $advert contient les valeurs entrées dans le formulaire par le visiteur
+    if ($request->isMethod('POST')) {
      $form->handleRequest($request);
-     // On vérifie que les valeurs entrées sont correctes
-     // (Nous verrons la validation des objets en détail dans le prochain chapitre)
      if ($form->isValid()) {
       $em = $this->getDoctrine()->getManager();
        $tagsArray = $form['tagsArray']->getData();
@@ -97,29 +93,33 @@ class ProjectController extends Controller
            $project->addTag($existingTag);
          }
        }
-       $project->addOwner($this->getUser());
+
        $ownersArray = $form['owner']->getData();
-       $owners = explode(",",$ownersArray);
-       foreach ($owners as $key => $owner) {
-         $thisOwner = $em->getRepository('GatomloUserBundle:User')->findOneBy(array(
-           'username'=> $owner
-         ));
-         $project->addOwner($thisOwner);
+       if (!empty($ownersArray)){
+         $owners = explode(",",$ownersArray);
+         foreach ($owners as $key => $owner) {
+           $thisOwner = $em->getRepository('GatomloUserBundle:User')->findOneBy(array(
+             'username'=> $owner
+           ));
+           $project->addOwner($thisOwner);
+         }
        }
        if(!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
          $project->addOwner($this->getUser());
        }
        $em->persist($project);
+       $event = new Event();
+       $event->setProject($project);
+       $event->setType($em->getRepository('GatomloProjectManagerBundle:Type')->find(1));
+       $event->setTitle('Création du projet');
+       $event->setDescription('Création du projet');
+       $event->setStartDate(new \DateTime("now"));
+       $em->persist($event);
        $em->flush();
-       $request->getSession()->getFlashBag()->add('notice', 'Projet bien enregistrée.');
-       // On redirige vers la page de visualisation de l'annonce nouvellement créée
+
        return $this->redirectToRoute('gatomlo_project_manager_one_project', array('id' => $project->getId()));
      }
    }
-
-
-    // On passe la méthode createView() du formulaire à la vue
-    // afin qu'elle puisse afficher le formulaire toute seule
     return $this->render('@GatomloProjectManager/Project/project.add.html.twig', array(
       'form' => $form->createView(),
       'project'=>$project

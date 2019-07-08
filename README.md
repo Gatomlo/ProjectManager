@@ -1,7 +1,8 @@
 ProjectManager
 ==============
 
-A Symfony project created on November 13, 2018, 1:13 pm.
+![screenshot dashboard](https://github.com/Gatomlo/ProjectManager/blob/master/Screenshot_14.png)
+
 
 Pour installer :
 

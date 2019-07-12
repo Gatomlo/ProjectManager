@@ -77,7 +77,7 @@
                 {% else %}
                   <td>{{task.description}}</td>
                 {% endif %}
-                <td>{{task.project.name}}</td>
+                <td><a  href="{{ path('gatomlo_project_manager_one_project', { 'id': task.project.id }) }}">{{task.project.name}}<a/></td>
                 {% if task.enddate != null %}
                 <td>{{task.enddate|date("d/m/Y")}}</td>
                 {% else %}

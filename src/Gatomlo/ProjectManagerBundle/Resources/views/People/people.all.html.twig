@@ -31,8 +31,8 @@
           <tbody>
             {% for people in peoples %}
               <tr>
-                <td>{{people.firstName}}</td>
-                <td>{{people.lastName}}</td>
+                <td><a  href="{{ path('gatomlo_project_manager_one_people', { 'id': people.id }) }}">{{people.firstName}}</a></td>
+                <td><a  href="{{ path('gatomlo_project_manager_one_people', { 'id': people.id }) }}">{{people.lastName}}</a></td>
                 {% if people.diplome is not null %}
                   <td>{{people.diplome}}</td>
                 {% else %}

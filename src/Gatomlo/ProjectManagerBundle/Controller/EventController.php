@@ -82,7 +82,8 @@ class EventController extends Controller
         $tags = explode(",",$tagsArray);
         foreach ($tags as $tag) {
           $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
-            'name'=> $tag
+            'name'=> $tag,
+            'type'=>2
           ));
           if (empty($existingTag)){
             $newTag = new Tags();
@@ -154,7 +155,8 @@ class EventController extends Controller
           $tags = explode(",",$tagsArray);
           foreach ($tags as $tag) {
             $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
-              'name'=> $tag
+              'name'=> $tag,
+              'type'=>2
             ));
             if (empty($existingTag)){
               $newTag = new Tags();
@@ -235,7 +237,8 @@ class EventController extends Controller
        $tags = explode(",",$tagsArray);
        foreach ($tags as $tag) {
          $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
-           'name'=> $tag
+           'name'=> $tag,
+           'type'=>4
          ));
          if (empty($existingTag)){
            $newTag = new Tags();
@@ -340,7 +343,8 @@ class EventController extends Controller
               $tags = explode(",",$tagsArray);
               foreach ($tags as $tag) {
                 $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
-                  'name'=> $tag
+                  'name'=> $tag,
+                  'type'=>4
                 ));
 
                 if (empty($existingTag)){

@@ -24,7 +24,7 @@ class Tags
     /**
      * @var string|null
      *
-     * @ORM\Column(name="name", type="string", length=50, nullable=false, unique=true)
+     * @ORM\Column(name="name", type="string", length=50, nullable=false)
      */
     private $name;
 
@@ -34,7 +34,7 @@ class Tags
      * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
-    
+
     /**
      * @var int
      *

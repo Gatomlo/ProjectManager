@@ -53,7 +53,8 @@ class PeopleController extends Controller
        $tags = explode(",",$tagsArray);
        foreach ($tags as $tag) {
          $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
-           'name'=> $tag
+           'name'=> $tag,
+           'type'=>0
          ));
 
          if (empty($existingTag)){
@@ -122,7 +123,8 @@ class PeopleController extends Controller
        $tags = explode(",",$tagsArray);
        foreach ($tags as $tag) {
          $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
-           'name'=> $tag
+           'name'=> $tag,
+           'type'=>0
          ));
 
          if (empty($existingTag)){

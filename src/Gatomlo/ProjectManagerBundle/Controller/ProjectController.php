@@ -81,7 +81,8 @@ class ProjectController extends Controller
        $tags = explode(",",$tagsArray);
        foreach ($tags as $tag) {
          $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
-           'name'=> $tag
+           'name'=> $tag,
+           'type'=>3
          ));
          if (empty($existingTag)){
            $newTag = new Tags();
@@ -169,7 +170,8 @@ class ProjectController extends Controller
           $tags = explode(",",$tagsArray);
           foreach ($tags as $tag) {
             $existingTag = $em->getRepository('GatomloProjectManagerBundle:Tags')->findOneBy(array(
-              'name'=> $tag
+              'name'=> $tag,
+              'type'=>3
             ));
             if (empty($existingTag)){
               $newTag = new Tags();

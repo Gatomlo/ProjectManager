@@ -351,7 +351,7 @@ class EventController extends Controller
                   $newTag = new Tags();
                   $newTag->setName($tag);
                   $newTag->setType(4);
-                  $event->addTag($newTag);
+                  $report->addTag($newTag);
                 }
 
                 else {

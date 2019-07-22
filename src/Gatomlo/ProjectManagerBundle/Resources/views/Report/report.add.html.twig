@@ -37,7 +37,7 @@
       load: function(query, callback) {
         if (!query.length) return callback();
         $.ajax({
-            url: '{{ path('gatomlo_project_manager_tags_json',{ 'type': 4 })}}',
+            url: '{{ path('gatomlo_project_manager_tags_json',{ 'type': 2 })}}',
             type: 'GET',
             dataType: 'json',
             data: {

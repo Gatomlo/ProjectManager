@@ -57,7 +57,8 @@
       </br>
       <i class="fas fa-at"></i> :
       {% if people.email is not null %}
-        {{people.email}}
+      <a href="mailto:{{people.email}}">{{people.email}}</a>
+
       {% else %}
         non encodé
       {% endif %}

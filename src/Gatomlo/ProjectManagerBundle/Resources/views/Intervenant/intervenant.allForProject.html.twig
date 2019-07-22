@@ -45,7 +45,7 @@
           <tbody>
             {% for intervenant in intervenants %}
               <tr>
-                <td>{{intervenant.people.lastName}} {{intervenant.people.firstName}}</td>
+                <td><a  href="{{ path('gatomlo_project_manager_one_people', { 'id': people.id }) }}">{{intervenant.people.lastName}} {{intervenant.people.firstName}}</a></td>
                 <td>{{intervenant.job.name}}</td>
                 <td>{{intervenant.comment | raw }}</td>
                 <td>

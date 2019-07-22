@@ -54,7 +54,7 @@
           <tbody>
             {% for project in projects %}
               <tr>
-                <td>{{project.project.name}}</td>
+                <td> <a  href="{{ path('gatomlo_project_manager_one_project', { 'id': project.project.id }) }}">{{project.project.name}}</a></td>
                 <td>{{project.job.name}}</td>
                 <td>{{project.comment | raw }}</td>
                 <td>

@@ -211,7 +211,32 @@ gatomlo_project_manager_delete_event:
         id: \d+
         from: project|events
 
+#Document
+gatomlo_project_manager_all_documents_from_project:
+    path:      /documents/all/{projectId}
+    defaults: { _controller: GatomloProjectManagerBundle:Document:allFor }
+    requirements:
+        projectId: \d+
 
+gatomlo_project_manager_all_documents:
+    path:      /documents/all/
+    defaults: { _controller: GatomloProjectManagerBundle:Document:all }
+
+gatomlo_project_manager_add_document:
+    path:      /document/add/
+    defaults: { _controller: GatomloProjectManagerBundle:Document:add }
+
+gatomlo_project_manager_add_document_from_project:
+    path:      /documents/add/{projectId}
+    defaults: { _controller: GatomloProjectManagerBundle:Document:add }
+    requirements:
+        projectId: \d+
+
+gatomlo_project_manager_delete_document:
+    path:      /documents/delete/{id}
+    defaults: { _controller: GatomloProjectManagerBundle:Document:delete }
+    requirements:
+        id: \d+
 
 #tags
 gatomlo_project_manager_tags_json:
@@ -229,8 +254,6 @@ gatomlo_project_manager_all_open_tasks:
 gatomlo_project_manager_all_closed_tasks:
     path:      /tasks/all/closed/
     defaults: { _controller: GatomloProjectManagerBundle:Task:allClosedTask }
-
-
 
 gatomlo_project_manager_all_tasks_plannificator:
     path:      /tasks/plannificator/all

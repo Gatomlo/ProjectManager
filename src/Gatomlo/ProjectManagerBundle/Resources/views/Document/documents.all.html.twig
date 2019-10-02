@@ -1,0 +1,73 @@
+{% extends "base.html.twig" %}
+
+{% block breadcrumb %}
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active">Documents</li>
+    <li class="breadcrumb-item active">Tous les Documents</li>
+  </ol>
+{% endblock %}
+
+{% block body %}
+
+  <div class="card mb-3">
+    <div class="card-header"><a class="float-right  btn btn-primary " href="{{ path('gatomlo_project_manager_add_document') }}"><i class="fas fa-plus-circle text-align-right"></i> Nouveau document</a></div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped display responsive nowrap" id="documentDatatable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Projet</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for document in documents %}
+              <tr>
+                {% if document.documentName is not null %}
+                  <td><a href="{{asset (vich_uploader_asset (document, 'documentFile'))}}">{{document.documentName}}</a></td>
+                {% else %}
+                  <td></td>
+                {% endif %}
+                {% if document.project is not null %}
+                  <td><a  href="{{ path('gatomlo_project_manager_one_project', { 'id': document.project.id }) }}">{{document.project.name}}</a></td>
+                {% else %}
+                  <td></td>
+                {% endif %}
+                {% if document.UpdatedAt is not null %}
+                  <td>{{document.UpdatedAt|date("d/m/Y")}}</td>
+                {% else %}
+                  <td></td>
+                {% endif %}
+                <td>
+                  <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-cogs"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="{{asset (vich_uploader_asset (document, 'documentFile'))}}" download ><i class="fas fa-file-download"></i> Télécharger</a>
+                      <a class="dropdown-item" href="{{ path('gatomlo_project_manager_one_project', { 'id': document.project.id }) }}"><i class="fas fa-fw fa-folder"></i> Projet</a>
+                      <a class="dropdown-item" href="{{ path('gatomlo_project_manager_delete_document',{ 'id': document.id }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function() {
+    $('#documentDatatable').DataTable({
+      responsive: true,
+      stateSave: true,
+    });
+  });
+</script>
+{% endblock %}

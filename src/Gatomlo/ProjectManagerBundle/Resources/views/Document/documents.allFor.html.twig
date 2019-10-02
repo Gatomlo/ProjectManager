@@ -1,0 +1,87 @@
+{% extends "base.html.twig" %}
+
+{% block breadcrumb %}
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active">Documents</li>
+    <li class="breadcrumb-item">
+      <a href="{{ path('gatomlo_project_manager_one_project', { 'id': project.id }) }}">{{project.name}}</a>
+    </li>
+    <li class="breadcrumb-item active">Documents</li>
+  </ol>
+{% endblock %}
+
+{% block body %}
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link" href="{{ path('gatomlo_project_manager_one_project', { 'id': project.id }) }}">Description</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ path('gatomlo_project_manager_all_intervenants_from_a_project', { 'projectId': project.id }) }}">Intervenants</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ path('gatomlo_project_manager_all_events_from_a_project', { 'projectId': project.id }) }}">Evénements</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ path('gatomlo_project_manager_all_tasks_from_a_project', { 'projectId': project.id }) }}">Tâches</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link  active" href="{{ path('gatomlo_project_manager_all_documents_from_project', { 'projectId': project.id }) }}">Documents</a>
+  </li>
+</ul>
+</br></br>
+
+  <div class="card mb-3">
+    <div class="card-header"><a class="float-right  btn btn-primary " href="{{ path('gatomlo_project_manager_add_document_from_project',{ 'projectId': project.id }) }}"><i class="fas fa-plus-circle text-align-right"></i> Nouveau document</a></div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped display responsive nowrap" id="documentDatatable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for document in documents %}
+              <tr>
+                {% if document is not null %}
+                  <td><a href="{{asset (vich_uploader_asset (document, 'documentFile'))}}">{{document.documentName}}</a></td>
+                {% else %}
+                  <td></td>
+                {% endif %}
+                {% if document is not null %}
+                  <td>{{document.UpdatedAt|date("d/m/Y")}}</td>
+                {% else %}
+                  <td></td>
+                {% endif %}
+                <td>
+                  <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-cogs"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="{{asset (vich_uploader_asset (document, 'documentFile'))}}" download ><i class="fas fa-file-download"></i> Télécharger</a>
+                      <a class="dropdown-item" href="{{ path('gatomlo_project_manager_delete_document',{ 'id': document.id }) }}"><i class="fas fa-trash-alt"></i> Supprimer</a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  $(document).ready(function() {
+    $('#documentDatatable').DataTable({
+      responsive: true,
+      stateSave: true,
+    });
+  });
+</script>
+{% endblock %}

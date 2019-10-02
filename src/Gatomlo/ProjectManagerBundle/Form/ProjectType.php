@@ -19,6 +19,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Gatomlo\ProjectManagerBundle\Repository\ProjectRepository;
+use Vich\UploaderBundle\Form\Type\VichFileType;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 
 class ProjectType extends AbstractType
@@ -87,6 +89,10 @@ class ProjectType extends AbstractType
         'required'=>false,
         'attr' => array('class' => 'select-tags'),
         'data' => $options['existingTags'],
+      ))
+      ->add('imageFile', VichImageType::class, array(
+        'label'=>'Document',
+        'required' => false,
       ))
       ->add('save',      SubmitType::class,array(
         'label'=>'Enregistrer',

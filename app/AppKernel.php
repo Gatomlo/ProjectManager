@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
             new Gatomlo\UserBundle\GatomloUserBundle(),
             new FOS\UserBundle\FOSUserBundle(),
+            new Vich\UploaderBundle\VichUploaderBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

@@ -81,4 +81,13 @@ fos_user:
     from_email:
         address: tonemail@test.be
         sender_name: tonpseudo
-        
+
+vich_uploader:
+    db_driver: orm # or mongodb or propel or phpcr
+    mappings:
+       product_image:
+           uri_prefix: documents/projets
+           upload_destination: '%kernel.project_dir%/web/documents/projets'
+           inject_on_load: false
+           delete_on_update: true
+           delete_on_remove: true

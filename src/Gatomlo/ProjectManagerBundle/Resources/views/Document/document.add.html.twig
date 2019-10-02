@@ -1,0 +1,49 @@
+{% extends "base.html.twig" %}
+
+{% block breadcrumb %}
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a href="">Document</a>
+    </li>
+    <li class="breadcrumb-item active"> </li>
+  </ol>
+{% endblock %}
+
+{% block body %}
+
+  {{ form(form) }}
+
+{% endblock %}
+{% block scripts %}
+<script>
+  $('.select-project').selectize({
+    sortField: 'text',
+    allowEmptyOption: true
+  });
+  $('.select-tags').selectize({
+    plugins: ['remove_button'],
+    valueField: 'text',
+    labelField: 'text',
+    searchField: 'text',
+    create: true,
+    options: [],
+    load: function(query, callback) {
+      if (!query.length) return callback();
+      $.ajax({
+          url: '{{ path('gatomlo_project_manager_tags_json',{ 'type': 2 })}}',
+          type: 'GET',
+          dataType: 'json',
+          data: {
+              country: query,
+          },
+          error: function() {
+              callback();
+          },
+          success: function(res) {
+              callback(res);
+          }
+      });
+    }
+  });
+</script>
+{% endblock %}
